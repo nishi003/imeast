@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path='modules' element={<ModuleList />} />
+            <Route path='module/list/' element={<ModuleList />} />
           </Route>
         </Routes>
       </BrowserRouter>
