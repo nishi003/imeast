@@ -6,15 +6,17 @@ export const index = () => {
     return (
         <>
             <div className='h-full w-full'>
-                <div className='flex flex-col'>
-                    <div className='flex flex-row'>
-                        <img src={logo} alt='logo' />
+                <div className='flex flex-col pt-[190px]'>
+                    <div className='flex flex-row items-baseline gap-4 justify-center'>
+                        <img src={logo} alt='logo' className='w-[43.36px] h-[136.04px]' />
                         <p className='text-text kalam-bold text-[200px]'>meast</p>
                     </div>
-                    <p className=''>Future of pain managements. Way towards a better life.</p>
-                    <div className='flex flex-row'>
-                        <Link to='' className='bg-black text-white'>BOOK MODULE</Link>
-                        <Link to='' className='bg-black text-white'>CONTACT US</Link>
+                    <div className='flex justify-center mt-[-45px]'>
+                        <p className='poppins-regular text-text text-3xl'>Future of pain managements. Way towards a better life.</p>
+                    </div>
+                    <div className='flex flex-row gap-9 justify-center pt-[60px]'>
+                        <Link to='' className='bg-text text-white w-[340px] h-[60px] text-center flex justify-center items-center rounded-[30px] text-xl poppins-semibold hover:scale-105 duration-200'>BOOK MODULE</Link>
+                        <Link to='' className='bg-text text-white w-[340px] h-[60px] text-center flex justify-center items-center rounded-[30px] text-xl poppins-semibold hover:scale-105 duration-200'>CONTACT US</Link>
                     </div>
                 </div>
             </div>
