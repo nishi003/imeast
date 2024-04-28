@@ -25,7 +25,7 @@ export const index = () => {
                 <Link to='/' className='text-text poppins-bold text-6xl hover:scale-105 duration-200'>LEARN</Link>
             </section>
             <section className='w-full flex items-center justify-center h-screen'>
-                <img src={logo_lg} alt="logo_lg" className='' />
+                <img src={logo_lg} alt="logo_lg" className='hover:scale-105 duration-200' />
             </section>
         </div>
     )
