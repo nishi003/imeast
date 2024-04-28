@@ -220,3 +220,13 @@ code {
   font-weight: 900;
   font-style: italic;
 }
+
+.scroll-snap-y{
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-snap-y > section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
