@@ -11,10 +11,9 @@ const Index = () => {
             </Link>
             <div className='text-text flex items-center text-xl font-semibold poppins-bold gap-9'>
                 <Link to='' className='hover:scale-105 duration-200'>INFORMATION</Link>
-                <Link to='module/list/' className='hover:scale-105 duration-200'>MODULES</Link>
+                <Link to='/module/list/' className='hover:scale-105 duration-200'>MODULES</Link>
                 <Link to='' className='hover:scale-105 duration-200'>ABOUT US</Link>
-                <Link to='' className='hover:scale-105 duration-200'>LOG IN</Link>
-                <Link to='' className='hover:scale-105 duration-200'>SIGN UP</Link>
+                <Link to='/signin/' className='hover:scale-105 duration-200'>SIGN UP</Link>
             </div>
         </header>
     )
