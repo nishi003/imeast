@@ -8,8 +8,8 @@ const path = require("path")
 const cors = require("cors")
 
 //google auth
-const authRouter = require('./routes/oauth')
-const requestRouter = require('./routes/request')
+var authRouter = require('./routes/oauth')
+var requestRouter = require('./routes/request')
 
 app.use(express.json());
 app.use(cors());
@@ -152,10 +152,6 @@ const Users = mongoose.model('Users', {
     date: {
         type: Date,
         default: Date.now,
-    },
-    useGoogle: {
-        type: Boolean,
-        default: false
     },
     admin: {
         type: Boolean,
