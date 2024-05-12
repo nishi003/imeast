@@ -1,5 +1,5 @@
 import React from 'react';
-import background from '../../Assets/signup-bg.png'
+import background from '../../Assets/signin-bg.png'
 import logo from '../../Assets/logo-large.png';
 import logo_lg from '../../Assets/logo-xl.png';
 
@@ -36,8 +36,15 @@ const Index = () => {
                             <input type='password' id='password' required className='w-[500px] h-[56px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='●●●●●●●●'></input>
                         </div>
                     </div>
-                    <button className='w-[500px] h-[60px] rounded-[30px] bg-[#669162] text-white poppins-semibold text-lg hover:scale-105 duration-200 mt-8'>SIGN UP</button>
-                    <p className='poppins-semibold text-[#767676] text-[15px] flex gap-1 mt-10'>Don't have an account? <Link to='/signup/' className='text-[#669162] hover:scale-105 duration-200'>Sign Up</Link></p>
+                    <div className='flex w-[500px] justify-between mt-6'>
+                        <div className='flex flex-row gap-1 items-center'>
+                            <input type='checkbox' id='remember-checkbox' className='h-4 w-4 rounded-none accent-[#669162]' />
+                            <label htmlFor='remember-checkbox' className='poppins-semibold text-sm text-[#669162]'>Remember me</label>
+                        </div>
+                        <Link to='' className='poppins-semibold text-sm text-[#669162]'>Forgot Password?</Link>
+                    </div>
+                    <button className='w-[500px] h-[60px] rounded-[30px] bg-[#669162] text-white poppins-semibold text-lg hover:scale-105 duration-200 mt-6'>SIGN UP</button>
+                    <p className='poppins-semibold text-[#767676] text-[15px] flex gap-1 mt-16'>Don't have an account? <Link to='/signup/' className='text-[#669162] hover:scale-105 duration-200'>Sign Up</Link></p>
                 </div>
             </div>
         </div>

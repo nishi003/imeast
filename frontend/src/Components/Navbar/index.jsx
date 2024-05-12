@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../Assets/logo-small.png'
+import logo from '../../Assets/logo-small.png'
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -13,7 +13,7 @@ const Index = () => {
                 <Link to='' className='hover:scale-105 duration-200'>INFORMATION</Link>
                 <Link to='/module/list/' className='hover:scale-105 duration-200'>MODULES</Link>
                 <Link to='' className='hover:scale-105 duration-200'>ABOUT US</Link>
-                <Link to='/signin/' className='hover:scale-105 duration-200'>SIGN UP</Link>
+                <Link to='/signin/' className='hover:scale-105 duration-200'>SIGN IN</Link>
             </div>
         </header>
     )
