@@ -14,9 +14,8 @@ const Index = () => {
     }
 
     return (
-        <div className='relative h-screen w-full flex justify-center items-center'>
-            <img src={background} alt='bg' className='absolute inset-0 object-cover w-full h-full z-0' />
-            <div className='h-[740px] w-[1330px] bg-[#91C28D] z-10 rounded-[50px] container flex flex-row items-center'>
+        <main className='h-screen p-40 bg-[#91C28D99] flex justify-center items-center'>
+            <div className='h-[740px] w-[1330px] bg-[#91C28D] rounded-[50px] container flex flex-row items-center'>
                 <div className='w-1/2 h-full flex items-center justify-center flex-col'>
                     <div className='flex flex-row justify-center items-baseline gap-4 logo-part'>
                         <img src={logo_lg} alt='lg-logo' className='w-[31px] h-[96px]' />
@@ -60,7 +59,7 @@ const Index = () => {
                     </form>
                 </div>
             </div>
-        </div>
+        </main>
     )
 }
 
