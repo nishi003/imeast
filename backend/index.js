@@ -71,6 +71,10 @@ const Product = mongoose.model("Product", {
         type: Number,
         required: true,
     },
+    video_embed_link: {
+        type: String,
+        required: true,
+    },
     date:{
         type: Date,
         default: Date.now,
@@ -95,6 +99,7 @@ app.post('/addproduct', async (req,res)=>{
         category: req.body.category,
         new_price: req.body.new_price,
         old_price: req.body.old_price,
+        video_embed_link: req.body.video_embed_link
     });
     console.log(product);
     await product.save();
@@ -122,6 +127,12 @@ app.get('/allproducts', async(req, res)=>{
     res.send(products)
 })
 
+function isvalidyear(str) {
+    const date = new Date();
+    let curYear = date.getFullYear(); //getting current year
+    var n = Math.floor(Number(str));
+    return n !== Infinity && String(n) === str && n >= 0 && n < curYear;
+}
 
 //Sign in Google
 app.use('/oauth', authRouter);
@@ -135,16 +146,31 @@ app.post('/request', (req, res)=>{
 const Users = mongoose.model('Users', {
     name: {
         type: String,
-        required: true
     },
     email:{
         type: String,
         unique: true,
-        required: true
+    },
+    sex: {
+        type: String,
+    },
+    DBmonth: {
+        type: String,
+    },
+    DBday: {
+        type: String, 
+    },
+    DByear: {
+        type: String,
+    },
+    pw1: {
+        type: String,
+    }, 
+    pw2: {
+        type: String,
     },
     password:{
         type: String,
-        required: true
     },
     modulesBought:{
         type: Object
@@ -185,6 +211,44 @@ app.post('/signup', async(req, res)=>{
     if (check){
         return res.status(400).json({success: false, errors: "existing user found with the same email address."})
     }
+
+    //Required fields (non-admin) validator. essential missing fields
+    let missingFields = []
+    if (typeof req.body.email == 'undefined'){
+        missingFields.push("email")
+    }
+    if (typeof req.body.pw1 == 'undefined'){
+        missingFields.push("pw1")
+    }
+    if (typeof req.body.pw2 == 'undefined'){
+        missingFields.push("pw2")
+    }
+    if (typeof req.body.sex == 'undefined'){
+        missingFields.push("sex")
+    }
+    if (typeof req.body.DBmonth == 'undefined'){
+        missingFields.push("DBmonth")
+    }
+    if (typeof req.body.DBday == 'undefined'){
+        missingFields.push("DBday")
+    }
+    if (typeof req.body.DByear == 'undefined'){
+        missingFields.push("DByear")
+    }
+
+    //password validator
+    if (!(req.body.pw1 == req.body.pw2)) {
+        return res.status(400).json({success: false, errors: "password 1 and password 2 don't match", fieldname: missingFields})
+    }
+    else if (req.body.pw1.length < 8){
+        return res.status(400).json({success: false, errors: "password must be at least 8 characters long", fieldname: missingFields})
+    }
+
+    //year validator
+    if (!isvalidyear){
+        return res.status(400).json({success: false, errors: "invalid year", fieldname: missingFields})
+    }
+
     let cart = {};
     // NOTE: I don't like the static cart data init. make it dynamic with all products probably.
     for (let i = 0; i<300; i++){
@@ -194,31 +258,35 @@ app.post('/signup', async(req, res)=>{
     //admin check for fields.
     let isAdmin = req.body.admin
     if (isAdmin){
-        let missingFields = []
-        if (typeof lisenceNumber == 'undefined'){
+        if (typeof req.body.lisenceNumber == 'undefined'){
             missingFields.push("lisenceNumber")
         }
-        if (typeof registeredCollege == 'undefined'){
+        if (typeof req.body.registeredCollege == 'undefined'){
             missingFields.push("registeredCollege")
         }
-        if (typeof practiceLocation == 'undefined'){
+        if (typeof req.body.practiceLocation == 'undefined'){
             missingFields.push("practiceLocation")
         }
-        if (typeof professionType == 'undefined'){
+        if (typeof req.body.professionType == 'undefined'){
             missingFields.push("professionType")
         }
-        if (typeof practicePeriod == 'undefined'){
+        if (typeof req.body.practicePeriod == 'undefined'){
             missingFields.push("practicePeriod")
         }
-        if (missingFields.length !== 0){
-            return res.status(400).json({success: false, errors: "missing fields", fieldname: missingFields})
-        }
     }
+    if (missingFields.length !== 0){
+        return res.status(400).json({success: false, errors: "missing fields", fieldname: missingFields})
+    }
+    
 
     const user = new Users({
         name: req.body.username,
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.pw1,
+        sex: req.body.sex,
+        DBmonth: req.body.DBmonth,
+        DBday: req.body.DBday,
+        DByear: req.body.DByear,
         modulesBought: cart,
         admin: req.body.admin,
         registeredCollege: req.body.registeredCollege,
