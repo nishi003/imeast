@@ -4,10 +4,10 @@ import Navbar from '../Navbar'
 
 const Index = () => {
     return (
-        <>
+        <div className='flex h-screen flex-col'>
             <Navbar />
             <Outlet />
-        </>
+        </div>
     )
 }
 

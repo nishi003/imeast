@@ -1,0 +1,43 @@
+::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+::-webkit-scrollbar-track {
+  background: white;
+}
+  
+::-webkit-scrollbar-thumb {
+  background: white;
+}
+  
+
+::-webkit-scrollbar-thumb:hover {
+  background: white;
+}
+
+.last-bit > img {
+  filter: drop-shadow(20px 20px 20px rgba(0, 0, 0, 0.25));
+}
+
+
+body {
+  background: white;
+}
+
+.glassy-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  backdrop-filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main {
+  position: absolute;
+  top: 0;
+  z-index: 100000;
+}
