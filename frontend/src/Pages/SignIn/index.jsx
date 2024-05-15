@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import background from '../../Assets/signin-bg.png'
 import logo from '../../Assets/logo-large.png';
 import logo_lg from '../../Assets/logo-xl.png';
@@ -7,6 +7,12 @@ import './style.css'
 import { Link } from 'react-router-dom';
 
 const Index = () => {
+    const [error, setError] = useState("");
+
+    function handle_submit(event) {
+        let data = new FormData(event.target);
+    }
+
     return (
         <div className='relative h-screen w-full flex justify-center items-center'>
             <img src={background} alt='bg' className='absolute inset-0 object-cover w-full h-full z-0' />
@@ -26,25 +32,32 @@ const Index = () => {
                         <img src={logo} alt='logo' className='h-[21px] w-[7px]' />
                         <p className='poppins-semibold text-text text-[30px]'>USER SIGN IN</p>
                     </div>
-                    <div className='flex flex-col gap-4 mt-12'>
-                        <div className='flex flex-col gap-1'>
+                    <form onSubmit={handle_submit} className='mt-12'>
+                        <div className='flex flex-col gap-1 mb-4'>
                             <label htmlFor='email' className='poppins-semibold text-sm text-[#767676] ml-1'>Email Address:</label>
-                            <input type='email' id='email' required className='w-[500px] h-[56px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='abcdefg@gmail.com'></input>
+                            <input type='email' id='email' name='email' required className='w-[500px] h-[56px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='abcdefg@gmail.com'></input>
                         </div>
                         <div className='flex flex-col gap-1'>
                             <label htmlFor='password' className='poppins-semibold text-sm text-[#767676] ml-1'>Password:</label>
-                            <input type='password' id='password' required className='w-[500px] h-[56px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='●●●●●●●●'></input>
+                            <input type='password' id='password' name='password' required className='w-[500px] h-[56px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='●●●●●●●●'></input>
                         </div>
-                    </div>
-                    <div className='flex w-[500px] justify-between mt-6'>
-                        <div className='flex flex-row gap-1 items-center'>
-                            <input type='checkbox' id='remember-checkbox' className='h-4 w-4 rounded-none accent-[#669162]' />
-                            <label htmlFor='remember-checkbox' className='poppins-semibold text-sm text-[#669162]'>Remember me</label>
+                        <div className='flex w-[500px] justify-between mt-6'>
+                            <div className='flex flex-row gap-1 items-center'>
+                                <input type='checkbox' id='remember-checkbox' className='h-4 w-4 rounded-none accent-[#669162]' />
+                                <label htmlFor='remember-checkbox' className='poppins-semibold text-sm text-[#669162]'>Remember me</label>
+                            </div>
+                            <Link to='' className='poppins-semibold text-sm text-[#669162]'>Forgot Password?</Link>
                         </div>
-                        <Link to='' className='poppins-semibold text-sm text-[#669162]'>Forgot Password?</Link>
-                    </div>
-                    <button className='w-[500px] h-[60px] rounded-[30px] bg-[#669162] text-white poppins-semibold text-lg hover:scale-105 duration-200 mt-6'>SIGN UP</button>
-                    <p className='poppins-semibold text-[#767676] text-[15px] flex gap-1 mt-16'>Don't have an account? <Link to='/signup/' className='text-[#669162] hover:scale-105 duration-200'>Sign Up</Link></p>
+                        <div className='flex justify-center items-center'>
+                            <button className='w-[500px] h-[60px] rounded-[30px] bg-[#669162] text-white poppins-semibold text-lg hover:scale-105 duration-200 mt-6'>SIGN UP</button>
+                        </div>
+                        <div className='flex justify-center items-center'>
+                            <p className='poppins-semibold text-[#767676] text-[15px] gap-1 mt-16'>Don't have an account? <Link to='/signup/' className='text-[#669162] hover:scale-105 duration-200'>Sign Up</Link></p>
+                        </div>
+                        <div className='flex justify-center items-center'>
+                            <p className='poppins-semibold text-red-500'>{error}</p>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
