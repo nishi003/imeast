@@ -7,6 +7,9 @@ import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import AdminLayout from './Components/AdminLayout';
 import Dashboard from './Pages/Dashboard';
+import Modules from './Pages/AdminModules';
+import UserInformation from './Pages/UserInformation';
+import Forum from './Pages/Forum';
 
 function App() {
   return (
@@ -19,8 +22,11 @@ function App() {
             <Route path='signin/' element={<SignIn />} />
             <Route path='signup/' element={<SignUp />} />
           </Route>
-          <Route path='/admin/' element={<AdminLayout />}>
+          <Route path='/admin/*' element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path='module/list/' element={<Modules />} />
+            <Route path='user-info/' element={<UserInformation />} />
+            <Route path='forum/' element={<Forum />} />
           </Route>
         </Routes>
       </BrowserRouter>
