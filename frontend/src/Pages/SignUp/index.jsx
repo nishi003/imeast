@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import background from '../../Assets/signin-bg.png'
 import logo from '../../Assets/logo-green-sm.png'
 
@@ -11,9 +11,7 @@ const Index = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [sex, setSex] = useState("");
-    const [birthMonth, setBirthMonth] = useState("");
-    const [birthDate, setBirthDate] = useState();
-    const [birthYear, setBirthYear] = useState();
+    const [birthday, setBirthday] = useState("");
     const [email, setEmail] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
@@ -26,6 +24,7 @@ const Index = () => {
     const [sectionOne, setSectionOne] = useState(false);
     const [sectionTwo, setSectionTwo] = useState(false);
     const [sectionThree, setSectionThree] = useState(false);
+    const [isCreateAccountHovered, setIsCreateAccountHovered] = useState(false);
 
     const handleFirstNameChange = ((event) => {
         const newFirstName = event.target.value;
@@ -42,20 +41,10 @@ const Index = () => {
         setSex(newSex);
     });
 
-    const handleMonthChange = ((event) => {
-        const newMonth = event.target.value;
-        setBirthMonth(newMonth);
-    });
-
-    const handleDateChange = ((event) => {
-        const newDate = event.target.value;
-        setBirthDate(newDate);
-    });
-
-    const handleYearChange = ((event) => {
-        const newYear = event.target.value;
-        setBirthYear(newYear);
-    });
+    const handleBirthdayChange = ((event) => {
+        const newBirthday = event.target.value;
+        setBirthday(newBirthday);
+    })
 
     const handleEmailChange = (event) => {
         const newEmail = event.target.value;
@@ -96,6 +85,32 @@ const Index = () => {
         const newPeriod = event.target.value;
         setPeriod(newPeriod);
     };
+
+    useEffect(() => {
+        if (firstName || lastName || sex || birthday || email || password1 || password2) {
+            setSectionOne(true);
+            setSectionTwo(false);
+            setSectionThree(false);
+        }
+    }, [firstName, lastName, sex, birthday, email, password1, password2]);
+
+    useEffect(() => {
+        if (college || license || location || profession || period) {
+            setSectionOne(false);
+            setSectionTwo(true);
+            setSectionThree(false);
+        }
+    }, [college, license, location, profession, period]);
+
+    useEffect(() => {
+        if (isCreateAccountHovered) {
+            setSectionOne(false);
+            setSectionTwo(false);
+            setSectionThree(true);
+        } else {
+            setSectionThree(false);
+        }
+    }, [isCreateAccountHovered]);
 
     return (
         <main className='p-36 bg-[#91C28D99]'>
@@ -141,7 +156,8 @@ const Index = () => {
                             <div className='flex flex-row gap-5'>
                                 <div className='flex flex-col gap-1'>
                                     <label className='poppins-semibold text-[15px] text-[#767676] pl-2'>Sex</label>
-                                    <select name="sex" value={sex} onChange={handelSexChange} className='h-[58px] w-[210px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
+                                    <select name="sex" value={sex} onChange={handelSexChange} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
+                                        <option value="" disabled selected hidden>Select sex</option>
                                         <option value="male" className="text-[15px]">Male</option>
                                         <option value="female" className="text-[15px]">Female</option>
                                         <option value="other" className="text-[15px]">Other</option>
@@ -150,57 +166,7 @@ const Index = () => {
                                 </div>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='birthday' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
-                                    <div id='birthday' className='flex flex-row gap-5'>
-                                        <select name="month" value={birthMonth} onChange={handleMonthChange} className='h-[58px] w-[210px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
-                                            <option value='jan' className='text-[15px]'>January</option>
-                                            <option value='feb' className='text-[15px]'>February</option>
-                                            <option value='mar' className='text-[15px]'>March</option>
-                                            <option value='apr' className='text-[15px]'>April</option>
-                                            <option value='may' className='text-[15px]'>May</option>
-                                            <option value='jun' className='text-[15px]'>June</option>
-                                            <option value='jul' className='text-[15px]'>July</option>
-                                            <option value='aug' className='text-[15px]'>August</option>
-                                            <option value='sep' className='text-[15px]'>September</option>
-                                            <option value='oct' className='text-[15px]'>October</option>
-                                            <option value='nov' className='text-[15px]'>November</option>
-                                            <option value='dec' className='text-[15px]'>December</option>
-                                        </select>
-                                        <select name="date" value={birthDate} onChange={handleDateChange} className='h-[58px] w-[80px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
-                                            <option value='1' className='text-[15px]'>1</option>
-                                            <option value='2' className='text-[15px]'>2</option>
-                                            <option value='3' className='text-[15px]'>3</option>
-                                            <option value='4' className='text-[15px]'>4</option>
-                                            <option value='5' className='text-[15px]'>5</option>
-                                            <option value='6' className='text-[15px]'>6</option>
-                                            <option value='7' className='text-[15px]'>7</option>
-                                            <option value='8' className='text-[15px]'>8</option>
-                                            <option value='9' className='text-[15px]'>9</option>
-                                            <option value='10' className='text-[15px]'>10</option>
-                                            <option value='11' className='text-[15px]'>11</option>
-                                            <option value='12' className='text-[15px]'>12</option>
-                                            <option value='13' className='text-[15px]'>13</option>
-                                            <option value='14' className='text-[15px]'>14</option>
-                                            <option value='15' className='text-[15px]'>15</option>
-                                            <option value='16' className='text-[15px]'>16</option>
-                                            <option value='17' className='text-[15px]'>17</option>
-                                            <option value='18' className='text-[15px]'>18</option>
-                                            <option value='19' className='text-[15px]'>19</option>
-                                            <option value='20' className='text-[15px]'>20</option>
-                                            <option value='21' className='text-[15px]'>21</option>
-                                            <option value='22' className='text-[15px]'>22</option>
-                                            <option value='23' className='text-[15px]'>23</option>
-                                            <option value='24' className='text-[15px]'>24</option>
-                                            <option value='25' className='text-[15px]'>25</option>
-                                            <option value='26' className='text-[15px]'>26</option>
-                                            <option value='27' className='text-[15px]'>27</option>
-                                            <option value='28' className='text-[15px]'>28</option>
-                                            <option value='29' className='text-[15px]'>29</option>
-                                            <option value='30' className='text-[15px]'>30</option>
-                                            <option value='31' className='text-[15px]'>31</option>
-                                        </select>
-                                        <input type='number' name='year' value={birthYear} onChange={handleYearChange} className='h-[58px] w-[112px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Year' />
-                                        {/* <input type='date' /> */}
-                                    </div>
+                                    <input type='date' name='birthday' vale={birthday} required onChange={handleBirthdayChange} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' />
                                 </div>
                             </div>
                             <div className='flex flex-col gap-1'>
@@ -266,6 +232,14 @@ const Index = () => {
                                     </select>
                                 </div>
                             </div>
+                            {profession === 'other' ?
+                                <div className='flex flex-col gap-1'>
+                                    <label htmlFor='other-prof' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Please Specify:</label>
+                                    <input type='text' name='other-prof' className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your profession' />
+                                </div>
+                                :
+                                <></>
+                            }
                         </div>
                     </div>
                     <div className='w-full h-auto flex flex-row'>
@@ -283,7 +257,7 @@ const Index = () => {
                                 <div className='text-[#2F2F2F] poppins-semibold text-[30px]'>Create Account</div>
                             </div>
                         </div>
-                        <div className='flex flex-col pl-6 w-[670px] justify-center items-center gap-4'>
+                        <div className='flex flex-col pl-6 w-[670px] justify-center items-center gap-4' onMouseEnter={() => setIsCreateAccountHovered(true)}>
                             <button type='submit' className='h-[58px] w-[400px] rounded-[30px] bg-[#669162] hover:scale-105 duration-200 poppins-semibold text-white text-[18px]'>CREATE ACCOUNT</button>
                             <div className='flex'>
                                 <p className='poppins-semibold text-[#767676] text-[15px] gap-1'>Already have an account? <Link to='/signin/' className='text-[#669162] hover:scale-105 duration-200'>Sign In</Link></p>
