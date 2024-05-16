@@ -29,7 +29,7 @@ const Index = (moduleID) => {
                     <input type='file' accept='.pdf' className='border border-[#9F9F9F] rounded-md p-2 poppins-semibold text-[#767676] text-sm' />
                 </div>
             </div>
-            <div className='w-[246px] h-full border-l border-r flex flex-col overflow-hidden pl-4 py-6 justify-center items-center'>
+            <div className='w-[246px] h-full border-l border-r flex flex-col overflow-hidden pl-4 py-6 justify-center'>
                 <div className='h-auto w-full flex flex-col gap-4 overflow-y-scroll pr-4'>
                     <AdminVideoCard title='Video Title 1' />
                     <AdminVideoCard title='Video Title 2' />
