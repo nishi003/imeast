@@ -2,7 +2,7 @@ import React from 'react'
 
 const Index = ({ name, birthday, email, address, profession, period, license, college, sex, purchases, registered }) => {
     return (
-        <div className='w-full h-auto p-2 border border-[#DCDCDC] rounded-[10px] flex flex-row gap-3'>
+        <div className='w-full h-auto p-2 border border-[#DCDCDC] rounded-[10px] flex flex-row justify-between'>
             <div className='flex items-center w-[80px]'>
                 <div className='h-[70px] w-[70px] rounded-full bg-[#D9D9D9]' />
             </div>
