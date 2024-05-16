@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import AdminVideoCard from '../../Components/AdminVideoCard';
 
+import './style.css';
+
 const Index = (moduleID) => {
     const [title, setTitle] = useState("MODULE 1");
     const [category, setCategory] = useState("TMJ, Bell’s Palsy");
@@ -29,8 +31,8 @@ const Index = (moduleID) => {
                     <input type='file' accept='.pdf' className='border border-[#9F9F9F] rounded-md p-2 poppins-semibold text-[#767676] text-sm' />
                 </div>
             </div>
-            <div className='w-[246px] h-full border-l border-r flex flex-col overflow-hidden pl-4 py-6 justify-center'>
-                <div className='h-auto w-full flex flex-col gap-4 overflow-y-scroll pr-4'>
+            <div className='w-[246px] h-full border-l border-r flex flex-col overflow-hidden px-4 py-6 justify-center'>
+                <div className='h-auto w-full flex flex-col gap-4 overflow-y-scroll custom-scrollbar'>
                     <AdminVideoCard title='Video Title 1' />
                     <AdminVideoCard title='Video Title 2' />
                     <AdminVideoCard title='Video Title 3' />

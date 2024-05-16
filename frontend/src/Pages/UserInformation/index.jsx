@@ -4,6 +4,7 @@ import users_inactive from '../../Assets/users-i.png';
 import transaction from '../../Assets/transaction.png';
 import transaction_inactive from '../../Assets/transaction-i.png';
 import UserCard from '../../Components/UserCard';
+import TransactionCard from '../../Components/TransactionCard';
 
 import './style.css';
 
@@ -68,9 +69,37 @@ const Index = () => {
                         </div>
                     </>
                     :
-                    <></>
+                    <>
+                        <div className='w-full h-auto px-14 py-4 border-b border-[#DCDCDC] gap-3 flex flex-row items-baseline justify-between'>
+                            <p className='poppins-semibold text-sm text-[#767676] w-[400px]'>User</p>
+                            <p className='poppins-semibold text-xs text-[#767676] w-[140px]'>Transaction Date</p>
+                            <p className='poppins-semibold text-xs text-[#767676] w-[50px]'>Time</p>
+                            <p className='poppins-semibold text-xs text-[#767676] w-[350px]'>Module Number & Name</p>
+                            <p className='poppins-semibold text-xs text-[#767676] w-[60px]'>Total</p>
+                            <p className='poppins-semibold text-xs text-[#767676] w-[170px]'>Payment Status</p>
+                        </div>
+                        <div className='h-full w-full overflow-hidden px-8 py-4 justify-center'>
+                            <div className='h-full w-full flex flex-col gap-4 overflow-y-scroll custom-scrollbar'>
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='processing' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='completed' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='refunded' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='incomplete' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='processing' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='completed' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='refunded' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='incomplete' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='processing' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='completed' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='refunded' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='incomplete' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='processing' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='completed' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='refunded' />
+                                <TransactionCard name='Eugene Jang' date='2024.05.15' time='15:27' module='Module 2: Neck & Shoulder, Shoulder Joint' total={149.99} status='incomplete' />
+                            </div>
+                        </div>
+                    </>
                 }
-
             </div>
         </div>
     )
