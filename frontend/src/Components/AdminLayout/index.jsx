@@ -6,7 +6,7 @@ const Index = () => {
     return (
         <div className='flex h-screen flex-row'>
             <AdminNavbar />
-            <div className='flex flex-col w-full'>
+            <div className='flex flex-col w-full overflow-hidden'>
                 <div className='w-full h-[94px] border-b flex justify-end items-center px-9'>
                     <div className='flex flex-row gap-4'>
                         <div className='h-[50px] w-[50px] rounded-full bg-[#9F9F9F]' />

@@ -11,7 +11,6 @@ const Index = () => {
     const [menu, setMenu] = useState("dashboard");
 
     useEffect(() => {
-        console.log(location.pathname); // Log pathname to the console
         switch (location.pathname) {
             case '/admin/module/list/':
                 setMenu('modules');
@@ -25,11 +24,10 @@ const Index = () => {
             default:
                 setMenu('dashboard');
         }
-        console.log(menu);
-    }, [location.pathname]);
+    }, [location.pathname, menu]);
 
     return (
-        <div className='flex flex-col h-screen w-[335px] rounded-r-[30px] border gap-12'>
+        <div className='flex flex-col h-screen w-[335px] rounded-tr-[30px] border-t border-l border-r gap-12'>
             <Link to='/' className='flex items-baseline lg:gap-2 align-bottom pl-6 pt-8'>
                 <img src={logo} alt='logo' className='h-[34px] w-[10.84px]' />
                 <p className='text-text text-5xl kalam-bold'>meast</p>
