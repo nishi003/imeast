@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AdminVideoCard from '../../Components/AdminVideoCard';
+import AdminAllVideos from '../../Components/AdminAllVideos';
 
 import './style.css';
 
@@ -13,9 +14,9 @@ const Index = (moduleID) => {
     const [videos, setVideos] = useState([]);
 
     return (
-        <div className='h-full w-full bg-white rounded-[30px] flex flex-row overflow-hidden'>
+        <div className='w-full h-full bg-white rounded-[30px] flex flex-row overflow-hidden'>
             <div className='w-[384px] h-full flex flex-col'>
-                <div className='h-auto flex flex-row items-center p-8 gap-3 border-b border-dashed'>
+                <div className='flex flex-row items-center p-6 gap-3 border-b border-dashed'>
                     <div className='h-[80px] w-[80px] bg-[#91C28D] rounded-full' />
                     <div className='flex flex-col'>
                         <p className='poppins-medium text-[30px]'>{title}</p>
@@ -31,15 +32,9 @@ const Index = (moduleID) => {
                     <input type='file' accept='.pdf' className='border border-[#9F9F9F] rounded-md p-2 poppins-semibold text-[#767676] text-sm' />
                 </div>
             </div>
-            <div className='w-[246px] h-full border-l border-r flex flex-col overflow-hidden px-4 py-6 justify-center'>
-                <div className='h-auto w-full flex flex-col gap-4 overflow-y-scroll custom-scrollbar'>
-                    <AdminVideoCard title='Video Title 1' />
-                    <AdminVideoCard title='Video Title 2' />
-                    <AdminVideoCard title='Video Title 3' />
-                    <AdminVideoCard title='Video Title 4' />
-                    <AdminVideoCard title='Video Title 5' />
-                    <AdminVideoCard title='Video Title 6' />
-                    <AdminVideoCard title='Video Title 7' />
+            <div className='w-auto h-full border-x p-4 flex flex-col overflow-hidden'>
+                <div className='h-auto w-auto flex flex-col flex-shrink-0 overflow-y-scroll custom-scrollbar'>
+                    <AdminAllVideos moduleID={moduleID} />
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Index = () => {
     return (
-        <div>Forum</div>
+        <div className='h-full w-full bg-[#DCDCDC]'>Forum</div>
     )
 }
 
