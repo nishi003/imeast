@@ -32,8 +32,8 @@ const Index = (moduleID) => {
                     <input type='file' accept='.pdf' className='border border-[#9F9F9F] rounded-md p-2 poppins-semibold text-[#767676] text-sm' />
                 </div>
             </div>
-            <div className='w-auto h-full border-x p-4 flex flex-col overflow-hidden'>
-                <div className='h-auto w-auto flex flex-col flex-shrink-0 overflow-y-scroll custom-scrollbar'>
+            <div className='w-auto h-full p-4 border-x overflow-hidden'>
+                <div className='w-auto h-full flex flex-col flex-shrink-0 overflow-y-scroll custom-scrollbar'>
                     <AdminAllVideos moduleID={moduleID} />
                 </div>
             </div>
