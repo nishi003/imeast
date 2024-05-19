@@ -13,6 +13,7 @@ const Index = () => {
                 <UserModuleCard id={3} registered={true} />
                 <UserModuleCard id={4} registered={true} />
                 <UserModuleCard id={5} registered={true} />
+                <UserModuleCard id={6} registered={true} />
             </div>
         </div>
     )
