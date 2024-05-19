@@ -216,6 +216,7 @@ const Index = () => {
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='profession' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Type of profession</label>
                                     <select name='profession' value={profession} onChange={handleProfessionChange} className='h-[58px] w-[327px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
+                                        <option value="" disabled selected hidden>Select Profession</option>
                                         <option value='acupuncturist' className='text-[15px]'>Acupuncturist</option>
                                         <option value='physiologist' className='text-[15px]'>Physiologist</option>
                                         <option value='naturopathicDoctor' className='text-[15px]'>Naturopathic Doctor</option>
@@ -225,6 +226,7 @@ const Index = () => {
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='period' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Practicing period</label>
                                     <select name='period' value={period} onChange={handlePeriodChange} className='h-[58px] w-[327px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
+                                        <option value="" disabled selected hidden>Select practicing period</option>
                                         <option value='lt1yr' className='text-[15px]'>Less than 1 year</option>
                                         <option value='1yr' className='text-[15px]'>1 year</option>
                                         <option value='2-3yr' className='text-[15px]'>2-3 years</option>

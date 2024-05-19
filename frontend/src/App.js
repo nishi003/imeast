@@ -7,9 +7,13 @@ import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import AdminLayout from './Components/AdminLayout';
 import Dashboard from './Pages/Dashboard';
-import Modules from './Pages/AdminModules';
+import AdminModules from './Pages/AdminModules';
 import UserInformation from './Pages/UserInformation';
 import Forum from './Pages/Forum';
+import UserLayout from './Components/UserLayout';
+import UserProfile from './Pages/UserProfile';
+import UserModules from './Pages/UserModules';
+import UserPurchases from './Pages/UserPurchases';
 
 function App() {
   return (
@@ -24,9 +28,14 @@ function App() {
           </Route>
           <Route path='/admin/*' element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path='module/list/' element={<Modules />} />
+            <Route path='module/list/' element={<AdminModules />} />
             <Route path='user-info/' element={<UserInformation />} />
             <Route path='forum/' element={<Forum />} />
+          </Route>
+          <Route path='/user/*' element={<UserLayout />}>
+            <Route index element={<UserProfile />} />
+            <Route path='module/list/' element={<UserModules />} />
+            <Route path='purchase/list/' element={<UserPurchases />} />
           </Route>
         </Routes>
       </BrowserRouter>

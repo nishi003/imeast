@@ -8,14 +8,10 @@
 }
   
 ::-webkit-scrollbar-thumb {
-  background: #DEF1DD;
+  background: #91C28D;
   border-radius: 10px;
 }
   
 ::-webkit-scrollbar-thumb:hover {
   background: #91C28D;
-}
-
-.first-container {
-  flex-shrink: 0;
 }

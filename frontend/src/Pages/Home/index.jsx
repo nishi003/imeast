@@ -7,7 +7,7 @@ export const Index = () => {
     return (
         <body>
             <main>
-                <div className='h-screen overflow-y-scroll scroll-snap-y'>
+                <div className='h-screen overflow-y-scroll scroll-snap-y custom-scrollbar'>
                     <section className='w-full h-screen flex flex-col items-center justify-center'>
                         <div className='flex flex-row items-baseline gap-4 justify-center mt-[-90px] z-10'>
                             <img src={logo} alt='logo' className='w-[43.36px] h-[136.04px]' />

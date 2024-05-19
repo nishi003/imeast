@@ -27,11 +27,7 @@ const Index = () => {
     }, [location.pathname, menu]);
 
     return (
-        <div className='flex flex-col h-screen w-[335px] rounded-tr-[30px] border-t border-l border-r gap-12'>
-            <Link to='/' className='flex items-baseline lg:gap-2 align-bottom pl-6 pt-8'>
-                <img src={logo} alt='logo' className='h-[34px] w-[10.84px]' />
-                <p className='text-text text-5xl kalam-bold'>meast</p>
-            </Link>
+        <div className='flex flex-col h-full w-[285px] border-r pt-16 flex-shrink-0'>
             <ul className='flex flex-col w-full px-3'>
                 <Link to='/admin/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'dashboard' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
                     <img src={dashboard} alt='dashboard-logo' className='h-[25px] w-[25px]' />
