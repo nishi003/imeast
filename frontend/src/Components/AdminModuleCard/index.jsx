@@ -8,7 +8,7 @@ const Index = ({ id, setModule }) => {
     const [duration, setDuration] = useState("3 hours");
     const [description, setDescription] = useState("This treatment focuses on alleviating issues in major facial muscles and is specifically designed to address asymmetries in facial expression. It offers relief for conditions associated with the temporomandibular joint and Bell's Palsy, improving muscle function and facial symmetry.");
     return (
-        <div className='flex flex-col justify-between items-center h-[460px] w-[460px] bg-white rounded-[30px] p-8'>
+        <div className='flex flex-col justify-between items-center h-[480px] w-[480px] bg-white rounded-[30px] p-8'>
             <div className='flex flex-col gap-3 w-full'>
                 <div className='flex flex-row items-center gap-6'>
                     <div className='h-[80px] w-[80px] bg-[#91C28D] rounded-full' />

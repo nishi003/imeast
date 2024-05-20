@@ -63,7 +63,7 @@ const Index = () => {
     });
 
     return (
-        <div className='h-full w-full bg-[#DEF1DD] flex p-8 gap-4 overflow-hidden'>
+        <div className='h-full w-full bg-[#DCDCDC] flex p-8 gap-4 overflow-hidden'>
             {module === -1 ?
                 <div className='h-full w-auto flex flex-wrap gap-8 overflow-y-scroll custom-scrollbar justify-center'>
                     <AdminModuleCard id={1} setModule={setModule} />

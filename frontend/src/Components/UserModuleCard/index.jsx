@@ -20,7 +20,6 @@ const Index = ({ id, registered }) => {
                 <p className='mt-4 poppins-bold text-[#2F2F2F] text-[15px]'>DURATION: {duration}</p>
                 <p className='poppins-bold text-[#2F2F2F] text-[15px]'>{description}</p>
             </div>
-
             <button className={`w-[300px] h-[40px] rounded-[20px] flex justify-center items-center shadow-md ${registered === false ? 'bg-[#9F9F9F] cursor-default' : 'bg-[#91C28D] hover:scale-105 duration-200'}`}>
                 {registered === false ?
                     <p className='text-white poppins-semibold text-[15px]'>ALREADY REGISTERED</p>
