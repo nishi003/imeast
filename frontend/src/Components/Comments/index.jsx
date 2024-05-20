@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Comment from './CommentCard';
-import NewComment from '../NewComment';
+import NewComment from './NewComment';
 
 const Index = ({ module, video, comment }) => {
     const [page, setPage] = useState(1);
@@ -12,7 +12,10 @@ const Index = ({ module, video, comment }) => {
             <p className='poppins-semibold text-lg'>COMMENTS</p>
             <div className='w-full h-[2px] bg-black'></div>
             {comments.length === 0 ?
-                <p className='poppins-medium text-[#9F9F9F]'>No comments yet</p>
+                <div className='flex flex-col gap-3 w-full pt-3'>
+                    <NewComment />
+                    <p className='poppins-medium text-[#9F9F9F] pl-[14px]'>No comments yet</p>
+                </div>
                 :
                 <div className='flex flex-col gap-6 w-full pt-3'>
                     <NewComment />

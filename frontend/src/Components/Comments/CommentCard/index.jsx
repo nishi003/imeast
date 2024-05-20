@@ -7,6 +7,7 @@ import './style.css';
 const Index = ({ id, name, date, content, hasReplies, isAdmin, comment }) => {
     const [isReply, setIsReply] = useState(false);
     const [isReplies, setIsReplies] = useState(false);
+    const [comm, setComm] = useState("At 4:06, what exactly is the needle used for this type of treatment? At 4:06, what exactly is the needle used for this type of treatment?, At 4:06, what exactly is the needle used for this type of treatment?");
 
     console.log({ id });
     console.log({ comment });
