@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../../Assets/logo-small.png'
+import logo from '../../../Assets/logo-small.png'
 import { Link } from 'react-router-dom';
 
 const Index = () => {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { UilPen } from '@iconscout/react-unicons'
 import './style.css';
 import { Link } from 'react-router-dom';
-import TransactionHistory from '../../Components/TransactionHistory';
+import TransactionHistory from '../../../Components/TransactionHistory';
 
 const Index = () => {
     const [isProfile, setIsProfile] = useState(true);
@@ -43,11 +43,6 @@ const Index = () => {
         const newBirthday = event.target.value;
         setBirthday(newBirthday);
     })
-
-    const handleEmailChange = (event) => {
-        const newEmail = event.target.value;
-        setEmail(newEmail);
-    };
 
     const handleProfilePictureChange = (event) => {
         const newProfilePic = event.target.value;
@@ -136,8 +131,8 @@ const Index = () => {
                                             </div>
                                         </div>
                                         <div className='flex flex-col gap-1'>
-                                            <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Email</label>
-                                            <input type='email' name='email' value={email} required onChange={handleEmailChange} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your email here' />
+                                            <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>*Email - cannot be changed</label>
+                                            <input type='email' name='email' value={email} required readOnly className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your email here' />
                                         </div>
                                         <div className='flex flex-row w-full justify-center gap-4'>
                                             <Link className='py-3 px-8 bg-red-300 poppins-semibold text-red-500 hover:text-white rounded-full hover:bg-red-500 hover:scale-105 hover:duration-200' onClick={() => { setIsPersonalEdit(false) }}>CANCEL</Link>

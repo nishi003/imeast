@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UilUsersAlt, UilCreditCard } from '@iconscout/react-unicons';
-import UserCard from '../../Components/UserCard';
-import TransactionCard from '../../Components/TransactionCard';
+import UserCard from '../../../Components/Admin/UserCard';
+import TransactionCard from '../../../Components/Admin/TransactionCard';
 
 import './style.css';
 

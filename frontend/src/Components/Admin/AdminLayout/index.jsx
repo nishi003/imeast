@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import AdminNavbar from '../AdminNavbar';
-import logo from '../../Assets/logo-small.png';
+import logo from '../../../Assets/logo-small.png';
 
 const Index = () => {
     return (

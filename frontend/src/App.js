@@ -1,18 +1,18 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Layout from './Components/Layout';
+import Layout from './Components/Home/Layout';
 import Home from './Pages/Home';
 import ModuleList from './Pages/ModuleList';
 import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
-import AdminLayout from './Components/AdminLayout';
-import AdminModules from './Pages/AdminModules';
-import UserInformation from './Pages/UserInformation';
-import Notifications from './Pages/Notifications';
-import UserLayout from './Components/UserLayout';
-import UserProfile from './Pages/UserProfile';
-import UserModules from './Pages/UserModules';
-import UserPurchases from './Pages/UserPurchases';
+import AdminLayout from './Components/Admin/AdminLayout';
+import AdminModules from './Pages/Admin/AdminModules';
+import UserInformation from './Pages/Admin/UserInformation';
+import Notifications from './Pages/Admin/Notifications';
+import UserLayout from './Components/User/UserLayout';
+import UserProfile from './Pages/User/UserProfile';
+import UserModules from './Pages/User/UserModules';
+import UserPurchases from './Pages/User/UserPurchases';
 
 function App() {
   return (

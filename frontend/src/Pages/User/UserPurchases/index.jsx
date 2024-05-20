@@ -1,5 +1,5 @@
 import React from 'react';
-import UserModulePurchaseCard from '../../Components/User/UserModulePurchaseCard';
+import UserModulePurchaseCard from '../../../Components/User/UserModulePurchaseCard';
 import './style.css';
 
 const Index = () => {

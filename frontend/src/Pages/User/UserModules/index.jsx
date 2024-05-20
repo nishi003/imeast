@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import UserModuleCard from '../../Components/UserModuleViewCard';
+import UserModuleCard from '../../../Components/User/UserModuleViewCard';
 import { UilAngleLeft, UilLinkH } from '@iconscout/react-unicons';
 import './style.css';
 import { Link, useParams } from 'react-router-dom';
-import UserVideoCard from '../../Components/UserVideoCard';
-import Comments from '../../Components/Comments';
+import UserVideoCard from '../../../Components/User/UserVideoCard';
+import Comments from '../../../Components/Comments';
 
-import document from '../../Assets/Documents/May_2024_Resume.pdf';
+import document from '../../../Assets/Documents/May_2024_Resume.pdf';
 
 const Index = () => {
     const { moduleID, videoID } = useParams();

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NotificationCard from '../../Components/NotificationCard';
+import NotificationCard from '../../../Components/Admin/NotificationCard';
 
 import './style.css';
 
