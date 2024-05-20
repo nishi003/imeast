@@ -39,6 +39,7 @@ function App() {
           </Route>
           <Route path='/user/*' element={<UserLayout />}>
             <Route index element={<UserProfile />} />
+            <Route path='transaction/list/' element={<UserProfile />} />
             <Route path='module/*' element={<UserModules />}>
               <Route path=':moduleID/' />
               <Route path=':moduleID/video/:videoID/' />

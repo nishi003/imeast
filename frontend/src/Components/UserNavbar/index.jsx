@@ -19,6 +19,8 @@ const Index = () => {
             setMenu('modules');
         } else if (path === '/user/purchase/list/') {
             setMenu('purchases');
+        } else if (path === '/user/transaction/list/') {
+            setMenu('user');
         } else {
             setMenu('user');
         }

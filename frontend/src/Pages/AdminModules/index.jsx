@@ -77,7 +77,7 @@ const Index = () => {
                     <AdminModuleCard id={9} setModule={setModule} />
                 </div>
                 :
-                <div className='h-full w-full flex flex-col flex-grow-0 flex-shrink-0 bg-white rounded-[30px] p-8 over'>
+                <div className='h-full w-full flex flex-col flex-grow-0 flex-shrink-0 bg-white rounded-[30px] p-8 overflow-hidden'>
                     {video !== -1 ?
                         <div className='flex flex-col overflow-hidden gap-4'>
                             <Link onClick={() => { setVideo(-1) }} className='w-auto flex h-auto flex-row items-center' to={`/admin/module/${module}/`}>
