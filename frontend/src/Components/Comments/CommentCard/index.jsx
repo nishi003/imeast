@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { UilAngleDown } from '@iconscout/react-unicons';
+import Replies from '../Replies';
 
 import './style.css';
 
-const Index = ({ name, date, content, hasReplies, isAdmin }) => {
+const Index = ({ id, name, date, content, hasReplies, isAdmin, comment }) => {
     const [isReply, setIsReply] = useState(false);
     const [isReplies, setIsReplies] = useState(false);
 
+    console.log({ id });
+    console.log({ comment });
     return (
-        <div className='flex flex-row gap-4 items-start h-full w-full pl-[14px]'>
+        <div className={`flex flex-row gap-4 items-start h-full w-full pl-[14px] ${comment === id ? 'bg-[#def1dd59] p-2 rounded-3xl' : ''}`}>
             <div className='bg-secondary h-[50px] w-[50px] rounded-full flex-shrink-0' />
             <div className='flex flex-col gap-1 w-full'>
                 <div className='flex flex-row gap-3 items-baseline'>
@@ -45,7 +48,7 @@ const Index = ({ name, date, content, hasReplies, isAdmin }) => {
                     <></>
                 }
                 {isReplies ?
-                    <></>
+                    <Replies commentID={id} />
                     :
                     <></>
                 }

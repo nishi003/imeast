@@ -20,21 +20,25 @@ const Index = () => {
     const [video, setVideo] = useState(-1);
     const [videoTitle, setVideoTitle] = useState("Neck & Shoulder, Shoulder Joint");
     const [videos, setVideos] = useState([]);
+    const [comment, setComment] = useState(0);
     const [isEdit, setIsEdit] = useState(false);
 
     useEffect(() => {
         if (moduleID && videoID && commentID && !isNaN(moduleID) && !isNaN(videoID) && !isNaN(commentID)) {
             setModule(parseInt(moduleID, 10));
-            setModule(parseInt(videoID, 10));
-            setModule(parseInt(commentID, 10));
+            setVideo(parseInt(videoID, 10));
+            setComment(parseInt(commentID, 10));
         } else if (moduleID && videoID && !isNaN(moduleID) && !isNaN(videoID)) {
             setModule(parseInt(moduleID, 10));
-            setModule(parseInt(videoID, 10));
+            setVideo(parseInt(videoID, 10));
+            setComment(0);
         } else if (moduleID && !isNaN(moduleID)) {
             setModule(parseInt(moduleID, 10));
+            setComment(0);
         }
         else {
             setModule(-1);
+            setComment(0);
         }
     }, [moduleID, videoID]);
 
@@ -87,7 +91,7 @@ const Index = () => {
                                         <p className='poppins-bold text-[30px]'>LESSON {video}:</p>
                                         <p className='poppins-semibold text-[30px]'>{videoTitle}</p>
                                     </div>
-                                    <Comments module={module} video={video} comment={commentID} />
+                                    <Comments module={module} video={video} comment={comment} />
                                 </div>
                                 <div className='h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar items-center mr-[-32px]'>
                                     <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
