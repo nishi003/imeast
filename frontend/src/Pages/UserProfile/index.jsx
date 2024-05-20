@@ -1,5 +1,4 @@
 import React from 'react';
-import UserModuleCard from '../../Components/UserModuleCard';
 
 const Index = () => {
     return (
