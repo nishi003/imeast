@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Comment from '../CommentCard';
+import Comment from './CommentCard';
 import NewComment from '../NewComment';
 
 const Index = ({ module, video, comment }) => {

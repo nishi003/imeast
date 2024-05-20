@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { UilAngleDown } from '@iconscout/react-unicons';
-import Replies from '../Replies';
+import Replies from '../../Replies';
 
 import './style.css';
 
