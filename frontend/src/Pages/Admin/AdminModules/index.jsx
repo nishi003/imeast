@@ -60,9 +60,7 @@ const Index = () => {
                         {video !== -1 ?
                             <AdminVideo module={module} video={video} setVideo={setVideo} comment={comment} />
                             :
-                            <>
-                                <AdminModuleInfo module={module} setModule={setModule} video={video} setVideo={setVideo} />
-                            </>
+                            <AdminModuleInfo module={module} setModule={setModule} video={video} setVideo={setVideo} />
                         }
                     </div>
             }
