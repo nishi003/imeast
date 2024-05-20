@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { UilPen } from '@iconscout/react-unicons'
 import './style.css';
 import { Link } from 'react-router-dom';
+import TransactionHistory from '../../Components/TransactionHistory';
 
 const Index = () => {
     const [isProfile, setIsProfile] = useState(true);
@@ -268,6 +269,7 @@ const Index = () => {
                         :
                         <div className='flex flex-col justify-start items-center gap-6 overflow-y-scroll custom-scrollbar w-full'>
                             <p className='w-full poppins-semibold text-xl'>Transaction History</p>
+                            <TransactionHistory id={1} />
                         </div>
                     }
                 </div>
