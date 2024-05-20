@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import users from '../../Assets/users.png';
 import { UilUsersAlt, UilCreditCard } from '@iconscout/react-unicons';
-import users_inactive from '../../Assets/users-i.png';
-import transaction from '../../Assets/transaction.png';
-import transaction_inactive from '../../Assets/transaction-i.png';
 import UserCard from '../../Components/UserCard';
 import TransactionCard from '../../Components/TransactionCard';
 
