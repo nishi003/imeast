@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UilAngleLeft, UilLinkH } from '@iconscout/react-unicons';
-import AdminModuleCard from '../../Components/AdminModuleCard';
-import AdminVideoCard from '../../Components/AdminVideoCard';
+import AdminModuleCard from '../../Components/Admin/AdminModuleCard';
+import AdminVideoCard from '../../Components/Admin/AdminVideoCard';
 import Comments from '../../Components/Comments';
 
 import document from '../../Assets/Documents/May_2024_Resume.pdf';
@@ -84,7 +84,7 @@ const Index = () => {
                                 <UilAngleLeft color='#505050' />
                                 <p className='poppins-bold text-[#505050] text-base'>Back</p>
                             </Link>
-                            <div className='h-full w-full flex flex-row overflow-hidden'>
+                            <div className='h-full w-full flex flex-row overflow-hidden flex-grow-0'>
                                 <div className='flex flex-col gap-3 overflow-y-scroll custom-scrollbar border-r-2 border-[#9F9F9F] pl-4 pr-12 flex-shrink-0 h-auto'>
                                     <div className='w-[1104px] h-[621px] bg-[#D9D9D9] flex-shrink-0' />
                                     <div className='flex flex-row items-center gap-2 mb-2'>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Index = () => {
     return (
-        <div className='flex flex-row gap-4 items-start h-full w-full p-3 rounded-lg border-2 border-[#DCDCDC]'>
+        <div className='flex flex-row gap-4 items-start h-full w-full pl-[14px]'>
             <div className='bg-secondary h-[50px] w-[50px] rounded-full flex-shrink-0' />
             <div className='flex flex-col justify-end w-full gap-2'>
                 <textarea className='outline-none w-full resize-none border-b-2 border-[#505050] bg-white py-[2px] poppins-medium' rows={1} placeholder='Add a comment...' />

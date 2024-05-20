@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AdminVideoCard from '../../Components/AdminVideoCard';
+import AdminVideoCard from '../AdminVideoCard';
 import AdminAllVideos from '../../Components/AdminAllVideos';
 
 import './style.css';
