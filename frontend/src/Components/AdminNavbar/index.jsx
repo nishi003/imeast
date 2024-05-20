@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import dashboard from '../../Assets/dashboard.png';
-import modules from '../../Assets/modules.png';
-import user from '../../Assets/user.png';
 import { UilBell, UilUser, UilFileAlt } from '@iconscout/react-unicons';
 import { Link, useLocation } from 'react-router-dom';
 

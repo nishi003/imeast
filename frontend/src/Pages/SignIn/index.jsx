@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import background from '../../Assets/signin-bg.png'
 import logo from '../../Assets/logo-large.png';
 import logo_lg from '../../Assets/logo-xl.png';
 

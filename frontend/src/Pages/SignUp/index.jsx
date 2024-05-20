@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import background from '../../Assets/signin-bg.png'
-import logo from '../../Assets/logo-green-sm.png'
+import logo from '../../Assets/logo-green-sm.png';
 
 import { useState } from 'react';
 
