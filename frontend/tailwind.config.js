@@ -11,11 +11,11 @@ module.exports = {
         'mobile': '20px',
       },
       colors: {
-        'primary': '#5A81E2',
-        'secondary': '#B5C7F2',
+        'primary': '#91C28D',
+        'secondary': '#DEF1DD',
         'accent': {
           '100': '#214CBA',
-          '200': '#5072c7'
+          '200': '#669162'
         },
         'background': '#F2F5FD',
         'text': '#2F2F2F',

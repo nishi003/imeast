@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import logo from '../../Assets/logo-small.png';
 import dashboard from '../../Assets/dashboard.png';
 import modules from '../../Assets/modules.png';
 import user from '../../Assets/user.png';
-import forum from '../../Assets/forum.png';
+import { UilBell, UilUser, UilFileAlt } from '@iconscout/react-unicons';
 import { Link, useLocation } from 'react-router-dom';
 
 const Index = () => {
@@ -18,32 +17,28 @@ const Index = () => {
             case '/admin/user-info/':
                 setMenu('user-info');
                 break;
-            case '/admin/forum/':
-                setMenu('forum');
+            case '/admin/notifications/':
+                setMenu('notifications');
                 break;
             default:
-                setMenu('dashboard');
+                setMenu('modules');
         }
     }, [location.pathname, menu]);
 
     return (
         <div className='flex flex-col h-full w-[285px] border-r pt-16 flex-shrink-0'>
             <ul className='flex flex-col w-full px-3'>
-                <Link to='/admin/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'dashboard' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
-                    <img src={dashboard} alt='dashboard-logo' className='h-[25px] w-[25px]' />
-                    Dashboard
-                </Link>
                 <Link to='/admin/module/list/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'modules' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
-                    <img src={modules} alt='modules-logo' className='h-[25px] w-[25px]' />
+                    <UilFileAlt size='30' />
                     Modules
                 </Link>
                 <Link to='/admin/user-info/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'user-info' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
-                    <div className='flex h-[25px] w-[25px] justify-center'><img src={user} alt='user-logo' className='h-[25px] w-auto' /></div>
+                    <UilUser size='30' />
                     User Information
                 </Link>
-                <Link to='/admin/forum/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'forum' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
-                    <img src={forum} alt='forum-logo' className='h-[25px] w-[25px]' />
-                    Forum
+                <Link to='/admin/notifications/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'notifications' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
+                    <UilBell size='30' />
+                    Notifications
                 </Link>
             </ul>
         </div>
