@@ -1,14 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Index = ({ lesson, title }) => {
+const Index = ({ lesson, title, module, setVideo, video }) => {
     return (
-        <div className='flex flex-col h-auto w-[208px] items-start gap-1'>
-            <div className='bg-[#D9D9D9] h-[117px] w-full' />
-            <div className='flex flex-col items-start'>
-                <p className='poppins-medium text-[12px]'>Lesson {lesson}:</p>
-                <p className='poppins-medium text-[8px] mt-[-2px]'>{title}</p>
-            </div>
-        </div>
+        <>
+            {video === -1 ?
+                <Link className='flex flex-row w-full items-start gap-6' onClick={() => { setVideo(lesson) }} to={`/admin/module/${module}/video/${lesson}/`}>
+                    <div className='bg-[#D9D9D9] w-[240px] h-[135px]' />
+                    <div className='flex flex-col items-start'>
+                        <p className='poppins-bold text-xl'>LESSON {lesson}:</p>
+                        <p className='poppins-regular text-base'>{title}</p>
+                    </div>
+                </Link>
+                :
+                <Link className='flex flex-col gap-1' onClick={() => { setVideo(lesson) }} to={`/admin/module/${module}/video/${lesson}/`}>
+                    <div className='bg-[#D9D9D9] w-[263px] h-[148px] flex-shrink-0' />
+                    <div className='flex flex-col items-start'>
+                        <p className='poppins-semibold text-lg'>LESSON {lesson}:</p>
+                        <p className='poppins-regular text-xs'>{title}</p>
+                    </div>
+                </Link>
+            }
+        </>
     )
 }
 

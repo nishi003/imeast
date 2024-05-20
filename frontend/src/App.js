@@ -6,10 +6,9 @@ import ModuleList from './Pages/ModuleList';
 import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import AdminLayout from './Components/AdminLayout';
-import Dashboard from './Pages/Dashboard';
 import AdminModules from './Pages/AdminModules';
 import UserInformation from './Pages/UserInformation';
-import Forum from './Pages/Forum';
+import Notifications from './Pages/Notifications';
 import UserLayout from './Components/UserLayout';
 import UserProfile from './Pages/UserProfile';
 import UserModules from './Pages/UserModules';
@@ -27,10 +26,12 @@ function App() {
             <Route path='signup/' element={<SignUp />} />
           </Route>
           <Route path='/admin/*' element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path='module/list/' element={<AdminModules />} />
-            <Route path='user-info/' element={<UserInformation />} />
-            <Route path='forum/' element={<Forum />} />
+            <Route index element={<AdminModules />} />
+            <Route path='module/*' element={<AdminModules />}>
+            </Route>
+            <Route path='user-info/*' element={<UserInformation />}>
+            </Route>
+            <Route path='notifications/' element={<Notifications />} />
           </Route>
           <Route path='/user/*' element={<UserLayout />}>
             <Route index element={<UserProfile />} />

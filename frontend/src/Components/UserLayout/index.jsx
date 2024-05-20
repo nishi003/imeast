@@ -11,7 +11,7 @@ const Index = () => {
                     <img src={logo} alt='logo' className='h-[34px] w-[10.84px]' />
                     <p className='text-text text-5xl kalam-bold'>meast</p>
                 </Link>
-                <Link to='/admin/' className='flex flex-row gap-4 justify-center items-center'>
+                <Link to='/admin/module/list' className='flex flex-row gap-4 justify-center items-center'>
                     <p className='poppins-bold text-xl'>EUGENE JANG</p>
                     <div className='h-[50px] w-[50px] rounded-full bg-[#DEF1DD]' />
                 </Link>
