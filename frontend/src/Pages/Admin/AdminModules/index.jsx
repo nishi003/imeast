@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import AdminModuleList from '../../../Components/Admin/AdminModuleList';
-import AdminVideoCard from '../../../Components/Admin/AdminVideoCard';
 import AdminVideo from '../../../Components/Admin/AdminVideo';
-import Comments from '../../../Components/Comments';
 import AdminModuleCreate from '../../../Components/Admin/AdminModuleCreate';
 import AdminModuleInfo from '../../../Components/Admin/AdminModuleInfo';
 
 import './style.css';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const Index = () => {
     const location = useLocation();

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AdminVideoCard from '../AdminVideoCard';
+import AdminAllVideos from '../AdminAllVideos';
 import { UilAngleLeft, UilLinkH } from '@iconscout/react-unicons';
 import document from '../../../Assets/Documents/May_2024_Resume.pdf';
 import './style.css';
@@ -14,7 +15,6 @@ const Index = ({ module, setModule, video, setVideo }) => {
     const [isEdit, setIsEdit] = useState(false);
 
     const [pdf, setPDF] = useState({ document });
-    const [videos, setVideos] = useState([]);
 
     const handleBack = (() => {
         setModule(-1);
@@ -110,20 +110,7 @@ const Index = ({ module, setModule, video, setVideo }) => {
                     </div>
                 </div>
                 <div className='h-full w-full flex flex-col px-8 overflow-hidden'>
-                    <div className='h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar'>
-                        <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={4} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={5} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={6} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={7} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={8} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={9} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={10} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={11} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                        <AdminVideoCard lesson={12} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
-                    </div>
+                    <AdminAllVideos module={module} setVideo={setVideo} video={video} />
                 </div>
             </div>
         </div>
