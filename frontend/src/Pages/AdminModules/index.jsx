@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { UilAngleLeft, UilLinkH } from '@iconscout/react-unicons';
-import ForumModuleCard from '../../Components/ForumModuleCard';
+import AdminModuleCard from '../../Components/AdminModuleCard';
 import AdminVideoCard from '../../Components/AdminVideoCard';
+import Comments from '../../Components/Comments';
 
 import document from '../../Assets/Documents/May_2024_Resume.pdf';
 import './style.css';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
     const [type, typeChange] = useState("");
@@ -43,24 +45,24 @@ const Index = () => {
         <div className='h-full w-full bg-[#DEF1DD] flex p-8 gap-4 overflow-hidden'>
             {module === -1 ?
                 <div className='h-full w-auto flex flex-wrap gap-8 overflow-y-scroll custom-scrollbar justify-center'>
-                    <ForumModuleCard id={1} setModule={setModule} />
-                    <ForumModuleCard id={2} setModule={setModule} />
-                    <ForumModuleCard id={3} setModule={setModule} />
-                    <ForumModuleCard id={4} setModule={setModule} />
-                    <ForumModuleCard id={5} setModule={setModule} />
-                    <ForumModuleCard id={6} setModule={setModule} />
-                    <ForumModuleCard id={7} setModule={setModule} />
-                    <ForumModuleCard id={8} setModule={setModule} />
-                    <ForumModuleCard id={9} setModule={setModule} />
+                    <AdminModuleCard id={1} setModule={setModule} />
+                    <AdminModuleCard id={2} setModule={setModule} />
+                    <AdminModuleCard id={3} setModule={setModule} />
+                    <AdminModuleCard id={4} setModule={setModule} />
+                    <AdminModuleCard id={5} setModule={setModule} />
+                    <AdminModuleCard id={6} setModule={setModule} />
+                    <AdminModuleCard id={7} setModule={setModule} />
+                    <AdminModuleCard id={8} setModule={setModule} />
+                    <AdminModuleCard id={9} setModule={setModule} />
                 </div>
                 :
                 <div className='h-full w-full flex flex-col flex-grow-0 flex-shrink-0 overflow-hidden bg-white rounded-[30px] p-8'>
                     {video !== -1 ?
                         <>
-                            <button onClick={() => { setVideo(-1) }} className='w-auto flex h-auto flex-row items-center'>
+                            <Link onClick={() => { setVideo(-1) }} className='w-auto flex h-auto flex-row items-center' to={`/admin/module/${module}/`}>
                                 <UilAngleLeft color='#505050' />
                                 <p className='poppins-bold text-[#505050] text-base'>Back</p>
-                            </button>
+                            </Link>
                             <div className='h-full w-full flex flex-row p-4 overflow-hidden flex-shrink-0'>
                                 <div className='flex flex-col gap-3 overflow-y-scroll custom-scrollbar border-r-2 border-[#9F9F9F] pr-12 flex-shrink-0'>
                                     <div className='w-[1104px] h-[621px] bg-[#D9D9D9] flex-shrink-0' />
@@ -68,11 +70,7 @@ const Index = () => {
                                         <p className='poppins-bold text-[30px]'>LESSON {video}:</p>
                                         <p className='poppins-semibold text-[30px]'>{videoTitle}</p>
                                     </div>
-                                    <p>what</p>
-                                    <p>what</p>
-                                    <p>what</p>
-                                    <p>what</p>
-                                    <p>what</p>
+                                    <Comments module={module} video={video} />
                                 </div>
                                 <div className='h-full w-full flex flex-col gap-8 overflow-y-scroll pl-12 custom-scrollbar items-center'>
                                     <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
@@ -92,10 +90,10 @@ const Index = () => {
                         </>
                         :
                         <>
-                            <button onClick={handleBack} className='w-auto flex h-auto flex-row items-center'>
+                            <Link onClick={handleBack} className='w-auto flex h-auto flex-row items-center' to={`/admin/module/list/`}>
                                 <UilAngleLeft color='#505050' />
                                 <p className='poppins-bold text-[#505050] text-base'>Back</p>
-                            </button>
+                            </Link>
                             <div className='h-full w-full flex flex-row'>
                                 <div className='h-auto w-[555px] border-r border-[#505050] flex flex-col flex-shrink-0'>
                                     <div className='flex flex-row gap-8 items-center border-b border-[#505050] pr-8 py-8 pl-2'>
@@ -127,8 +125,8 @@ const Index = () => {
                                                     </div>
                                                 </div>
                                                 <div className='flex flex-row w-full justify-center gap-4'>
-                                                    <button className='py-3 px-8 bg-red-300 poppins-semibold text-red-500 hover:text-white rounded-full hover:bg-red-500 hover:scale-105 hover:duration-200' onClick={() => { setIsEdit(false) }} >BACK</button>
-                                                    <button className='py-3 px-8 bg-secondary poppins-semibold text-primary rounded-full hover:text-white hover:bg-primary hover:scale-105 hover:duration-200'>UPDATE</button>
+                                                    <Link className='py-3 px-8 bg-red-300 poppins-semibold text-red-500 hover:text-white rounded-full hover:bg-red-500 hover:scale-105 hover:duration-200' onClick={() => { setIsEdit(false) }} to={`/admin/module/${module}/`}>BACK</Link>
+                                                    <Link className='py-3 px-8 bg-secondary poppins-semibold text-primary rounded-full hover:text-white hover:bg-primary hover:scale-105 hover:duration-200' onClick={() => { console.log('handle update') }} to={`/admin/module/${module}/`}>UPDATE</Link>
                                                 </div>
                                             </>
                                             :
@@ -157,7 +155,7 @@ const Index = () => {
                                                     </div>
                                                 </div>
                                                 <div className='flex flex-row w-full justify-center gap-4'>
-                                                    <button className='py-3 px-8 bg-secondary poppins-semibold text-primary hover:text-white rounded-full hover:bg-primary hover:scale-105 hover:duration-200' onClick={() => { setIsEdit(true) }}>EDIT MODULE</button>
+                                                    <Link className='py-3 px-8 bg-secondary poppins-semibold text-primary hover:text-white rounded-full hover:bg-primary hover:scale-105 hover:duration-200' onClick={() => { setIsEdit(true) }} to={`/admin/module/${module}/edit/`}>EDIT MODULE</Link>
                                                 </div>
                                             </>
                                         }
@@ -165,18 +163,18 @@ const Index = () => {
                                 </div>
                                 <div className='h-full w-full flex flex-col px-8 p-6 overflow-hidden'>
                                     <div className='h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar'>
-                                        <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={4} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={5} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={6} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={7} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={8} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={9} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={10} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={11} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
-                                        <AdminVideoCard lesson={12} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={4} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={5} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={6} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={7} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={8} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={9} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={10} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={11} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={12} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
                                     </div>
                                 </div>
                             </div>

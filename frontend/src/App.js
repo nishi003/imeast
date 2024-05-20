@@ -27,8 +27,10 @@ function App() {
           </Route>
           <Route path='/admin/*' element={<AdminLayout />}>
             <Route index element={<AdminModules />} />
-            <Route path='module/list/' element={<AdminModules />} />
-            <Route path='user-info/' element={<UserInformation />} />
+            <Route path='module/*' element={<AdminModules />}>
+            </Route>
+            <Route path='user-info/*' element={<UserInformation />}>
+            </Route>
             <Route path='notifications/' element={<Notifications />} />
           </Route>
           <Route path='/user/*' element={<UserLayout />}>

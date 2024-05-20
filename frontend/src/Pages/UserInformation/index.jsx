@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import users from '../../Assets/users.png';
-import { UilUsersAlt } from '@iconscout/react-unicons';
+import { UilUsersAlt, UilCreditCard } from '@iconscout/react-unicons';
 import users_inactive from '../../Assets/users-i.png';
 import transaction from '../../Assets/transaction.png';
 import transaction_inactive from '../../Assets/transaction-i.png';
@@ -15,33 +16,32 @@ const Index = () => {
     return (
         <div className='h-full w-full bg-[#DCDCDC] px-9 py-10 overflow-hidden flex flex-col'>
             <div className='flex flex-row gap-2'>
-                <button className={`flex flex-row gap-2 items-center justify-center p-4 rounded-t-[20px] ${isUsers ? 'bg-white' : ''}`} onClick={() => { setIsUsers(true) }}>
+                <Link className={`flex flex-row gap-2 items-center justify-center p-4 rounded-t-[20px] ${isUsers ? 'bg-white' : ''}`} onClick={() => { setIsUsers(true) }} to={`/admin/user-info/user/list/`}>
                     {isUsers ?
                         <div className='flex flex-row items-center gap-1'>
                             <UilUsersAlt size='27' color='#2F2F2F' />
-                            {/* <img src={users} alt='users' className='w-[28.3px] h-[22.5px]' /> */}
                             <p className='poppins-semibold text-xl text-[#2F2F2F]'>Users</p>
                         </div>
                         :
-                        <>
-                            <img src={users_inactive} alt='users' className='w-[28.3px] h-[22.5px]' />
+                        <div className='flex flex-row items-center gap-1'>
+                            <UilUsersAlt size='27' color='#9F9F9F' />
                             <p className='poppins-semibold text-xl text-[#9F9F9F]'>Users</p>
-                        </>
+                        </div>
                     }
-                </button>
-                <button className={`flex flex-row gap-2 items-center justify-center p-4 rounded-t-[20px] ${isUsers === false ? 'bg-white' : ''}`} onClick={() => { setIsUsers(false) }}>
+                </Link>
+                <Link className={`flex flex-row gap-2 items-center justify-center p-4 rounded-t-[20px] ${isUsers === false ? 'bg-white' : ''}`} onClick={() => { setIsUsers(false) }} to={`/admin/user-info/transaction/list/`}>
                     {isUsers === false ?
-                        <>
-                            <img src={transaction} alt='users' className='w-[28.3px] h-[22.5px]' />
+                        <div className='flex flex-row items-center gap-1'>
+                            <UilCreditCard size='27' color='#2F2F2F' />
                             <p className='poppins-semibold text-xl text-[#2F2F2F]'>Transaction History</p>
-                        </>
+                        </div>
                         :
-                        <>
-                            <img src={transaction_inactive} alt='users' className='w-[28.3px] h-[22.5px]' />
+                        <div className='flex flex-row items-center gap-1'>
+                            <UilCreditCard size='27' color='#9F9F9F' />
                             <p className='poppins-semibold text-xl text-[#9F9F9F]'>Transaction History</p>
-                        </>
+                        </div>
                     }
-                </button>
+                </Link>
             </div>
             <div className={`h-full w-full flex-grow-0 flex flex-col overflow-hidden bg-white ${isUsers ? 'rounded-b-[30px] rounded-r-[30px]' : 'rounded-[30px]'} `}>
                 {isUsers ?

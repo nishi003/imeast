@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { UilBell, UilFileAlt, UilAngleLeft } from '@iconscout/react-unicons';
-import ForumModuleCard from '../../Components/ForumModuleCard';
 import NotificationCard from '../../Components/NotificationCard';
 
 import './style.css';

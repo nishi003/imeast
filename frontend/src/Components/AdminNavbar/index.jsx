@@ -14,7 +14,10 @@ const Index = () => {
             case '/admin/module/list/':
                 setMenu('modules');
                 break;
-            case '/admin/user-info/':
+            case '/admin/user-info/user/list/':
+                setMenu('user-info');
+                break;
+            case '/admin/user-info/transaction/list/':
                 setMenu('user-info');
                 break;
             case '/admin/notifications/':
@@ -32,7 +35,7 @@ const Index = () => {
                     <UilFileAlt size='30' />
                     Modules
                 </Link>
-                <Link to='/admin/user-info/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'user-info' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
+                <Link to='/admin/user-info/user/list/' className={`w-full h-[54px] poppins-semibold flex px-4 justify-left items-center gap-4 ${menu === 'user-info' ? 'bg-[#DEF1DD] rounded-[15px] cursor-default' : 'hover:scale-105 duration-200 cursor-pointer'}`}>
                     <UilUser size='30' />
                     User Information
                 </Link>
