@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import background from '../../Assets/signin-bg.png'
-import logo from '../../Assets/logo-green-sm.png'
+import logo from '../../Assets/logo-green-sm.png';
 
 import { useState } from 'react';
 
@@ -166,7 +165,7 @@ const Index = () => {
                                 </div>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='birthday' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
-                                    <input type='date' name='birthday' vale={birthday} required onChange={handleBirthdayChange} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' />
+                                    <input type='date' name='birthday' value={birthday} required onChange={handleBirthdayChange} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' />
                                 </div>
                             </div>
                             <div className='flex flex-col gap-1'>

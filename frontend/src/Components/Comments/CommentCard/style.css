@@ -1,0 +1,9 @@
+.comment-content {
+    word-wrap: break-word; /* For older browser compatibility */
+    overflow-wrap: break-word; /* For newer browser compatibility */
+    white-space: pre-wrap; /* Preserve white space and allow wrapping */
+}
+
+.comment-content {
+    word-wrap: break-word;
+}
