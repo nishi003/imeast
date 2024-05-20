@@ -15,6 +15,7 @@ const Index = () => {
     const [duration, setDuration] = useState("3 hours");
     const [pdf, setPDF] = useState({ document });
     const [video, setVideo] = useState(-1);
+    const [videoTitle, setVideoTitle] = useState("Neck & Shoulder, Shoulder Joint");
     const [videos, setVideos] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
 
@@ -60,10 +61,32 @@ const Index = () => {
                                 <UilAngleLeft color='#505050' />
                                 <p className='poppins-bold text-[#505050] text-base'>Back</p>
                             </button>
-                            <div className='h-full w-full flex flex-row p-4'>
-                                <div className='flex flex-col gap-2 overflow-hidden'>
-                                    <div className='w-[1104px] h-[621px] bg-[#D9D9D9]' />
-                                    <p></p>
+                            <div className='h-full w-full flex flex-row p-4 overflow-hidden flex-shrink-0'>
+                                <div className='flex flex-col gap-3 overflow-y-scroll custom-scrollbar border-r-2 border-[#9F9F9F] pr-12 flex-shrink-0'>
+                                    <div className='w-[1104px] h-[621px] bg-[#D9D9D9] flex-shrink-0' />
+                                    <div className='flex flex-row items-center gap-2 mb-2'>
+                                        <p className='poppins-bold text-[30px]'>LESSON {video}:</p>
+                                        <p className='poppins-semibold text-[30px]'>{videoTitle}</p>
+                                    </div>
+                                    <p>what</p>
+                                    <p>what</p>
+                                    <p>what</p>
+                                    <p>what</p>
+                                    <p>what</p>
+                                </div>
+                                <div className='h-full w-full flex flex-col gap-8 overflow-y-scroll pl-12 custom-scrollbar items-center'>
+                                    <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={4} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={5} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={6} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={7} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={8} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={9} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={10} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={11} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                    <AdminVideoCard lesson={12} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
                                 </div>
                             </div>
                         </>
@@ -142,18 +165,18 @@ const Index = () => {
                                 </div>
                                 <div className='h-full w-full flex flex-col px-8 p-6 overflow-hidden'>
                                     <div className='h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar'>
-                                        <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={4} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={5} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={6} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={7} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={8} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={9} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={10} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={11} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
-                                        <AdminVideoCard lesson={12} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} />
+                                        <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={4} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={5} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={6} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={7} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={8} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={9} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={10} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={11} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
+                                        <AdminVideoCard lesson={12} title='Neck & Shoulder, Shoulder Joint' setVideo={setVideo} video={video} />
                                     </div>
                                 </div>
                             </div>
