@@ -6,7 +6,6 @@ import AdminVideoCard from '../AdminVideoCard';
 
 const Index = ({ module, video, setVideo, comment }) => {
     const [videoTitle, setVideoTitle] = useState("Neck & Shoulder, Shoulder Joint");
-    const [videos, setVideos] = useState([]);
 
     return (
         <div className='flex flex-col overflow-hidden gap-4'>
