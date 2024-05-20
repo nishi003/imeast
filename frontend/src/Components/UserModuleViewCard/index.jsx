@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-const Index = () => {
+const Index = ({ moduleId, setModule }) => {
     const [title, setTitle] = useState("MODULE 1");
     const [category, setCategory] = useState("TMJ, Bell’s Palsy");
     const [duration, setDuration] = useState("3 hours");
@@ -19,9 +20,9 @@ const Index = () => {
                 <p className='mt-4 poppins-bold text-[#2F2F2F] text-[15px]'>DURATION: {duration}</p>
                 <p className='poppins-bold text-[#2F2F2F] text-[15px]'>{description}</p>
             </div>
-            <button className='w-[300px] h-[40px] rounded-[20px] flex justify-center items-center shadow-md bg-[#91C28D] hover:scale-105 duration-200'>
+            <Link className='w-[300px] h-[40px] rounded-[20px] flex justify-center items-center shadow-md bg-[#91C28D] hover:scale-105 duration-200' onClick={() => { setModule(moduleId) }} to={`/user/module/${moduleId}/`}>
                 <p className='text-white poppins-semibold text-[15px]'>VIEW THIS MODULE</p>
-            </button>
+            </Link>
         </div>
     )
 }

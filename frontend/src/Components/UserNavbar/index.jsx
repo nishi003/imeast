@@ -7,22 +7,25 @@ const Index = () => {
     const [menu, setMenu] = useState("profile");
 
     useEffect(() => {
-        switch (location.pathname) {
-            case '/user/':
-                setMenu('user');
-                break;
-            case '/user/module/list/':
-                setMenu('modules');
-                break;
-            case '/user/purchase/list/':
-                setMenu('purchases');
-                break;
-            default:
-                setMenu('user');
+        const path = location.pathname;
+
+        if (path === '/user/') {
+            setMenu('user');
+        } else if (path === '/user/module/list/') {
+            setMenu('modules');
+        } else if (/^\/user\/module\/\d+\/$/.test(path)) {
+            setMenu('modules');
+        } else if (/^\/user\/module\/\d+\/video\/\d+$/.test(path)) {
+            setMenu('modules');
+        } else if (path === '/user/purchase/list/') {
+            setMenu('purchases');
+        } else {
+            setMenu('user');
         }
+
         console.log(location);
         console.log(menu);
-    }, [location.pathname, menu]);
+    }, [location.pathname]);
 
     return (
         <div className='flex flex-col h-full w-[285px] border-r pt-16 flex-shrink-0'>

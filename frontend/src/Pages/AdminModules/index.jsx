@@ -6,7 +6,7 @@ import Comments from '../../Components/Comments';
 
 import document from '../../Assets/Documents/May_2024_Resume.pdf';
 import './style.css';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const Index = () => {
     const { moduleID, videoID, commentID } = useParams();
@@ -40,7 +40,7 @@ const Index = () => {
             setModule(-1);
             setComment(0);
         }
-    }, [moduleID, videoID]);
+    }, [moduleID, videoID, commentID]);
 
     const handlePriceChange = ((event) => {
         const newPrice = event.target.value;

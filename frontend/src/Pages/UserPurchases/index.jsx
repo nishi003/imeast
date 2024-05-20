@@ -1,5 +1,6 @@
 import React from 'react';
 import UserModulePurchaseCard from '../../Components/UserModulePurchaseCard';
+import './style.css';
 
 const Index = () => {
 
