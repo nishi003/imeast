@@ -4,14 +4,17 @@ import logo from '../../Assets/logo-green-sm.png';
 import { useState } from 'react';
 
 import './style.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Index = () => {
+    const navigate = useNavigate();
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [sex, setSex] = useState("");
     const [birthday, setBirthday] = useState("");
     const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNnmber] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
     const [college, setCollege] = useState("");
@@ -24,6 +27,26 @@ const Index = () => {
     const [sectionTwo, setSectionTwo] = useState(false);
     const [sectionThree, setSectionThree] = useState(false);
     const [isCreateAccountHovered, setIsCreateAccountHovered] = useState(false);
+
+    const [errors, setErrors] = useState({
+        first_name: null,
+        last_name: null,
+        sex: null,
+        email: null,
+        phone_number: null,
+        password1: null,
+        password2: null,
+        college: null,
+        license: null,
+        address: null,
+        profession: null,
+        period: null,
+        other: null
+    });
+
+    useEffect(() => {
+        setErrors({});
+    }, [navigate]);
 
     const handleFirstNameChange = ((event) => {
         const newFirstName = event.target.value;
@@ -49,6 +72,11 @@ const Index = () => {
         const newEmail = event.target.value;
         setEmail(newEmail);
     };
+
+    const handlePhoneNumberChange = (event) => {
+        const newPhoneNumber = event.target.value;
+        setPhoneNnmber(newPhoneNumber);
+    }
 
     const handlePassword1Change = ((event) => {
         const newPassword1 = event.target.value;
@@ -171,6 +199,10 @@ const Index = () => {
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Email</label>
                                 <input type='email' name='email' value={email} required onChange={handleEmailChange} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your email here' />
+                            </div>
+                            <div className='flex flex-col gap-1'>
+                                <label htmlFor='phoneNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Phone Number</label>
+                                <input type='text' name='phoneNumber' value={phoneNumber} required onChange={handlePhoneNumberChange} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your phone number here' />
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='password1' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Create Password</label>
