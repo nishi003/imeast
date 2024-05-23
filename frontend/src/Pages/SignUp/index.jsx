@@ -73,12 +73,12 @@ const Index = () => {
     };
 
     useEffect(() => {
-        if (firstName || lastName || sex || birthday || email || password1 || password2) {
+        if (formData['first_name'] || lastName || sex || birthday || email || password1 || password2) {
             setSectionOne(true);
             setSectionTwo(false);
             setSectionThree(false);
         }
-    }, [firstName, lastName, sex, birthday, email, password1, password2]);
+    }, [formData['first_name'], lastName, sex, birthday, email, password1, password2]);
 
     useEffect(() => {
         if (college || license || location || profession || period) {
