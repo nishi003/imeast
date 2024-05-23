@@ -263,6 +263,12 @@ app.post('/signup', async(req, res)=>{
 
     //Required fields (non-admin) validator. essential missing fields
     let missingFields = []
+    if (typeof req.body.first_name == 'undefined'){
+        missingFields.push("first_name")
+    }
+    if (typeof req.body.last_name == 'undefined'){
+        missingFields.push("last_name")
+    }
     if (typeof req.body.email == 'undefined'){
         missingFields.push("email")
     }
@@ -323,7 +329,8 @@ app.post('/signup', async(req, res)=>{
     
 
     const user = new Users({
-        name: req.body.username,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         email: req.body.email,
         password: req.body.pw1,
         sex: req.body.sex,
