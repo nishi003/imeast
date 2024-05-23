@@ -28,13 +28,14 @@ function App() {
           <Route path='/admin/*' element={<AdminLayout />}>
             <Route index element={<AdminModules />} />
             <Route path='module/*' element={<AdminModules />}>
-              <Route path=':moduleID/' />
+              <Route index element={<AdminModules />} />
+              <Route path=':moduleID/' element={<AdminModules />} />
               <Route path=':moduleID/edit/' element={<AdminModules />} />
-              <Route path=':moduleID/video/:videoID/' />
-              <Route path=':moduleID/video/:videoID/comment/:commentID/' />
+              <Route path=':moduleID/video/:videoID/' element={<AdminModules />} />
+              <Route path=':moduleID/video/create/' element={<AdminModules />} />
+              <Route path=':moduleID/video/:videoID/comment/:commentID/' element={<AdminModules />} />
             </Route>
-            <Route path='user-info/*' element={<UserInformation />}>
-            </Route>
+            <Route path='user-info/*' element={<UserInformation />} />
             <Route path='notifications/' element={<Notifications />} />
           </Route>
           <Route path='/user/*' element={<UserLayout />}>
