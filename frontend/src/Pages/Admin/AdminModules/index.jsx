@@ -49,7 +49,7 @@ const Index = () => {
     return (
         <div className='h-full w-full bg-[#DCDCDC] flex p-8 gap-4 overflow-hidden'>
             {isCreate ?
-                <AdminModuleCreate />
+                <AdminModuleCreate setModule={setModule} />
                 :
                 module === -1 ?
                     <AdminModuleList setModule={setModule} />

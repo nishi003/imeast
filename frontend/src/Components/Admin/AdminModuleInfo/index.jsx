@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AdminVideoCard from '../AdminVideoCard';
 import AdminAllVideos from '../AdminAllVideos';
-import { UilAngleLeft, UilLinkH } from '@iconscout/react-unicons';
+import { UilAngleLeft, UilLinkH, UilEditAlt } from '@iconscout/react-unicons';
 import document from '../../../Assets/Documents/May_2024_Resume.pdf';
 import './style.css';
 import { Link } from 'react-router-dom';
@@ -13,6 +13,7 @@ const Index = ({ module, setModule, video, setVideo }) => {
     const [duration, setDuration] = useState(3);
     const [description, setDescription] = useState("This treatment focuses on alleviating issues in major facial muscles and is specifically designed to address asymmetries in facial expression. It offers relief for conditions associated with the temporomandibular joint and Bell's Palsy, improving muscle function and facial symmetry.");
     const [isEdit, setIsEdit] = useState(false);
+    const [moduleAvatar, setAvatarFile] = useState(null);
 
     const [pdf, setPDF] = useState({ document });
 
@@ -36,6 +37,14 @@ const Index = ({ module, setModule, video, setVideo }) => {
         setDescription(newDescription);
     });
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            setAvatarFile(file);
+        }
+    };
+
     return (
         <div className='flex flex-col overflow-hidden'>
             <Link onClick={handleBack} className='w-auto flex h-auto flex-row items-center' to={`/admin/module/list/`}>
@@ -45,11 +54,42 @@ const Index = ({ module, setModule, video, setVideo }) => {
             <div className='h-full w-full flex flex-row overflow-hidden'>
                 <div className='w-[555px] border-r border-[#505050] flex flex-col flex-shrink-0'>
                     <div className='flex flex-row gap-8 items-center border-b border-[#505050] pr-8 py-8 pl-2'>
-                        <div className='h-[100px] w-[100px] bg-primary rounded-full' />
-                        <div className='flex flex-col'>
-                            <p className='poppins-medium text-black text-[40px]'>MODULE {module}</p>
-                            <p className='poppins-bold text-black text-base mt-[-6px]'>{category}</p>
-                        </div>
+                        {isEdit ?
+                            <>
+                                <label htmlFor="avatarInput" className="rounded-full min-h-[100px] aspect-square bg-primary md:hidden">
+                                    <div className="rounded-full aspect-square bg-primary group relative cursor-pointer md:hidden">
+                                        <div className='group-hover:opacity-50 h-[100px] w-[100px] rounded-full borderobject-cover bg-primary' />
+                                        <UilEditAlt color='#ffffff' size='36' className='absolute left-[46%] top-[46%] hidden group-hover:block' />
+                                    </div>
+                                </label>
+                                <input
+                                    type="file"
+                                    id="avatarInput"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                />
+                                <div className="rounded-full h-[100px] aspect-square bg-primary group relative cursor-pointer max-md:hidden">
+                                    <label htmlFor="avatarInput" className="w-full rounded-full">
+                                        <div className='group-hover:opacity-50 h-[100px] w-[100px] rounded-full borderobject-cover bg-primary' />
+                                        <UilEditAlt color='#ffffff' size='36' className='absolute left-[33%] top-[30%] hidden group-hover:block' />
+                                    </label>
+                                </div>
+                                <div className='flex flex-col w-full overflow-hidden'>
+                                    <p className='poppins-medium text-black text-[40px]'>MODULE {module}</p>
+                                    <input type='text' className='poppins-bold text-[#9F9F9F] focus:text-black text-base mt-[-6px] focus:outline-none bg-white p-0' value={category} />
+                                </div>
+                            </>
+                            :
+                            <>
+                                <div className='h-[100px] w-[100px] bg-primary rounded-full' />
+                                <div className='flex flex-col'>
+                                    <p className='poppins-medium text-black text-[40px]'>MODULE {module}</p>
+                                    <p className='poppins-bold text-black text-base mt-[-6px]'>{category}</p>
+                                </div>
+                            </>
+                        }
+
                     </div>
                     <div className='flex h-full w-full flex-col pt-6 pr-6 justify-between'>
                         {isEdit ?
