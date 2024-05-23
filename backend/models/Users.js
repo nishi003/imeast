@@ -3,7 +3,10 @@
 const mongoose = require('mongoose');
 
 const Users = mongoose.model('Users', {
-    name: {
+    first_name: {
+        type: String
+    },
+    last_name:{
         type: String,
     },
     email:{
@@ -65,6 +68,9 @@ const Users = mongoose.model('Users', {
     practicePeriod: {
         type: Number,
         required: false
+    },
+    Other:{
+        type: String
     }
 })
 

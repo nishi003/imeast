@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const dotenv = require("../dotenv");
+const dotenv = require("dotenv");
 dotenv.config();
 const {OAuth2Client} = require('google-auth-library');
 var google = require('googleapis').google;
@@ -96,6 +96,8 @@ router.get('/', async(req, res)=>{
         console.log('Error signing in with Google')
         console.log(err)
     }
+
+    //sending json doesn't work for some reason. 
     if (loginsuccess){
         await res.json({success: true, token})
     } 

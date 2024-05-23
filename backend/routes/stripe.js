@@ -1,6 +1,3 @@
-// const datas = require('../index.js');
-// const Product = datas.Product;
-
 // console.log(Product)
 //dotenv for stripe
 const express = require("express");
@@ -13,8 +10,6 @@ dotenv.config();
 //payment processing with stripe:
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
-
-//get home page
 
 //req: im thinking just the cart map.
 router.post('/', async (req, res, ) => {
@@ -34,8 +29,8 @@ router.post('/', async (req, res, ) => {
             }
         }),
         //look up how to do 
-        success_url: `${process.env.SERVER_URL}/success.html`,
-        cancel_url: `${process.env.SERVER_URL}/cancel.html`
+        success_url: `${process.env.SERVER_URL}/paymentsucess`,
+        cancel_url: `${process.env.SERVER_URL}/cancel`
     })
     res.json({url: session.url})
     }
