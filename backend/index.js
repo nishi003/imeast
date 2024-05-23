@@ -261,80 +261,71 @@ app.post('/signup', async (req, res) => {
     // }
 
     //Required fields (non-admin) validator. essential missing fields
-    let isIncomplete = false;
-    let missingFields = [];
 
-    if (!req.body.first_name) {
-        missingFields.push("first_name");
-        isIncomplete = true;
-    }
-    if (!req.body.last_name) {
-        missingFields.push("last_name");
-        isIncomplete = true;
-    }
-    if (!req.body.sex) {
-        missingFields.push("sex");
-        isIncomplete = true;
-    }
-    if (!req.body.birthDate) {
-        missingFields.push("birthDate");
-        isIncomplete = true;
-    }
-    if (!req.body.email) {
-        missingFields.push("email");
-        isIncomplete = true;
-    }
-    if (!req.body.phoneNumber) {
-        missingFields.push("phoneNumber");
-        isIncomplete = true;
-    }
+    let errors = {};
+    let isIncomplete = false;
+
+    const requiredFields = [
+        { field: 'first_name', message: 'This field is required.' },
+        { field: 'last_name', message: 'This field is required.' },
+        { field: 'sex', message: 'This field is required.' },
+        { field: 'birthDate', message: 'This field is required.' },
+        { field: 'email', message: 'This field is required.' },
+        { field: 'phoneNumber', message: 'This field is required.' },
+        { field: 'registeredCollege', message: 'This field is required.' },
+        { field: 'licenseNumber', message: 'This field is required.' },
+        { field: 'practiceLocation', message: 'This field is required.' },
+        { field: 'professionType', message: 'This field is required.' },
+        { field: 'practicePeriod', message: 'This field is required.' },
+    ];
+
+    // Check required fields
+    requiredFields.forEach(({ field, message }) => {
+        if (!req.body[field]) {
+            errors[field] = message;
+            isIncomplete = true;
+        } else {
+            errors[field] = '';
+        }
+    });
+
+    // Additional check for password fields
     if ((!req.body.pw1 || req.body.pw1 === '') && !req.body.google) {
-        missingFields.push("pw1");
+        errors["pw1"] = "This field is required.";
         isIncomplete = true;
     }
     if ((!req.body.pw2 || req.body.pw2 === '') && !req.body.google) {
-        missingFields.push("pw2");
-        isIncomplete = true;
-    }
-    if (!req.body.registeredCollege) {
-        missingFields.push("registeredCollege");
-        isIncomplete = true;
-    }
-    if (!req.body.lisenceNumber) {
-        missingFields.push("licenseNumber");
-        isIncomplete = true;
-    }
-    if (!req.body.practiceLocation) {
-        missingFields.push("practiceLocation");
-        isIncomplete = true;
-    }
-    if (!req.body.professionType) {
-        missingFields.push("professionType");
-        isIncomplete = true;
-    }
-    if (!req.body.practicePeriod) {
-        missingFields.push("practicePeriod");
+        errors["pw2"] = "This field is required.";
         isIncomplete = true;
     }
 
-    if (req.body.professionType === 'other') {
-        if (!req.body.Other) {
-            missingFields.push("other");
-            isIncomplete = true;
+    // Check for 'other' profession type
+    if (req.body.professionType === 'other' && !req.body.other) {
+        errors["other"] = "This field is required.";
+        isIncomplete = true;
+    }
+
+    // If form is incomplete, return errors
+    if (isIncomplete) {
+        return res.status(400).json({ success: false, errors: errors });
+    }
+
+    // Additional validations if form is complete
+    if (req.body.pw1 && req.body.pw2) {
+        if (req.body.pw1 !== req.body.pw2) {
+            errors["pw2"] = "The passwords you entered do not match.";
+            return res.status(400).json({ success: false, errors: errors });
+        }
+        if (req.body.pw1.length < 8) {
+            errors["pw1"] = "The password must be at least 8 characters long.";
+            return res.status(400).json({ success: false, errors: errors });
         }
     }
 
-    if (!isIncomplete) {
-        if (!(req.body.pw1 == req.body.pw2)) {
-            return res.status(400).json({ success: false, errors: "password 1 and password 2 don't match", fieldname: missingFields })
-        }
-        else if (req.body.pw1.length < 8) {
-            return res.status(400).json({ success: false, errors: "password must be at least 8 characters long", fieldname: missingFields })
-        }
-    }
-
-    if (!isvalidyear) {
-        return res.status(400).json({ success: false, errors: "invalid year", fieldname: missingFields })
+    // Assuming isvalidyear is a function or variable defined elsewhere in your code
+    if (!isvalidyear(req.body.birthDate)) {
+        errors["birthDate"] = "The date you entered is invalid.";
+        return res.status(400).json({ success: false, errors: errors });
     }
 
     //owned objects are just arrays of product ids.
@@ -344,7 +335,7 @@ app.post('/signup', async (req, res) => {
     let cart = [];
 
     if (isIncomplete) {
-        return res.status(400).json({ success: false, errors: "missing fields", fieldname: missingFields })
+        return res.status(400).json({ success: false, errors: errors });
     }
 
 

@@ -72,33 +72,10 @@ const Index = () => {
 
             if (!response.ok) {
                 const json = await response.json();
-                console.log(json);
-                if (json.errors === 'missing fields') {
-                    fieldNames.forEach(fieldName => {
-                        // Access each field name and its corresponding value in the formData object
-                        setErrors(prevState => ({ ...prevState, [fieldName]: 'missing' }));
-                    });
-                    console.log(errors);
+                const serverErrors = json.errors;
+                if (serverErrors) {
+                    setErrors(serverErrors);
                 }
-                const receivedErrors = json.fieldname || [];
-                const newErrors = {};
-
-                // Update the newErrors object with received errors
-                receivedErrors.forEach(fieldName => {
-                    newErrors[fieldName] = true;
-                });
-
-                // Handle password validation errors separately
-                if (json.errors) {
-                    if (json.errors === "password 1 and password 2 don't match") {
-                        newErrors['passwordMismatch'] = true;
-                    } else if (json.errors === "password must be at least 8 characters long") {
-                        newErrors['passwordLength'] = true;
-                    }
-                }
-
-                // Set errors state with the new errors
-                setErrors(newErrors);
             } else {
                 navigate("/login/");
             }
@@ -106,6 +83,11 @@ const Index = () => {
             console.error("Error during fetch: ", error);
         }
     }
+
+    useEffect(() => {
+        console.log("errors changed");
+        console.log(errors);
+    }, [errors]);
 
     return (
         <main className='p-36 bg-[#91C28D99]'>
