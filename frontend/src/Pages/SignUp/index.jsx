@@ -9,21 +9,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const Index = () => {
     const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [sex, setSex] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [email, setEmail] = useState("");
-    const [phoneNumber, setPhoneNnmber] = useState("");
-    const [password1, setPassword1] = useState("");
-    const [password2, setPassword2] = useState("");
-    const [college, setCollege] = useState("");
-    const [license, setLicense] = useState("");
-    const [location, setLocation] = useState("");
-    const [profession, setProfession] = useState("");
-    const [period, setPeriod] = useState("");
-    const [other, setOther] = useState(null);
-
     const [sectionOne, setSectionOne] = useState(false);
     const [sectionTwo, setSectionTwo] = useState(false);
     const [sectionThree, setSectionThree] = useState(false);
@@ -36,14 +21,14 @@ const Index = () => {
         birthDate: null,
         email: null,
         phoneNumber: null,
-        password1: null,
-        password2: null,
-        college: null,
-        license: null,
-        address: null,
-        profession: null,
-        period: null,
-        other: null
+        pw1: null,
+        pw2: null,
+        registeredCollege: null,
+        lisenceNumber: null,
+        practiceLocation: null,
+        professionType: null,
+        practicePeriod: null,
+        Other: null
     });
 
     useEffect(() => {
@@ -57,14 +42,14 @@ const Index = () => {
         birthDate: null,
         email: null,
         phoneNumber: null,
-        password1: null,
-        password2: null,
-        college: null,
-        license: null,
-        address: null,
-        profession: null,
-        period: null,
-        other: null
+        pw1: null,
+        pw2: null,
+        registeredCollege: null,
+        lisenceNumber: null,
+        practiceLocation: null,
+        professionType: null,
+        practicePeriod: null,
+        Other: null
     });
 
     const handleInputChangeForm = (e) => {
@@ -72,31 +57,55 @@ const Index = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    useEffect(() => {
-        if (formData['first_name'] || lastName || sex || birthday || email || password1 || password2) {
-            setSectionOne(true);
-            setSectionTwo(false);
-            setSectionThree(false);
-        }
-    }, [formData['first_name'], lastName, sex, birthday, email, password1, password2]);
+    async function handle_submit(event) {
+        event.preventDefault();
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        };
 
-    useEffect(() => {
-        if (college || license || location || profession || period) {
-            setSectionOne(false);
-            setSectionTwo(true);
-            setSectionThree(false);
-        }
-    }, [college, license, location, profession, period]);
+        try {
+            const response = await fetch('http://localhost:4000/signup', requestOptions);
 
-    useEffect(() => {
-        if (isCreateAccountHovered) {
-            setSectionOne(false);
-            setSectionTwo(false);
-            setSectionThree(true);
-        } else {
-            setSectionThree(false);
+            if (!response.ok) {
+                const json = await response.json();
+                console.log(json);
+                if (json.errors === 'missing fields') {
+                    fieldNames.forEach(fieldName => {
+                        // Access each field name and its corresponding value in the formData object
+                        setErrors(prevState => ({ ...prevState, [fieldName]: 'missing' }));
+                    });
+                    console.log(errors);
+                }
+                const receivedErrors = json.fieldname || [];
+                const newErrors = {};
+
+                // Update the newErrors object with received errors
+                receivedErrors.forEach(fieldName => {
+                    newErrors[fieldName] = true;
+                });
+
+                // Handle password validation errors separately
+                if (json.errors) {
+                    if (json.errors === "password 1 and password 2 don't match") {
+                        newErrors['passwordMismatch'] = true;
+                    } else if (json.errors === "password must be at least 8 characters long") {
+                        newErrors['passwordLength'] = true;
+                    }
+                }
+
+                // Set errors state with the new errors
+                setErrors(newErrors);
+            } else {
+                navigate("/login/");
+            }
+        } catch (error) {
+            console.error("Error during fetch: ", error);
         }
-    }, [isCreateAccountHovered]);
+    }
 
     return (
         <main className='p-36 bg-[#91C28D99]'>
@@ -131,18 +140,18 @@ const Index = () => {
                         <div className='flex flex-col pl-5 gap-6 pb-20'>
                             <div className='flex flex-row gap-5'>
                                 <div className='flex flex-col gap-1'>
-                                    <label htmlFor='first-name' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
-                                    <input type='text' id='first-name' value={formData['first_name']} onChange={handleInputChangeForm} required className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
+                                    <label htmlFor='first_name' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
+                                    <input type='text' name='first_name' value={formData['first_name']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
                                 </div>
                                 <div className='flex flex-col gap-1'>
-                                    <label htmlFor='last-name' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>
-                                    <input type='text' id='last-name' value={formData['last_name']} onChange={handleInputChangeForm} required className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Fill in your last name' />
+                                    <label htmlFor='last_name' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>
+                                    <input type='text' name='last_name' value={formData['last_name']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Fill in your last name' />
                                 </div>
                             </div>
                             <div className='flex flex-row gap-5'>
                                 <div className='flex flex-col gap-1'>
                                     <label className='poppins-semibold text-[15px] text-[#767676] pl-2'>Sex</label>
-                                    <select name="sex" value={formData['sex']} onChange={handleInputChangeForm} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
+                                    <select name="sex" value={formData['sex']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
                                         <option value="" disabled selected hidden>Select sex</option>
                                         <option value="male" className="text-[15px]">Male</option>
                                         <option value="female" className="text-[15px]">Female</option>
@@ -151,25 +160,25 @@ const Index = () => {
                                     </select>
                                 </div>
                                 <div className='flex flex-col gap-1'>
-                                    <label htmlFor='birthday' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
-                                    <input type='date' name='birthday' value={formData['birthDate']} required onChange={handleInputChangeForm} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' />
+                                    <label htmlFor='birthDate' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
+                                    <input type='date' name='birthDate' value={formData['birthDate']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[326px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' />
                                 </div>
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Email</label>
-                                <input type='email' name='email' value={formData['email']} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your email here' />
+                                <input type='email' name='email' value={formData['email']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your email here' />
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='phoneNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Phone Number</label>
-                                <input type='text' name='phoneNumber' value={formData['phoneNumber']} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your phone number here' />
+                                <input type='text' name='phoneNumber' value={formData['phoneNumber']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your phone number here' />
                             </div>
                             <div className='flex flex-col gap-1'>
-                                <label htmlFor='password1' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Create Password</label>
-                                <input type='password' name='password1' value={password1} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='●●●●●●●●' />
+                                <label htmlFor='pw1' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Create Password</label>
+                                <input type='password' name='pw1' value={formData['pw1']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='●●●●●●●●' />
                             </div>
                             <div className='flex flex-col gap-1'>
-                                <label htmlFor='password2' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Confirm Password</label>
-                                <input type='password' name='password2' value={password2} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='●●●●●●●●' />
+                                <label htmlFor='pw2' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Confirm Password</label>
+                                <input type='password' name='pw2' value={formData['pw2']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='●●●●●●●●' />
                             </div>
                         </div>
                     </div>
@@ -191,21 +200,21 @@ const Index = () => {
                         </div>
                         <div className='flex flex-col pl-5 gap-6 pb-20'>
                             <div className='flex flex-col gap-1'>
-                                <label htmlFor='college' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Registered College</label>
-                                <input type='text' name='college' value={college} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your college' />
+                                <label htmlFor='registeredCollege' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Registered College</label>
+                                <input type='text' name='registeredCollege' value={formData['registeredCollege']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your college' />
                             </div>
                             <div className='flex flex-col gap-1'>
-                                <label htmlFor='license' className='poppins-semibold text-[15px] text-[#767676] pl-2'>License Number</label>
-                                <input type='text' name='license' value={license} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your license number' />
+                                <label htmlFor='lisenceNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>License Number</label>
+                                <input type='text' name='lisenceNumber' value={formData['lisenceNumber']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your license number' />
                             </div>
                             <div className='flex flex-col gap-1'>
-                                <label htmlFor='location' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Location of practice (address)</label>
-                                <input type='text' name='location' value={location} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your location of practice' />
+                                <label htmlFor='practiceLocation' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Location of practice (address)</label>
+                                <input type='text' name='practiceLocation' value={formData['practiceLocation']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your location of practice' />
                             </div>
                             <div className='flex flex-row gap-4'>
                                 <div className='flex flex-col gap-1'>
-                                    <label htmlFor='profession' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Type of profession</label>
-                                    <select name='profession' value={profession} onChange={handleInputChangeForm} className='h-[58px] w-[327px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
+                                    <label htmlFor='professionType' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Type of profession</label>
+                                    <select name='professionType' value={formData['professionType']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[327px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
                                         <option value="" disabled selected hidden>Select Profession</option>
                                         <option value='acupuncturist' className='text-[15px]'>Acupuncturist</option>
                                         <option value='physiologist' className='text-[15px]'>Physiologist</option>
@@ -214,8 +223,8 @@ const Index = () => {
                                     </select>
                                 </div>
                                 <div className='flex flex-col gap-1'>
-                                    <label htmlFor='period' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Practicing period</label>
-                                    <select name='period' value={period} onChange={handleInputChangeForm} className='h-[58px] w-[327px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
+                                    <label htmlFor='practicePeriod' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Practicing period</label>
+                                    <select name='practicePeriod' value={formData['practicePeriod']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[327px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]'>
                                         <option value="" disabled selected hidden>Select practicing period</option>
                                         <option value='lt1yr' className='text-[15px]'>Less than 1 year</option>
                                         <option value='1yr' className='text-[15px]'>1 year</option>
@@ -224,10 +233,10 @@ const Index = () => {
                                     </select>
                                 </div>
                             </div>
-                            {profession === 'other' ?
+                            {formData['professionType'] === 'other' ?
                                 <div className='flex flex-col gap-1'>
-                                    <label htmlFor='other-prof' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Please Specify:</label>
-                                    <input type='text' name='other-prof' value={other} required onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your profession' />
+                                    <label htmlFor='Other' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Please Specify:</label>
+                                    <input type='text' name='Other' value={formData['Other']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className='h-[58px] w-[670px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' placeholder='Type in your profession' />
                                 </div>
                                 :
                                 <></>
@@ -249,8 +258,8 @@ const Index = () => {
                                 <div className='text-[#2F2F2F] poppins-semibold text-[30px]'>Create Account</div>
                             </div>
                         </div>
-                        <div className='flex flex-col pl-6 w-[670px] justify-center items-center gap-4' onMouseEnter={() => setIsCreateAccountHovered(true)}>
-                            <button type='submit' className='h-[58px] w-[400px] rounded-[30px] bg-[#669162] hover:scale-105 duration-200 poppins-semibold text-white text-[18px]'>CREATE ACCOUNT</button>
+                        <div className='flex flex-col pl-6 w-[670px] justify-center items-center gap-4' onMouseEnter={() => { setSectionOne(false); setSectionTwo(false); setSectionThree(true); }}>
+                            <button type='submit' className='h-[58px] w-[400px] rounded-[30px] bg-[#669162] hover:scale-105 duration-200 poppins-semibold text-white text-[18px]' onClick={handle_submit}>CREATE ACCOUNT</button>
                             <div className='flex'>
                                 <p className='poppins-semibold text-[#767676] text-[15px] gap-1'>Already have an account? <Link to='/signin/' className='text-[#669162] hover:scale-105 duration-200'>Sign In</Link></p>
                             </div>

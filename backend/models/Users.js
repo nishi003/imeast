@@ -6,10 +6,10 @@ const Users = mongoose.model('Users', {
     first_name: {
         type: String
     },
-    last_name:{
+    last_name: {
         type: String,
     },
-    email:{
+    email: {
         type: String,
         unique: true,
     },
@@ -19,26 +19,29 @@ const Users = mongoose.model('Users', {
     birthDate: {
         type: Date,
     },
+    phoneNumber: {
+        type: Number,
+    },
     google: {
         type: Boolean,
         default: false
     },
-    googleid:{
+    googleid: {
         type: Number,
     },
     pw1: {
         type: String,
-    }, 
+    },
     pw2: {
         type: String,
     },
-    password:{
+    password: {
         type: String,
     },
-    cart:{
+    cart: {
         type: Object
     },
-    modulesBought:{
+    modulesBought: {
         type: Object
     },
     date: {
@@ -51,25 +54,20 @@ const Users = mongoose.model('Users', {
     },
     registeredCollege: {
         type: String,
-        required: false
     },
     lisenceNumber: {
         type: Number,
-        required: false
     },
     practiceLocation: {
         type: String,
-        required: false
     },
     professionType: {
         type: String,
-        required: false
     },
     practicePeriod: {
         type: Number,
-        required: false
     },
-    Other:{
+    Other: {
         type: String
     }
 })

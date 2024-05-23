@@ -33,36 +33,36 @@ app.get("/", (req, res) => {
 
 //Image Storage Engine
 const Imagestorage = multer.diskStorage({
-    destination:'./upload/images',
-    filename:(req,file,cb)=>{
+    destination: './upload/images',
+    filename: (req, file, cb) => {
         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
 })
 
 //PDF Storage Engine
 const PDFstorage = multer.diskStorage({
-    destination:'./upload/pdf',
-    filename:(req,file,cb) =>{
+    destination: './upload/pdf',
+    filename: (req, file, cb) => {
         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
 })
 
 
-const upload = multer({storage:Imagestorage})
-const pdfupload = multer({storage:PDFstorage})
+const upload = multer({ storage: Imagestorage })
+const pdfupload = multer({ storage: PDFstorage })
 
 //Creating Upload Endpoint for images
 app.use("/images", express.static('upload/images'))
-app.post("/upload", upload.single("product"), (req, res) =>{
+app.post("/upload", upload.single("product"), (req, res) => {
     res.json({
-        success:1,
-        image_url:`http://localhost:${port}/images/${req.file.filename}`
+        success: 1,
+        image_url: `http://localhost:${port}/images/${req.file.filename}`
     })
 })
 
 //Upload Endpoint for PDFs
 app.use("/pdf", express.static("upload/pdf"))
-app.post("/pdfupload", pdfupload.single("productlesson"), (req, res) =>{
+app.post("/pdfupload", pdfupload.single("productlesson"), (req, res) => {
     res.json({
         success: 1,
         pdf_url: `http://localhost:${port}/pdf/${req.file.filename}`
@@ -73,16 +73,15 @@ app.post("/pdfupload", pdfupload.single("productlesson"), (req, res) =>{
 //$client = 
 const Product = require('./models/Product');
 
-app.post('/addproduct', async (req,res)=>{
+app.post('/addproduct', async (req, res) => {
     let products = await Product.find({});
     let id;
-    if(products.length>0)
-    {
+    if (products.length > 0) {
         let last_product_array = products.slice(-1)
         let last_product = last_product_array[0]
-        id = last_product.id+1
+        id = last_product.id + 1
     }
-    else{
+    else {
         id = 1
     }
     const product = new Product({
@@ -105,11 +104,11 @@ app.post('/addproduct', async (req,res)=>{
 })
 
 // Creating API for deleting products
-app.post('/removeproduct', async(req, res)=>{
-    const id = await Product.find({id: req.body.id});
-    if (id.length !== 0){
-        await Product.findOneAndDelete({id:req.body.id});
-        console.log("Removed:"+req.body.id);
+app.post('/removeproduct', async (req, res) => {
+    const id = await Product.find({ id: req.body.id });
+    if (id.length !== 0) {
+        await Product.findOneAndDelete({ id: req.body.id });
+        console.log("Removed:" + req.body.id);
         res.json({
             success: true,
             error: "",
@@ -117,7 +116,7 @@ app.post('/removeproduct', async(req, res)=>{
 
         })
     }
-    else{
+    else {
         res.json({
             success: false,
             error: "No id found"
@@ -128,22 +127,22 @@ app.post('/removeproduct', async(req, res)=>{
 //add to cart endpoint
 //req format: {usertoken: "", product id: str}
 //stripe requires so we'll filter through products to get that.[{id: ,name: , priceCents: },...]
-app.post('/addtocart', async(req, res)=>{
+app.post('/addtocart', async (req, res) => {
     let usertoken = req.body.usertoken
     let userid = JSON.parse(atob(usertoken.split('.')[1]));
-    const filter = {_id: userid.user.id};
+    const filter = { _id: userid.user.id };
 
     //getting values from Products
     const productID = req.body.productID;
-    const productDoc = await Product.findOne({id: req.body.productID});
-    const itemFormatted = {id: productID, name: productDoc.name, priceCents: productDoc.new_price * 100};
+    const productDoc = await Product.findOne({ id: req.body.productID });
+    const itemFormatted = { id: productID, name: productDoc.name, priceCents: productDoc.new_price * 100 };
     let userdoc = await Users.findById(filter);
     let temp_cart = Array.from(userdoc.cart);
 
     //get the product ids
     //console.log(temp_cart)
     const idList = [];
-    for (const items of Object.entries(temp_cart)){
+    for (const items of Object.entries(temp_cart)) {
         let item = items[1]["id"]
         //console.log(item)
         idList.push(item)
@@ -155,59 +154,59 @@ app.post('/addtocart', async(req, res)=>{
 
         userdoc.cart = temp_cart;
         await userdoc.save();
-        res.json({success: true})
+        res.json({ success: true })
     }
-    else{
-        res.json({success: false, message: "item already exists"})
+    else {
+        res.json({ success: false, message: "item already exists" })
     }
 
 })
 
 //remove from cart endpoint
 //req format: {usertoken: "", product id: ""}
-app.post('/removefromcart', async(req, res)=>{
+app.post('/removefromcart', async (req, res) => {
     let usertoken = req.body.usertoken
     let userid = JSON.parse(atob(usertoken.split('.')[1]));
-    const filter = {_id: userid.user.id};
+    const filter = { _id: userid.user.id };
 
     //getting values from Products
     const productID = req.body.productID;
-    const productDoc = await Product.findOne({id: req.body.productID});
-    const itemFormatted = {id: productID, name: productDoc.name, priceCents: productDoc.new_price * 100};
+    const productDoc = await Product.findOne({ id: req.body.productID });
+    const itemFormatted = { id: productID, name: productDoc.name, priceCents: productDoc.new_price * 100 };
     let userdoc = await Users.findById(filter);
     let temp_cart = Array.from(userdoc.cart);
 
     //get the product ids
     //console.log(temp_cart)
     const idList = [];
-    for (const items of Object.entries(temp_cart)){
+    for (const items of Object.entries(temp_cart)) {
         let item = items[1]["id"]
         //console.log(item)
         idList.push(item)
     }
     //console.log(idList)
-    
+
 
     if (!idList.includes(productID)) {
-        res.json({success: false, message: "item doesn't exist in cart"})
+        res.json({ success: false, message: "item doesn't exist in cart" })
     }
-    else{
+    else {
         const indexproduct = temp_cart.indexOf(itemFormatted)
         temp_cart.splice(indexproduct, 1);
 
         userdoc.cart = temp_cart;
         await userdoc.save();
-        res.json({sucess: true})
+        res.json({ sucess: true })
     }
 
 })
 
 //update modules bought after payment
 //json req: only the user token 
-app.post('/paymentsuccess', async(req, res)=>{
+app.post('/paymentsuccess', async (req, res) => {
     let usertoken = req.body.usertoken
     let userid = JSON.parse(atob(usertoken.split('.')[1]));
-    const filter = {_id: userid.user.id};
+    const filter = { _id: userid.user.id };
     let userdoc = await Users.findById(filter);
 
     //update modules bought
@@ -222,7 +221,7 @@ app.post('/paymentsuccess', async(req, res)=>{
 
 
 //creating API for getting all prodcuts
-app.get('/allproducts', async(req, res)=>{
+app.get('/allproducts', async (req, res) => {
     let products = await Product.find({})
     console.log("All Products Fetched.")
     res.send(products)
@@ -246,7 +245,7 @@ function isvalidyear(str) {
 app.use('/oauth', authRouter);
 app.use('/request', requestRouter);
 
-app.post('/request', (req, res)=>{
+app.post('/request', (req, res) => {
     const data = res.json();
     return data
 })
@@ -255,47 +254,87 @@ app.post('/request', (req, res)=>{
 const Users = require('./models/Users')
 
 //Creating the endpoint for registering the user
-app.post('/signup', async(req, res)=>{
-    let check = await Users.findOne({email: req.body.email}) //finds if there is already an existing email address.
-    if (check){
-        return res.status(400).json({success: false, errors: "existing user found with the same email address."})
-    }
+app.post('/signup', async (req, res) => {
+    // let check = await Users.findOne({email: req.body.email}) //finds if there is already an existing email address.
+    // if (check){
+    //     return res.status(400).json({success: false, errors: "existing user found with the same email address."})
+    // }
 
     //Required fields (non-admin) validator. essential missing fields
-    let missingFields = []
-    if (typeof req.body.first_name == 'undefined'){
-        missingFields.push("first_name")
+    let isIncomplete = false;
+    let missingFields = [];
+
+    if (!req.body.first_name) {
+        missingFields.push("first_name");
+        isIncomplete = true;
     }
-    if (typeof req.body.last_name == 'undefined'){
-        missingFields.push("last_name")
+    if (!req.body.last_name) {
+        missingFields.push("last_name");
+        isIncomplete = true;
     }
-    if (typeof req.body.email == 'undefined'){
-        missingFields.push("email")
+    if (!req.body.sex) {
+        missingFields.push("sex");
+        isIncomplete = true;
     }
-    if (typeof req.body.pw1 == 'undefined' && !req.body.google){
-        missingFields.push("pw1")
+    if (!req.body.birthDate) {
+        missingFields.push("birthDate");
+        isIncomplete = true;
     }
-    if (typeof req.body.pw2 == 'undefined' && !req.body.google){
-        missingFields.push("pw2")
+    if (!req.body.email) {
+        missingFields.push("email");
+        isIncomplete = true;
     }
-    if (typeof req.body.sex == 'undefined'){
-        missingFields.push("sex")
+    if (!req.body.phoneNumber) {
+        missingFields.push("phoneNumber");
+        isIncomplete = true;
     }
-    if (typeof req.body.birthDate == 'undefined'){
-        missingFields.push("birthDate")
+    if ((!req.body.pw1 || req.body.pw1 === '') && !req.body.google) {
+        missingFields.push("pw1");
+        isIncomplete = true;
+    }
+    if ((!req.body.pw2 || req.body.pw2 === '') && !req.body.google) {
+        missingFields.push("pw2");
+        isIncomplete = true;
+    }
+    if (!req.body.registeredCollege) {
+        missingFields.push("registeredCollege");
+        isIncomplete = true;
+    }
+    if (!req.body.lisenceNumber) {
+        missingFields.push("licenseNumber");
+        isIncomplete = true;
+    }
+    if (!req.body.practiceLocation) {
+        missingFields.push("practiceLocation");
+        isIncomplete = true;
+    }
+    if (!req.body.professionType) {
+        missingFields.push("professionType");
+        isIncomplete = true;
+    }
+    if (!req.body.practicePeriod) {
+        missingFields.push("practicePeriod");
+        isIncomplete = true;
     }
 
-    //password validator
-    if (!(req.body.pw1 == req.body.pw2)) {
-        return res.status(400).json({success: false, errors: "password 1 and password 2 don't match", fieldname: missingFields})
-    }
-    else if (req.body.pw1.length < 8){
-        return res.status(400).json({success: false, errors: "password must be at least 8 characters long", fieldname: missingFields})
+    if (req.body.professionType === 'other') {
+        if (!req.body.Other) {
+            missingFields.push("other");
+            isIncomplete = true;
+        }
     }
 
-    //year validator
-    if (!isvalidyear){
-        return res.status(400).json({success: false, errors: "invalid year", fieldname: missingFields})
+    if (!isIncomplete) {
+        if (!(req.body.pw1 == req.body.pw2)) {
+            return res.status(400).json({ success: false, errors: "password 1 and password 2 don't match", fieldname: missingFields })
+        }
+        else if (req.body.pw1.length < 8) {
+            return res.status(400).json({ success: false, errors: "password must be at least 8 characters long", fieldname: missingFields })
+        }
+    }
+
+    if (!isvalidyear) {
+        return res.status(400).json({ success: false, errors: "invalid year", fieldname: missingFields })
     }
 
     //owned objects are just arrays of product ids.
@@ -304,29 +343,10 @@ app.post('/signup', async(req, res)=>{
     //cart is the same thing, arrays of product ids.
     let cart = [];
 
-    //admin check for fields.
-    let isAdmin = req.body.admin
-    if (isAdmin){
-        if (typeof req.body.lisenceNumber == 'undefined'){
-            missingFields.push("lisenceNumber")
-        }
-        if (typeof req.body.registeredCollege == 'undefined'){
-            missingFields.push("registeredCollege")
-        }
-        if (typeof req.body.practiceLocation == 'undefined'){
-            missingFields.push("practiceLocation")
-        }
-        if (typeof req.body.professionType == 'undefined'){
-            missingFields.push("professionType")
-        }
-        if (typeof req.body.practicePeriod == 'undefined'){
-            missingFields.push("practicePeriod")
-        }
+    if (isIncomplete) {
+        return res.status(400).json({ success: false, errors: "missing fields", fieldname: missingFields })
     }
-    if (missingFields.length !== 0){
-        return res.status(400).json({success: false, errors: "missing fields", fieldname: missingFields})
-    }
-    
+
 
     const user = new Users({
         first_name: req.body.first_name,
@@ -354,38 +374,37 @@ app.post('/signup', async(req, res)=>{
     }
 
     const token = jwt.sign(data, 'imEast_tokenEncryptionKey') //may also somehow put this into .env
-    res.json({success:true, token})
+    res.json({ success: true, token })
 
 })
 
-app.post('/login', async (req, res) =>{
-    let user = await Users.findOne({email: req.body.email});
-    if (user){
+app.post('/login', async (req, res) => {
+    let user = await Users.findOne({ email: req.body.email });
+    if (user) {
         const passCompare = req.body.password === user.password;
-        if(passCompare) {
+        if (passCompare) {
             const data = {
-                user:{
-                    id:user.id
+                user: {
+                    id: user.id
                 }
             }
             const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
-            res.json({success: true, token})
+            res.json({ success: true, token })
         }
-        else{
-            res.json({success: false, errors: "Wrong Password"})
+        else {
+            res.json({ success: false, errors: "Wrong Password" })
         }
     }
-    else{
-        res.json({success: false, errors: "Email does not exist"})
+    else {
+        res.json({ success: false, errors: "Email does not exist" })
     }
-} )
+})
 
-app.listen(port, (error)=>{
+app.listen(port, (error) => {
     if (!error) {
-        console.log("Server Running on Port"+port)
+        console.log("Server Running on Port" + port)
     }
-    else
-    {
-        console.log("Error: "+error)
+    else {
+        console.log("Error: " + error)
     }
 })
