@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AdminVideoCard from '../AdminVideoCard';
+import AdminVideoCard from '../AdminAllVideos/AdminVideoCard';
 import AdminAllVideos from '../AdminAllVideos';
 import { UilAngleLeft, UilLinkH, UilEditAlt } from '@iconscout/react-unicons';
 import document from '../../../Assets/Documents/May_2024_Resume.pdf';

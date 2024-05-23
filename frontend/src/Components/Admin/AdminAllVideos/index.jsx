@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import AdminVideoCard from '../AdminVideoCard';
+import AdminVideoCard from './AdminVideoCard';
+import AdminNewVideoCard from './AdminNewVideoCard';
 
 const Index = ({ module, setVideo, video }) => {
     const [videos, setVideos] = useState([]);
 
     return (
         <div className={`h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar ${video !== -1 ? 'items-center mr-[-32px]' : ''}`}>
+            <AdminNewVideoCard module={module} video={video} setVideo={setVideo} />
             <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
             <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />
             <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' module={module} setVideo={setVideo} video={video} />

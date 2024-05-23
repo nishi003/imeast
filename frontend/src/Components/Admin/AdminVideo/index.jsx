@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UilAngleLeft } from '@iconscout/react-unicons';
 import Comments from '../../Comments';
-import AdminVideoCard from '../AdminVideoCard';
 import AdminAllVideos from '../AdminAllVideos';
 
 const Index = ({ module, video, setVideo, comment }) => {
