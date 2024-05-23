@@ -69,48 +69,9 @@ app.post("/pdfupload", pdfupload.single("productlesson"), (req, res) =>{
     })
 })
 
-//Schema for Creating Products
-const Product = mongoose.model("Product", {
-    id:{
-        type: Number,
-        required: true,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    //thumbnail
-    image: {
-        type: String,
-        required: false,
-    },
-    category: {
-        type: String,
-        required: true,
-    },
-    new_price:{
-        type: Number,
-        required: true,
-    },
-    old_price: {
-        type: Number,
-        required: false,
-    },
-    video_embed_link: {
-        type: String,
-        //for now false
-        required: false,
-    },
-    date:{
-        type: Date,
-        default: Date.now,
-    },
-
-})
+//vimeo stuff
+//$client = 
+const Product = require('./models/Product');
 
 app.post('/addproduct', async (req,res)=>{
     let products = await Product.find({});
@@ -291,64 +252,7 @@ app.post('/request', (req, res)=>{
 })
 
 //Schema for User model
-const Users = mongoose.model('Users', {
-    name: {
-        type: String,
-    },
-    email:{
-        type: String,
-        unique: true,
-    },
-    sex: {
-        type: String,
-    },
-    birthDate: {
-        type: Date,
-    },
-    pw1: {
-        type: String,
-    }, 
-    pw2: {
-        type: String,
-    },
-    password:{
-        type: String,
-    },
-    cart:{
-        type: Object
-    },
-    modulesBought:{
-        type: Object
-    },
-    date: {
-        type: Date,
-        default: Date.now,
-    },
-    admin: {
-        type: Boolean,
-        default: false
-    },
-    registeredCollege: {
-        type: String,
-        required: false
-    },
-    lisenceNumber: {
-        type: Number,
-        required: false
-    },
-    practiceLocation: {
-        type: String,
-        required: false
-    },
-    professionType: {
-        type: String,
-        required: false
-    },
-    practicePeriod: {
-        type: Number,
-        required: false
-    }
-})
+const Users = require('./models/Users')
 
 //Creating the endpoint for registering the user
 app.post('/signup', async(req, res)=>{
@@ -362,10 +266,10 @@ app.post('/signup', async(req, res)=>{
     if (typeof req.body.email == 'undefined'){
         missingFields.push("email")
     }
-    if (typeof req.body.pw1 == 'undefined'){
+    if (typeof req.body.pw1 == 'undefined' && !req.body.google){
         missingFields.push("pw1")
     }
-    if (typeof req.body.pw2 == 'undefined'){
+    if (typeof req.body.pw2 == 'undefined' && !req.body.google){
         missingFields.push("pw2")
     }
     if (typeof req.body.sex == 'undefined'){
@@ -432,7 +336,7 @@ app.post('/signup', async(req, res)=>{
         practiceLocation: req.body.practiceLocation,
         professionType: req.body.professionType,
         practicePeriod: req.body.practicePeriod
-    })
+    });
 
     await user.save();
 
