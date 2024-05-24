@@ -348,14 +348,19 @@ app.post('/user/signup/', async (req, res) => {
         other: fieldNames['other'],
     });
 
-    await user.save();
-    const data = {
-        user: {
-            id: user.id
+    try {
+        await user.save();
+        const data = {
+            user: {
+                id: user.id
+            }
         }
+        const token = jwt.sign(data, 'imEast_tokenEncryptionKey'); //may also somehow put this into .env
+        return res.status(200).json({ success: true, token: token });
+    } catch (error) {
+        errors['serverError'] = 'There was an internal server error. Please try again later.';
+        return res.status(400).json({ success: false, errors: errors });
     }
-    const token = jwt.sign(data, 'imEast_tokenEncryptionKey') //may also somehow put this into .env
-    return res.json({ success: true, token: token })
 })
 
 app.post('/login/', async (req, res) => {
@@ -404,8 +409,188 @@ app.post('/login/', async (req, res) => {
         userID: user.id,
         isAdmin: user.isAdmin,
     }
-    return res.json({ success: true, info: info });
+    return res.status(200).json({ success: true, info: info });
 })
+
+const Modules = require('./models/Modules')
+
+app.post('/module/', async (req, res) => {
+    let errors = {};
+    let isIncomplete = false;
+
+    const fieldNames = {
+        'title': '',
+        'duration': '',
+        'description': '',
+        'pdf': '',
+        'image': '',
+        'price': '',
+        'link': '',
+    };
+
+    for (const field in fieldNames) {
+        if (!req.body[field]) {
+            if (field === 'pdf' || field === 'image' || field === 'link') {
+                errors[field] = '';
+                fieldNames[field] = req.body[field].trim();
+            } else {
+                errors[field] = 'This field is required.';
+                isIncomplete = true;
+            }
+        } else {
+            errors[field] = '';
+            fieldNames[field] = req.body[field].trim();
+        }
+    };
+
+    if (isIncomplete) {
+        return res.status(400).json({ success: false, errors: errors });
+    }
+
+    const module = new Modules({
+        title: fieldNames['title'],
+        duration: fieldNames['duration'],
+        description: fieldNames['description'],
+        pdf: fieldNames['pdf'],
+        image: fieldNames['image'],
+        price: fieldNames['price'],
+        link: fieldNames['link'],
+    });
+
+    try {
+        await module.save();
+        return res.status(200).json({ success: true, message: 'Module saved successfully.' });
+    } catch (error) {
+        errors['serverError'] = 'There was an internal server error. Please try again later.';
+        return res.status(400).json({ success: false, errors: errors });
+    }
+})
+
+app.get('/module/', async (req, res) => {
+    try {
+        let modules;
+        if (req.isAdmin) {
+            modules = await Modules.find({}, '-pdf -price -link').lean();
+        } else {
+            modules = await Modules.find({}, '-pdf').lean();
+        }
+        return res.status(200).json({ success: true, modules: modules });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+})
+
+const Purchases = require('./models/Purchases')
+
+app.get('/module/:moduleID/', async (req, res) => {
+    try {
+        const userID = req.body.userID
+        const moduleID = req.params.moduleID;
+        const module = await Modules.findById(moduleID);
+
+        if (!module) {
+            return res.status(404).json({ success: false, error: 'Module does not exist.' });
+        }
+
+        let responseData = {};
+        if (req.isAdmin) {
+            responseData['moduleID'] = module.id;
+            responseData['title'] = module.title;
+            responseData['duration'] = module.duration;
+            responseData['description'] = module.description;
+            responseData['pdf'] = module.pdf;
+            responseData['image'] = module.image;
+            responseData['price'] = module.price;
+            responseData['link'] = module.link;
+        } else {
+            const userOwns = await Purchases.findOne({ userID: userID, moduleID: moduleID });
+            if (!userOwns) {
+                return res.status(403).json({ success: false, error: 'You do not have permission to view this module.' });
+            }
+
+            responseData['moduleID'] = module.id;
+            responseData['title'] = module.title;
+            responseData['duration'] = module.duration;
+            responseData['description'] = module.description;
+            responseData['pdf'] = module.pdf;
+            responseData['image'] = module.image;
+        }
+        return res.status(200).json({ success: true, module: responseData });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+})
+
+app.patch('/module/:moduleID/', async (req, res) => {
+    try {
+        if (!req.isAdmin) {
+            return res.status(403).json({ success: false, error: 'Unauthorized.' });
+        }
+
+        const moduleID = req.params.moduleID;
+        const module = await Modules.findById(moduleID);
+
+        if (!module) {
+            return res.status(404).json({ success: false, error: 'Module does not exist.' });
+        }
+
+        let errors = {};
+        let isIncomplete = false;
+
+        const fieldNames = {
+            'title': '',
+            'duration': '',
+            'description': '',
+            'pdf': '',
+            'image': '',
+            'price': '',
+            'link': '',
+        };
+
+        for (const field in fieldNames) {
+            if (!req.body[field]) {
+                if (field === 'pdf' || field === 'image' || field === 'link') {
+                    errors[field] = '';
+                    module[field] = req.body[field].trim();
+                } else {
+                    errors[field] = 'This field is required.';
+                    isIncomplete = true;
+                }
+            } else {
+                errors[field] = '';
+                module.[field] = req.body[field].trim();
+            }
+        };
+
+        if (isIncomplete) {
+            return res.status(400).json({ success: false, errors: errors });
+        }
+
+        await module.save();
+        return res.status(200).json({ success: true, module: module });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.delete('/module/:moduleID/', async (req, res) => {
+    try {
+        if (!req.isAdmin) {
+            return res.status(403).json({ success: false, error: 'You do not have permission to delete this module.' });
+        }
+
+        const moduleID = req.params.moduleID;
+        const deletedModule = await Modules.findByIdAndDelete(moduleID);
+
+        if (!deletedModule) {
+            return res.status(404).json({ success: false, error: 'Module does not exist.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Module deleted successfully.' });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+});
 
 app.listen(port, (error) => {
     if (!error) {
