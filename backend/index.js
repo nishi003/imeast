@@ -480,6 +480,55 @@ app.get('/module/', async (req, res) => {
     }
 })
 
+const Purchases = require('./models/Purchases')
+
+app.get('/module/:moduleID/', async (req, res) => {
+    try {
+        const userID = req.body.userID
+        const moduleID = req.params.moduleID;
+        const module = await Modules.findById(moduleID);
+
+        if (!module) {
+            return res.status(404).json({ success: false, error: 'Module does not exist.' });
+        }
+
+        let return_module = {};
+        if (req.isAdmin) {
+            return_module['moduleID'] = module.id;
+            return_module['title'] = module.title;
+            return_module['duration'] = module.duration;
+            return_module['description'] = module.description;
+            return_module['pdf'] = module.pdf;
+            return_module['image'] = module.image;
+            return_module['price'] = module.price;
+            return_module['link'] = module.link;
+        } else {
+            const userOwns = await Purchases.findOne({ userID: userID, moduleID: moduleID })
+        }
+
+        let fields;
+        if (req.user && req.user.isAdmin) {
+            // Admin has access to all fields
+            fields = ['moduleID', 'title', 'duration', 'description', 'pdf', 'picture', 'price'];
+        } else {
+            // Non-admin user has limited access
+            fields = ['moduleID', 'title', 'duration', 'description', 'pdf', 'picture'];
+        }
+
+        // Extract selected fields from the module object
+        const responseData = {};
+        fields.forEach(field => {
+            responseData[field] = module[field];
+        });
+
+        // Return the module info as a response
+        return res.status(200).json({ success: true, module: responseData });
+    } catch (error) {
+        // If an error occurs, return an error response
+        return res.status(500).json({ success: false, error: error.message });
+    }
+})
+
 app.listen(port, (error) => {
     if (!error) {
         console.log("Server Running on Port" + port)
