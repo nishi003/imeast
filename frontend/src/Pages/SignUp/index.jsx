@@ -67,7 +67,7 @@ const Index = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/signup/', requestOptions);
+            const response = await fetch('http://localhost:4000/user/signup/', requestOptions);
             if (!response.ok) {
                 const json = await response.json();
                 console.log(json);

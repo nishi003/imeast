@@ -262,7 +262,7 @@ app.post('/request', (req, res) => {
 
 const Users = require('./models/Users')
 
-app.post('/signup', async (req, res) => {
+app.post('user/signup/', async (req, res) => {
     let errors = {};
     let isIncomplete = false;
 
@@ -331,11 +331,11 @@ app.post('/signup', async (req, res) => {
         }
     }
 
-    // const existingUser = await Users.findOne({ email: fieldNames['email'] });
-    // if (existingUser) {
-    //     errors['email'] = 'This email is already registered.';
-    //     isIncomplete = true;
-    // }
+    const existingUser = await Users.findOne({ email: fieldNames['email'] });
+    if (existingUser) {
+        errors['email'] = 'This email is already registered.';
+        isIncomplete = true;
+    }
 
     if (isIncomplete) {
         return res.status(400).json({ success: false, errors: errors });
@@ -346,6 +346,7 @@ app.post('/signup', async (req, res) => {
         firstName: fieldNames['firstName'],
         lastName: fieldNames['lastName'],
         email: fieldNames['email'],
+        phoneNumber: fieldNames['phoneNumber'],
         password: fieldNames['pw1'],
         sex: fieldNames['sex'],
         birthday: fieldNames['birthday'],
@@ -357,17 +358,17 @@ app.post('/signup', async (req, res) => {
         other: fieldNames['other'],
     });
 
-    // await user.save();
+    await user.save();
 
-    // const data = {
-    //     user: {
-    //         id: user.id
-    //     }
-    // }
+    const data = {
+        user: {
+            id: user.id
+        }
+    }
 
-    // const token = jwt.sign(data, 'imEast_tokenEncryptionKey') //may also somehow put this into .env
-    // return res.json({ success: true, token: token })
-    return res.json({ success: true });
+    const token = jwt.sign(data, 'imEast_tokenEncryptionKey') //may also somehow put this into .env
+    return res.json({ success: true, token: token })
+    // return res.json({ success: true });
 })
 
 app.post('/login', async (req, res) => {
