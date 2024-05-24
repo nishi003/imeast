@@ -48,10 +48,21 @@ const Index = () => {
                     setErrors(serverErrors);
                 }
             } else {
-                const info = json.info;
-                localStorage.setItem('access', info.access);
-                localStorage.setItem('userID', info.userID);
-                localStorage.setItem('isAdmin', info.isAdmin);
+                localStorage.setItem('access', json.access);
+                const decrypt = await access_or_login('/currentuser/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ access: json.access })
+                }, navigate);
+                const decrypt_json = await decrypt.json();
+                if (!decrypt.ok) {
+                    const decrypt_serverErrors = decrypt_json.errors;
+                    if (decrypt_serverErrors) {
+                        setErrors(decrypt_serverErrors);
+                    }
+                } else {
+                    navigate('/user/profile/');
+                }
             }
         } catch (error) {
             console.error("Error during fetch: ", error);
