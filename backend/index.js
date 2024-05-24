@@ -466,6 +466,20 @@ app.post('/module/', async (req, res) => {
     }
 })
 
+app.get('/module/', async (req, res) => {
+    try {
+        let modules;
+        if (req.isAdmin) {
+            modules = await Modules.find({}, '-pdf -price -link').lean();
+        } else {
+            modules = await Modules.find({}, '-pdf').lean();
+        }
+        return res.status(200).json({ success: true, modules: modules });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+})
+
 app.listen(port, (error) => {
     if (!error) {
         console.log("Server Running on Port" + port)
