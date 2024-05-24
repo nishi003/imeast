@@ -299,10 +299,10 @@ app.post('/user/signup/', async (req, res) => {
         if (!req.body[field]) {
             if (field === 'other') {
                 if (req.body['professionType'] && req.body['professionType'] === 'other') {
-                    errors[field] = 'This field is required.'; // other is only required if the professionType is other
+                    errors[field] = 'This field is required.';
                     isIncomplete = true;
                 } else {
-                    errors['other'] = ''; // the professionType is not other, other is not required
+                    errors['other'] = '';
                 }
             } else {
                 errors[field] = 'This field is required.';
@@ -310,7 +310,11 @@ app.post('/user/signup/', async (req, res) => {
             }
         } else {
             errors[field] = '';
-            fieldNames[field] = req.body[field].trim(); // the field is not empty, trim and store
+            if (typeof req.body[field] === 'string') {
+                fieldNames[field] = req.body[field].trim();
+            } else {
+                fieldNames[field] = req.body[field];
+            }
         }
     };
 
@@ -400,7 +404,11 @@ app.post('/login/', async (req, res) => {
             isIncomplete = true;
         } else {
             errors[field] = '';
-            fieldNames[field] = req.body[field].trim();
+            if (typeof req.body[field] === 'string') {
+                fieldNames[field] = req.body[field].trim();
+            } else {
+                fieldNames[field] = req.body[field];
+            }
         }
     };
 
@@ -432,7 +440,7 @@ app.post('/login/', async (req, res) => {
     return res.status(200).json({ success: true, access: token });
 })
 
-const Modules = require('./models/Modules')
+const Module = require('./models/Module')
 
 app.post('/module/', async (req, res) => {
     let errors = {};
@@ -452,14 +460,22 @@ app.post('/module/', async (req, res) => {
         if (!req.body[field]) {
             if (field === 'pdf' || field === 'image' || field === 'link') {
                 errors[field] = '';
-                fieldNames[field] = req.body[field].trim();
+                if (typeof req.body[field] === 'string') {
+                    fieldNames[field] = req.body[field].trim();
+                } else {
+                    fieldNames[field] = req.body[field];
+                }
             } else {
                 errors[field] = 'This field is required.';
                 isIncomplete = true;
             }
         } else {
             errors[field] = '';
-            fieldNames[field] = req.body[field].trim();
+            if (typeof req.body[field] === 'string') {
+                fieldNames[field] = req.body[field].trim();
+            } else {
+                fieldNames[field] = req.body[field];
+            }
         }
     };
 
@@ -467,7 +483,7 @@ app.post('/module/', async (req, res) => {
         return res.status(400).json({ success: false, errors: errors });
     }
 
-    const module = new Modules({
+    const module = new Module({
         title: fieldNames['title'],
         duration: fieldNames['duration'],
         description: fieldNames['description'],
@@ -490,9 +506,9 @@ app.get('/module/', async (req, res) => {
     try {
         let modules;
         if (req.isAdmin) {
-            modules = await Modules.find({}, '-pdf -price -link').lean();
+            modules = await Module.find({}, '-pdf -price -link').lean();
         } else {
-            modules = await Modules.find({}, '-pdf').lean();
+            modules = await Module.find({}, '-pdf').lean();
         }
         return res.status(200).json({ success: true, modules: modules });
     } catch (error) {
@@ -506,7 +522,7 @@ app.get('/module/:moduleID/', async (req, res) => {
     try {
         const userID = req.body.userID
         const moduleID = req.params.moduleID;
-        const module = await Modules.findById(moduleID);
+        const module = await Module.findById(moduleID);
 
         if (!module) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });
@@ -548,7 +564,7 @@ app.patch('/module/:moduleID/', async (req, res) => {
         }
 
         const moduleID = req.params.moduleID;
-        const module = await Modules.findById(moduleID);
+        const module = await Module.findById(moduleID);
 
         if (!module) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });
@@ -571,14 +587,22 @@ app.patch('/module/:moduleID/', async (req, res) => {
             if (!req.body[field]) {
                 if (field === 'pdf' || field === 'image' || field === 'link') {
                     errors[field] = '';
-                    module[field] = req.body[field].trim();
+                    if (typeof req.body[field] === 'string') {
+                        module[field] = req.body[field].trim();
+                    } else {
+                        module[field] = req.body[field];
+                    }
                 } else {
                     errors[field] = 'This field is required.';
                     isIncomplete = true;
                 }
             } else {
                 errors[field] = '';
-                module[field] = req.body[field].trim();
+                if (typeof req.body[field] === 'string') {
+                    module[field] = req.body[field].trim();
+                } else {
+                    module[field] = req.body[field];
+                }
             }
         };
 
@@ -600,7 +624,7 @@ app.delete('/module/:moduleID/', async (req, res) => {
         }
 
         const moduleID = req.params.moduleID;
-        const deletedModule = await Modules.findByIdAndDelete(moduleID);
+        const deletedModule = await Module.findByIdAndDelete(moduleID);
 
         if (!deletedModule) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });

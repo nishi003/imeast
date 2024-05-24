@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const Modules = mongoose.model('Modules', {
+const Module = mongoose.model('Module', {
     title: {
         type: String,
         required: true,
@@ -33,4 +33,4 @@ const Modules = mongoose.model('Modules', {
     },
 })
 
-module.exports = Modules;
+module.exports = Module;
