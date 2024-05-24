@@ -228,8 +228,6 @@ app.post('/paymentsuccess', async (req, res) => {
     await userdoc.save()
 })
 
-
-
 //creating API for getting all prodcuts
 app.get('/allproducts', async (req, res) => {
     let products = await Product.find({})
@@ -240,16 +238,8 @@ app.get('/allproducts', async (req, res) => {
 //stripe payment
 app.use('/stripepayment', stripeRouter);
 
-
 //comments
 app.use('/comments', Comments);
-
-function isvalidyear(str) {
-    const date = new Date();
-    let curYear = date.getFullYear(); //getting current year
-    var n = Math.floor(Number(str));
-    return n !== Infinity && String(n) === str && n >= 0 && n < curYear;
-}
 
 //Sign in Google
 app.use('/oauth', authRouter);
@@ -262,7 +252,7 @@ app.post('/request', (req, res) => {
 
 const Users = require('./models/Users')
 
-app.post('user/signup/', async (req, res) => {
+app.post('/user/signup/', async (req, res) => {
     let errors = {};
     let isIncomplete = false;
 
@@ -359,38 +349,62 @@ app.post('user/signup/', async (req, res) => {
     });
 
     await user.save();
-
     const data = {
         user: {
             id: user.id
         }
     }
-
     const token = jwt.sign(data, 'imEast_tokenEncryptionKey') //may also somehow put this into .env
     return res.json({ success: true, token: token })
-    // return res.json({ success: true });
 })
 
-app.post('/login', async (req, res) => {
+app.post('/login/', async (req, res) => {
+    let errors = {};
+    let isIncomplete = false;
+
+    const fieldNames = {
+        'email': '',
+        'password': '',
+    };
+
+    for (const field in fieldNames) {
+        if (!req.body[field]) {
+            errors[field] = 'This field is required.';
+            isIncomplete = true;
+        } else {
+            errors[field] = '';
+            fieldNames[field] = req.body[field].trim();
+        }
+    };
+
+    if (isIncomplete) {
+        return res.status(400).json({ success: false, errors: errors });
+    }
+
     let user = await Users.findOne({ email: req.body.email });
-    if (user) {
-        const passCompare = req.body.password === user.password;
-        if (passCompare) {
-            const data = {
-                user: {
-                    id: user.id
-                }
-            }
-            const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
-            res.json({ success: true, token })
-        }
-        else {
-            res.json({ success: false, errors: "Wrong Password" })
-        }
+    if (!user) {
+        errors['valid'] = 'This email is not registered with imEast.';
+        return res.status(400).json({ success: false, errors: errors });
     }
-    else {
-        res.json({ success: false, errors: "Email does not exist" })
+
+    if (user.password !== fieldNames['password']) {
+        errors['valid'] = 'Email and password combination do not match our records.';
+        return res.status(400).json({ success: false, errors: errors });
     }
+
+    const data = {
+        user: {
+            id: user.id
+        }
+    };
+
+    const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
+    const info = {
+        access: token,
+        userID: user.id,
+        isAdmin: user.isAdmin,
+    }
+    return res.json({ success: true, info: info });
 })
 
 app.listen(port, (error) => {

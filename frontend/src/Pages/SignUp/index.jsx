@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import logo from '../../Assets/logo-green-sm.png';
 
 import { useState } from 'react';
@@ -12,8 +12,6 @@ const Index = () => {
     const [sectionOne, setSectionOne] = useState(false);
     const [sectionTwo, setSectionTwo] = useState(false);
     const [sectionThree, setSectionThree] = useState(false);
-
-    const [success, setSuccess] = useState(false);
 
     const [errors, setErrors] = useState({
         firstName: "",
@@ -53,10 +51,9 @@ const Index = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         setErrors({ ...errors, [name]: '' });
-        setSuccess(false);
     };
 
-    async function handle_submit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
         const requestOptions = {
             method: 'POST',
@@ -70,30 +67,17 @@ const Index = () => {
             const response = await fetch('http://localhost:4000/user/signup/', requestOptions);
             if (!response.ok) {
                 const json = await response.json();
-                console.log(json);
                 const serverErrors = json.errors;
                 if (serverErrors) {
                     setErrors(serverErrors);
                 }
             } else {
-                setSuccess(true);
-                // navigate("/login/");
+                navigate("/signin/");
             }
         } catch (error) {
             console.error("Error during fetch: ", error);
         };
     }
-
-    useEffect(() => {
-        setSuccess(false);
-    }, [navigate])
-
-    useEffect(() => {
-        console.log(errors);
-        if (success) {
-            console.log("success!");
-        }
-    }, [success]);
 
     return (
         <main className='p-36 bg-[#91C28D99]'>
@@ -260,8 +244,8 @@ const Index = () => {
                                 <div className='text-[#2F2F2F] poppins-semibold text-[30px]'>Create Account</div>
                             </div>
                         </div>
-                        <div className='flex flex-col pl-6 w-[670px] justify-center items-center gap-4' onMouseEnter={() => { setSectionOne(false); setSectionTwo(false); setSectionThree(true); }}>
-                            <button type='submit' className='h-[58px] w-[400px] rounded-[30px] bg-[#669162] hover:scale-105 duration-200 poppins-semibold text-white text-[18px]' onClick={handle_submit}>CREATE ACCOUNT</button>
+                        <div className='flex flex-col pl-5 w-[670px] justify-center items-center gap-4' onMouseEnter={() => { setSectionOne(false); setSectionTwo(false); setSectionThree(true); }}>
+                            <button type='submit' className='h-[58px] w-[400px] rounded-[30px] bg-[#669162] hover:scale-105 duration-200 poppins-semibold text-white text-[18px]' onClick={handleSubmit}>CREATE ACCOUNT</button>
                             <div className='flex'>
                                 <p className='poppins-semibold text-[#767676] text-[15px] gap-1'>Already have an account? <Link to='/signin/' className='text-[#669162] hover:scale-105 duration-200'>Sign In</Link></p>
                             </div>

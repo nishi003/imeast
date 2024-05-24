@@ -10,11 +10,11 @@ const Users = mongoose.model('Users', {
     },
     firstName: {
         type: String,
-        required: true,
+        required: false,
     },
     lastName: {
         type: String,
-        required: true,
+        required: false,
     },
     email: {
         type: String,
@@ -23,15 +23,15 @@ const Users = mongoose.model('Users', {
     },
     sex: {
         type: String,
-        required: true,
+        required: false,
     },
     birthday: {
         type: Date,
-        required: true,
+        required: false,
     },
     phoneNumber: {
         type: Number,
-        required: true,
+        required: false,
     },
     password: {
         type: String,
@@ -40,27 +40,27 @@ const Users = mongoose.model('Users', {
     date: {
         type: Date,
         default: Date.now,
-        required: true,
+        required: false,
     },
     registeredCollege: {
         type: String,
-        required: true,
+        required: false,
     },
     licenseNumber: {
         type: String,
-        required: true,
+        required: false,
     },
     practiceLocation: {
         type: String,
-        required: true,
+        required: false,
     },
     professionType: {
         type: String,
-        required: true,
+        required: false,
     },
     practicePeriod: {
         type: String,
-        required: true,
+        required: false,
     },
     other: {
         type: String,
