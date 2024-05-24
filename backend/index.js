@@ -558,7 +558,7 @@ app.patch('/module/:moduleID/', async (req, res) => {
                 }
             } else {
                 errors[field] = '';
-                module.[field] = req.body[field].trim();
+                module[field] = req.body[field].trim();
             }
         };
 
