@@ -264,9 +264,7 @@ function decodeJwt(token) {
 
 app.post('/currentuser/', async (req, res) => {
     const token = req.body.access;
-    console.log('Token ' + req.body.access);
-    console.log('Decrypted ' + parseJwt(token));
-    const user = User.findById(parseJwt(token));
+    const user = await User.findById(decodeJwt(token).user.id);
 
     const info = {
         userID: user.id,
@@ -430,11 +428,8 @@ app.post('/login/', async (req, res) => {
     };
 
     const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
-    const info = {
-        access: token,
-        userID: user.id,
-    }
-    return res.status(200).json({ success: true, info: info });
+
+    return res.status(200).json({ success: true, access: token });
 })
 
 const Modules = require('./models/Modules')

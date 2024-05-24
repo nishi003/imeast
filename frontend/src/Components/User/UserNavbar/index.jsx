@@ -24,9 +24,6 @@ const Index = () => {
         } else {
             setMenu('user');
         }
-
-        console.log(location);
-        console.log(menu);
     }, [location.pathname]);
 
     return (
