@@ -382,7 +382,6 @@ app.post('/login/', async (req, res) => {
     }
 
     let user = await Users.findOne({ email: req.body.email });
-
     if (!user) {
         errors['valid'] = 'This email is not registered with imEast.';
         return res.status(400).json({ success: false, errors: errors });
@@ -400,13 +399,11 @@ app.post('/login/', async (req, res) => {
     };
 
     const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
-
     const info = {
+        access: token,
         userID: user.id,
         isAdmin: user.isAdmin,
-        access: token,
-    };
-
+    }
     return res.json({ success: true, info: info });
 })
 

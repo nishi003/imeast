@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import logo from '../../Assets/logo-large.png';
 import logo_lg from '../../Assets/logo-xl.png';
 import FieldError from '../../Components/FieldError';
+import { access, access_or_login } from '../../Util/access';
+import { UserContext } from '../../Contexts/UserContext';
 
 import './style.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Index = () => {
+    const navigate = useNavigate();
+    const { setID } = useContext(UserContext);
+
     const [errors, setErrors] = useState({
         email: '',
         password: '',
@@ -35,19 +40,21 @@ const Index = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/login/', requestOptions);
+            const response = await access('/login/', requestOptions);
+            const json = await response.json();
             if (!response.ok) {
-                const json = await response.json();
                 const serverErrors = json.errors;
                 if (serverErrors) {
                     setErrors(serverErrors);
                 }
             } else {
-                const json = await response.json();
-                const serverInfo = json.info;
-                localStorage.setItem('access', serverInfo.access);
-                localStorage.setItem('userID', serverInfo.userID);
-                localStorage.setItem('isAdmin', serverInfo.isAdmin);
+                const info = json.info;
+                localStorage.setItem('access', info.access);
+                localStorage.setItem('userID', info.userID);
+                localStorage.setItem('isAdmin', info.isAdmin);
+                console.log(localStorage.getItem('access'));
+                console.log(localStorage.getItem('userID'));
+                console.log(localStorage.getItem('isAdmin'));
             }
         } catch (error) {
             console.error("Error during fetch: ", error);
