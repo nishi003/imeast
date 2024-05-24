@@ -262,7 +262,7 @@ app.post('/request', (req, res) => {
 
 const Users = require('./models/Users')
 
-app.post('user/signup/', async (req, res) => {
+app.post('/user/signup/', async (req, res) => {
     let errors = {};
     let isIncomplete = false;
 
