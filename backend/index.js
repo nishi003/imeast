@@ -506,9 +506,9 @@ app.get('/module/', async (req, res) => {
     try {
         let modules;
         if (req.isAdmin) {
-            modules = await Module.find({}, '-pdf -price -link').lean();
+            modules = await Module.find({}, '_id title duration description image').lean();
         } else {
-            modules = await Module.find({}, '-pdf').lean();
+            modules = await Module.find({}, '_id title duration description image price link').lean();
         }
         return res.status(200).json({ success: true, modules: modules });
     } catch (error) {
