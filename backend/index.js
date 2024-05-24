@@ -573,6 +573,25 @@ app.patch('/module/:moduleID/', async (req, res) => {
     }
 });
 
+app.delete('/module/:moduleID/', async (req, res) => {
+    try {
+        if (!req.isAdmin) {
+            return res.status(403).json({ success: false, error: 'You do not have permission to delete this module.' });
+        }
+
+        const moduleID = req.params.moduleID;
+        const deletedModule = await Modules.findByIdAndDelete(moduleID);
+
+        if (!deletedModule) {
+            return res.status(404).json({ success: false, error: 'Module does not exist.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Module deleted successfully.' });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 app.listen(port, (error) => {
     if (!error) {
         console.log("Server Running on Port" + port)
