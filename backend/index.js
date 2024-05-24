@@ -253,116 +253,99 @@ app.post('/request', (req, res) => {
 //Schema for User model
 const Users = require('./models/Users')
 
-//Creating the endpoint for registering the user
 app.post('/signup', async (req, res) => {
-    // let check = await Users.findOne({email: req.body.email}) //finds if there is already an existing email address.
-    // if (check){
-    //     return res.status(400).json({success: false, errors: "existing user found with the same email address."})
-    // }
-
-    //Required fields (non-admin) validator. essential missing fields
+    let errors = {};
     let isIncomplete = false;
-    let missingFields = [];
 
-    if (!req.body.first_name) {
-        missingFields.push("first_name");
-        isIncomplete = true;
-    }
-    if (!req.body.last_name) {
-        missingFields.push("last_name");
-        isIncomplete = true;
-    }
-    if (!req.body.sex) {
-        missingFields.push("sex");
-        isIncomplete = true;
-    }
-    if (!req.body.birthDate) {
-        missingFields.push("birthDate");
-        isIncomplete = true;
-    }
-    if (!req.body.email) {
-        missingFields.push("email");
-        isIncomplete = true;
-    }
-    if (!req.body.phoneNumber) {
-        missingFields.push("phoneNumber");
-        isIncomplete = true;
-    }
-    if ((!req.body.pw1 || req.body.pw1 === '') && !req.body.google) {
-        missingFields.push("pw1");
-        isIncomplete = true;
-    }
-    if ((!req.body.pw2 || req.body.pw2 === '') && !req.body.google) {
-        missingFields.push("pw2");
-        isIncomplete = true;
-    }
-    if (!req.body.registeredCollege) {
-        missingFields.push("registeredCollege");
-        isIncomplete = true;
-    }
-    if (!req.body.lisenceNumber) {
-        missingFields.push("licenseNumber");
-        isIncomplete = true;
-    }
-    if (!req.body.practiceLocation) {
-        missingFields.push("practiceLocation");
-        isIncomplete = true;
-    }
-    if (!req.body.professionType) {
-        missingFields.push("professionType");
-        isIncomplete = true;
-    }
-    if (!req.body.practicePeriod) {
-        missingFields.push("practicePeriod");
-        isIncomplete = true;
-    }
+    const fieldNames = {
+        'firstName': '',
+        'lastName': '',
+        'sex': '',
+        'birthday': '',
+        'email': '',
+        'phoneNumber': '',
+        'pw1': '',
+        'pw2': '',
+        'registeredCollege': '',
+        'licenseNumber': '',
+        'practiceLocation': '',
+        'professionType': '',
+        'practicePeriod': '',
+        'other': '',
+    };
 
-    if (req.body.professionType === 'other') {
-        if (!req.body.Other) {
-            missingFields.push("other");
+    for (const field in fieldNames) {
+        if (!req.body[field]) {
+            if (field === 'other') {
+                if (req.body['professionType'] && req.body['professionType'] === 'other') {
+                    errors[field] = 'This field is required.'; // other is only required if the professionType is other
+                    isIncomplete = true;
+                } else {
+                    errors['other'] = ''; // the professionType is not other, other is not required
+                }
+            } else {
+                errors[field] = 'This field is required.';
+                isIncomplete = true;
+            }
+        } else {
+            errors[field] = '';
+            fieldNames[field] = req.body[field].trim(); // the field is not empty, trim and store
+        }
+    };
+
+    if (fieldNames['pw1'] !== '' && fieldNames['pw1'] !== '') {
+        if (fieldNames['pw1'] !== fieldNames['pw2']) {
+            errors["pw2"] = "The passwords you entered do not match.";
+            isIncomplete = true;
+        }
+        if (fieldNames['pw1'].length < 8) {
+            errors["pw1"] = "The password must be at least 8 characters long.";
             isIncomplete = true;
         }
     }
 
-    if (!isIncomplete) {
-        if (!(req.body.pw1 == req.body.pw2)) {
-            return res.status(400).json({ success: false, errors: "password 1 and password 2 don't match", fieldname: missingFields })
+    if (fieldNames['birthday']) {
+        const today = new Date();
+        const birthday = new Date(req.body.birthday);
+
+        let age = today.getFullYear() - birthday.getFullYear();
+        const birthMonth = birthday.getMonth();
+        const todayMonth = today.getMonth();
+
+        if (todayMonth < birthMonth || (todayMonth === birthMonth && today.getDate() < birthday.getDate())) {
+            age--;
         }
-        else if (req.body.pw1.length < 8) {
-            return res.status(400).json({ success: false, errors: "password must be at least 8 characters long", fieldname: missingFields })
+
+        if (age < 18) {
+            errors["birthday"] = "You must be at least 18 years old.";
+            isIncomplete = true;
         }
     }
 
-    if (!isvalidyear) {
-        return res.status(400).json({ success: false, errors: "invalid year", fieldname: missingFields })
-    }
-
-    //owned objects are just arrays of product ids.
-    let owned = [];
-
-    //cart is the same thing, arrays of product ids.
-    let cart = [];
+    // const existingUser = await Users.findOne({ email: fieldNames['email'] });
+    // if (existingUser) {
+    //     errors['email'] = 'This email is already registered.';
+    //     isIncomplete = true;
+    // }
 
     if (isIncomplete) {
-        return res.status(400).json({ success: false, errors: "missing fields", fieldname: missingFields })
+        return res.status(400).json({ success: false, errors: errors });
     }
 
-
     const user = new Users({
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        password: req.body.pw1,
-        sex: req.body.sex,
-        birthDate: req.body.birthDate,
-        modulesBought: owned,
-        cart: cart,
-        admin: req.body.admin,
-        registeredCollege: req.body.registeredCollege,
-        lisenceNumber: req.body.lisenceNumber,
-        practiceLocation: req.body.practiceLocation,
-        professionType: req.body.professionType,
-        practicePeriod: req.body.practicePeriod
+        isAdmin: false,
+        firstName: fieldNames['firstName'],
+        lastName: fieldNames['lastName'],
+        email: fieldNames['email'],
+        password: fieldNames['pw1'],
+        sex: fieldNames['sex'],
+        birthday: fieldNames['birthday'],
+        registeredCollege: fieldNames['registeredCollege'],
+        licenseNumber: fieldNames['licenseNumber'],
+        practiceLocation: fieldNames['practiceLocation'],
+        professionType: fieldNames['professionType'],
+        practicePeriod: fieldNames['practicePeriod'],
+        other: fieldNames['other'],
     });
 
     await user.save();
@@ -374,8 +357,8 @@ app.post('/signup', async (req, res) => {
     }
 
     const token = jwt.sign(data, 'imEast_tokenEncryptionKey') //may also somehow put this into .env
-    res.json({ success: true, token })
-
+    return res.json({ success: true, token: token })
+    // return res.json({success: true});
 })
 
 app.post('/login', async (req, res) => {

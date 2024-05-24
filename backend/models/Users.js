@@ -3,72 +3,68 @@
 const mongoose = require('mongoose');
 
 const Users = mongoose.model('Users', {
-    first_name: {
-        type: String
+    isAdmin: {
+        type: Boolean,
+        default: false,
+        required: true,
     },
-    last_name: {
+    firstName: {
         type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
     },
     email: {
         type: String,
         unique: true,
+        required: true,
     },
     sex: {
         type: String,
+        required: true,
     },
-    birthDate: {
+    birthday: {
         type: Date,
+        required: true,
     },
     phoneNumber: {
         type: Number,
-    },
-    google: {
-        type: Boolean,
-        default: false
-    },
-    googleid: {
-        type: Number,
-    },
-    pw1: {
-        type: String,
-    },
-    pw2: {
-        type: String,
+        required: true,
     },
     password: {
         type: String,
-    },
-    cart: {
-        type: Object
-    },
-    modulesBought: {
-        type: Object
+        required: true,
     },
     date: {
         type: Date,
         default: Date.now,
-    },
-    admin: {
-        type: Boolean,
-        default: false
+        required: true,
     },
     registeredCollege: {
         type: String,
+        required: true,
     },
-    lisenceNumber: {
-        type: Number,
+    licenseNumber: {
+        type: String,
+        required: true,
     },
     practiceLocation: {
         type: String,
+        required: true,
     },
     professionType: {
         type: String,
+        required: true,
     },
     practicePeriod: {
-        type: Number,
+        type: String,
+        required: true,
     },
-    Other: {
-        type: String
+    other: {
+        type: String,
+        required: false,
     }
 })
 
