@@ -47,7 +47,7 @@ const Index = () => {
                             <Link to='' className='poppins-semibold text-sm text-[#669162]'>Forgot Password?</Link>
                         </div>
                         <div className='flex justify-center items-center'>
-                            <button className='w-[500px] h-[60px] rounded-[30px] bg-[#669162] text-white poppins-semibold text-lg hover:scale-105 duration-200 mt-6'>SIGN UP</button>
+                            <button className='w-[500px] h-[60px] rounded-[30px] bg-[#669162] text-white poppins-semibold text-lg hover:scale-105 duration-200 mt-6'>SIGN IN</button>
                         </div>
                         <div className='flex justify-center items-center'>
                             <p className='poppins-semibold text-[#767676] text-[15px] gap-1 mt-16'>Don't have an account? <Link to='/signup/' className='text-[#669162] hover:scale-105 duration-200'>Sign Up</Link></p>

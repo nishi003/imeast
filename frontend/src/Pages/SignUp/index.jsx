@@ -52,6 +52,8 @@ const Index = () => {
     const handleInputChangeForm = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: '' });
+        setSuccess(false);
     };
 
     async function handle_submit(event) {
@@ -65,7 +67,7 @@ const Index = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/signup/', requestOptions);
+            const response = await fetch('http://localhost:4000/user/signup/', requestOptions);
             if (!response.ok) {
                 const json = await response.json();
                 console.log(json);
@@ -74,7 +76,8 @@ const Index = () => {
                     setErrors(serverErrors);
                 }
             } else {
-                navigate("/login/");
+                setSuccess(true);
+                // navigate("/login/");
             }
         } catch (error) {
             console.error("Error during fetch: ", error);
@@ -82,11 +85,15 @@ const Index = () => {
     }
 
     useEffect(() => {
+        setSuccess(false);
+    }, [navigate])
+
+    useEffect(() => {
         console.log(errors);
         if (success) {
             console.log("success!");
         }
-    }, [errors, success]);
+    }, [success]);
 
     return (
         <main className='p-36 bg-[#91C28D99]'>
