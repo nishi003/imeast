@@ -146,7 +146,7 @@ app.post('/addtocart', async (req, res) => {
     const productID = req.body.productID;
     const productDoc = await Product.findOne({ id: req.body.productID });
     const itemFormatted = { id: productID, name: productDoc.name, priceCents: productDoc.new_price * 100 };
-    let userdoc = await Users.findById(filter);
+    let userdoc = await User.findById(filter);
     let temp_cart = Array.from(userdoc.cart);
 
     //get the product ids
@@ -183,7 +183,7 @@ app.post('/removefromcart', async (req, res) => {
     const productID = req.body.productID;
     const productDoc = await Product.findOne({ id: req.body.productID });
     const itemFormatted = { id: productID, name: productDoc.name, priceCents: productDoc.new_price * 100 };
-    let userdoc = await Users.findById(filter);
+    let userdoc = await User.findById(filter);
     let temp_cart = Array.from(userdoc.cart);
 
     //get the product ids
@@ -217,7 +217,7 @@ app.post('/paymentsuccess', async (req, res) => {
     let usertoken = req.body.usertoken
     let userid = JSON.parse(atob(usertoken.split('.')[1]));
     const filter = { _id: userid.user.id };
-    let userdoc = await Users.findById(filter);
+    let userdoc = await User.findById(filter);
 
     //update modules bought
     userdoc.modulesBought = Array.from(userdoc.cart);
@@ -250,7 +250,31 @@ app.post('/request', (req, res) => {
     return data
 })
 
-const Users = require('./models/Users')
+const User = require('./models/User')
+
+function decodeJwt(token) {
+    try {
+        const decoded = jwt.verify(token, 'imEast_tokenEncryptionKey');
+        return decoded;
+    } catch (error) {
+        console.error('Error decoding JWT:', error.message);
+        return null;
+    }
+}
+
+app.post('/currentuser/', async (req, res) => {
+    const token = req.body.access;
+    console.log('Token ' + req.body.access);
+    console.log('Decrypted ' + parseJwt(token));
+    const user = User.findById(parseJwt(token));
+
+    const info = {
+        userID: user.id,
+        isAdmin: user.isAdmin,
+    };
+
+    return res.status(200).json({ success: true, info: info });
+})
 
 app.post('/user/signup/', async (req, res) => {
     let errors = {};
@@ -321,7 +345,7 @@ app.post('/user/signup/', async (req, res) => {
         }
     }
 
-    const existingUser = await Users.findOne({ email: fieldNames['email'] });
+    const existingUser = await User.findOne({ email: fieldNames['email'] });
     if (existingUser) {
         errors['email'] = 'This email is already registered.';
         isIncomplete = true;
@@ -331,7 +355,7 @@ app.post('/user/signup/', async (req, res) => {
         return res.status(400).json({ success: false, errors: errors });
     }
 
-    const user = new Users({
+    const user = new User({
         isAdmin: false,
         firstName: fieldNames['firstName'],
         lastName: fieldNames['lastName'],
@@ -386,13 +410,15 @@ app.post('/login/', async (req, res) => {
         return res.status(400).json({ success: false, errors: errors });
     }
 
-    let user = await Users.findOne({ email: req.body.email });
+    let user = await User.findOne({ email: req.body.email });
     if (!user) {
         errors['valid'] = 'This email is not registered with imEast.';
         return res.status(400).json({ success: false, errors: errors });
     }
 
-    if (user.password !== fieldNames['password']) {
+    const correctPassword = user.comparePassword(fieldNames['password']);
+
+    if (!correctPassword) {
         errors['valid'] = 'Email and password combination do not match our records.';
         return res.status(400).json({ success: false, errors: errors });
     }
@@ -407,7 +433,6 @@ app.post('/login/', async (req, res) => {
     const info = {
         access: token,
         userID: user.id,
-        isAdmin: user.isAdmin,
     }
     return res.status(200).json({ success: true, info: info });
 })

@@ -49,9 +49,30 @@ const Index = () => {
                 }
             } else {
                 const info = json.info;
-                localStorage.setItem('access', info.access);
-                localStorage.setItem('userID', info.userID);
-                localStorage.setItem('isAdmin', info.isAdmin);
+                const data = { access: info.access }
+                console.log('Encrypted: ' + info.access);
+                console.log('Encrypted: ' + info.userID);
+                // localStorage.setItem('access', info.access);
+                const requestOptions1 = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                };
+                const decrypt = await access('/currentuser/', requestOptions1);
+                const decrypt_json = await decrypt.json();
+                if (!decrypt.ok) {
+                    const decrypt_serverErrors = decrypt_json.errors;
+                    if (decrypt_serverErrors) {
+                        setErrors(decrypt_serverErrors);
+                    }
+                } else {
+                    const decrypted_info = decrypt_json.info;
+                    // localStorage.setItem('userID', info.userID);
+                    console.log('Decrypted: ' + decrypted_info.userID);
+                    console.log('Decrypted: ' + decrypted_info.isAdmin);
+                }
             }
         } catch (error) {
             console.error("Error during fetch: ", error);
