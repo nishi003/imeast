@@ -33,4 +33,4 @@ const Modules = mongoose.model('Modules', {
     },
 })
 
-module.exports = Module;
+module.exports = Modules;

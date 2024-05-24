@@ -348,14 +348,19 @@ app.post('/user/signup/', async (req, res) => {
         other: fieldNames['other'],
     });
 
-    await user.save();
-    const data = {
-        user: {
-            id: user.id
+    try {
+        await user.save();
+        const data = {
+            user: {
+                id: user.id
+            }
         }
+        const token = jwt.sign(data, 'imEast_tokenEncryptionKey'); //may also somehow put this into .env
+        return res.status(200).json({ success: true, token: token });
+    } catch (error) {
+        errors['serverError'] = 'There was an internal server error. Please try again later.';
+        return res.status(400).json({ success: false, errors: errors });
     }
-    const token = jwt.sign(data, 'imEast_tokenEncryptionKey') //may also somehow put this into .env
-    return res.json({ success: true, token: token })
 })
 
 app.post('/login/', async (req, res) => {
@@ -404,7 +409,61 @@ app.post('/login/', async (req, res) => {
         userID: user.id,
         isAdmin: user.isAdmin,
     }
-    return res.json({ success: true, info: info });
+    return res.status(200).json({ success: true, info: info });
+})
+
+const Modules = require('./models/Modules')
+
+app.post('/module/', async (req, res) => {
+    let errors = {};
+    let isIncomplete = false;
+
+    const fieldNames = {
+        'title': '',
+        'duration': '',
+        'description': '',
+        'pdf': '',
+        'image': '',
+        'price': '',
+        'link': '',
+    };
+
+    for (const field in fieldNames) {
+        if (!req.body[field]) {
+            if (field === 'pdf' || field === 'image' || field === 'link') {
+                errors[field] = '';
+                fieldNames[field] = req.body[field].trim();
+            } else {
+                errors[field] = 'This field is required.';
+                isIncomplete = true;
+            }
+        } else {
+            errors[field] = '';
+            fieldNames[field] = req.body[field].trim();
+        }
+    };
+
+    if (isIncomplete) {
+        return res.status(400).json({ success: false, errors: errors });
+    }
+
+    const module = new Modules({
+        title: fieldNames['title'],
+        duration: fieldNames['duration'],
+        description: fieldNames['description'],
+        pdf: fieldNames['pdf'],
+        image: fieldNames['image'],
+        price: fieldNames['price'],
+        link: fieldNames['link'],
+    });
+
+    try {
+        await module.save();
+        return res.status(200).json({ success: true, message: 'Module saved successfully.' });
+    } catch (error) {
+        errors['serverError'] = 'There was an internal server error. Please try again later.';
+        return res.status(400).json({ success: false, errors: errors });
+    }
 })
 
 app.listen(port, (error) => {
