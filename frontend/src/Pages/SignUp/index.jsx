@@ -123,12 +123,12 @@ const Index = () => {
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='firstName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
                                     <input type='text' name='firstName' value={formData['firstName']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[326px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["firstName"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Fill in your first name' />
-                                    <FieldError fielderror={errors?.firstName}/>
+                                    <FieldError fielderror={errors?.firstName} />
                                 </div>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='lastName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>
                                     <input type='text' name='lastName' value={formData['lastName']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[326px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["lastName"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Fill in your last name' />
-                                    <FieldError fielderror={errors?.lastName}/>
+                                    <FieldError fielderror={errors?.lastName} />
                                 </div>
                             </div>
                             <div className='flex flex-row gap-5'>
@@ -141,33 +141,33 @@ const Index = () => {
                                         <option value="other" className="text-[15px]">Other</option>
                                         <option value="none" className="text-[15px]">Prefer not to specify</option>
                                     </select>
-                                    <FieldError fielderror={errors?.sex}/>
+                                    <FieldError fielderror={errors?.sex} />
                                 </div>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='birthday' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
                                     <input type='date' name='birthday' value={formData['birthday']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[326px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676 ${errors["birthday"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} />
-                                    <FieldError fielderror={errors?.birthday}/>
+                                    <FieldError fielderror={errors?.birthday} />
                                 </div>
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Email</label>
                                 <input type='email' name='email' value={formData['email']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676]' ${errors["email"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Type in your email here' />
-                                <FieldError fielderror={errors?.email}/>
+                                <FieldError fielderror={errors?.email} />
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='phoneNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Phone Number</label>
                                 <input type='text' name='phoneNumber' value={formData['phoneNumber']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["phoneNumber"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'} `} placeholder='Type in your phone number here' />
-                                <FieldError fielderror={errors?.phoneNumber}/>
+                                <FieldError fielderror={errors?.phoneNumber} />
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='pw1' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Create Password</label>
                                 <input type='password' name='pw1' value={formData['pw1']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["pw1"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='●●●●●●●●' />
-                                <FieldError fielderror={errors?.pw1}/>
+                                <FieldError fielderror={errors?.pw1} />
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='pw2' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Confirm Password</label>
                                 <input type='password' name='pw2' value={formData['pw2']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["pw2"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='●●●●●●●●' />
-                                <FieldError fielderror={errors?.pw2}/>
+                                <FieldError fielderror={errors?.pw2} />
                             </div>
                         </div>
                     </div>
@@ -196,12 +196,12 @@ const Index = () => {
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='licenseNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>License Number</label>
                                 <input type='text' name='licenseNumber' value={formData['licenseNumber']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["licenseNumber"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Type in your license number' />
-                                <FieldError fielderror={errors?.licenseNumber}/>
+                                <FieldError fielderror={errors?.licenseNumber} />
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='practiceLocation' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Location of practice (address)</label>
                                 <input type='text' name='practiceLocation' value={formData['practiceLocation']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["practiceLocation"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Type in your location of practice' />
-                                <FieldError fielderror={errors?.practiceLocation}/>
+                                <FieldError fielderror={errors?.practiceLocation} />
                             </div>
                             <div className='flex flex-row gap-4'>
                                 <div className='flex flex-col gap-1'>
@@ -213,7 +213,7 @@ const Index = () => {
                                         <option value='naturopathicDoctor' className='text-[15px]'>Naturopathic Doctor</option>
                                         <option value='other' className='text-[15px]'>Other</option>
                                     </select>
-                                    <FieldError fielderror={errors?.professionType}/>
+                                    <FieldError fielderror={errors?.professionType} />
                                 </div>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='practicePeriod' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Practicing period</label>
@@ -224,14 +224,14 @@ const Index = () => {
                                         <option value='2-3yr' className='text-[15px]'>2-3 years</option>
                                         <option value='gt3yr' className='text-[15px]'>More than 3 years</option>
                                     </select>
-                                    <FieldError fielderror={errors?.professionType}/>
+                                    <FieldError fielderror={errors?.professionType} />
                                 </div>
                             </div>
                             {formData['professionType'] === 'other' ?
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='other' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Please Specify:</label>
                                     <input type='text' name='other' value={formData['other']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["other"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Type in your profession' />
-                                    <FieldError fielderror={errors?.other}/>
+                                    <FieldError fielderror={errors?.other} />
                                 </div>
                                 :
                                 <></>
