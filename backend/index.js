@@ -523,15 +523,15 @@ app.get('/module/:moduleID/', async (req, res) => {
 
 app.patch('/module/:moduleID/', async (req, res) => {
     try {
+        if (!req.isAdmin) {
+            return res.status(403).json({ success: false, error: 'Unauthorized.' });
+        }
+
         const moduleID = req.params.moduleID;
         const module = await Modules.findById(moduleID);
 
         if (!module) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });
-        }
-
-        if (!req.isAdmin) {
-            return res.status(403).json({ success: false, error: 'Unauthorized.' });
         }
 
         let errors = {};
