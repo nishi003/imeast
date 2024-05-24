@@ -52,9 +52,6 @@ const Index = () => {
                 localStorage.setItem('access', info.access);
                 localStorage.setItem('userID', info.userID);
                 localStorage.setItem('isAdmin', info.isAdmin);
-                console.log(localStorage.getItem('access'));
-                console.log(localStorage.getItem('userID'));
-                console.log(localStorage.getItem('isAdmin'));
             }
         } catch (error) {
             console.error("Error during fetch: ", error);
