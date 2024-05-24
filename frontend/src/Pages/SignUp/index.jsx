@@ -67,7 +67,6 @@ const Index = () => {
             const response = await fetch('http://localhost:4000/user/signup/', requestOptions);
             if (!response.ok) {
                 const json = await response.json();
-                console.log(json);
                 const serverErrors = json.errors;
                 if (serverErrors) {
                     setErrors(serverErrors);
@@ -245,7 +244,7 @@ const Index = () => {
                                 <div className='text-[#2F2F2F] poppins-semibold text-[30px]'>Create Account</div>
                             </div>
                         </div>
-                        <div className='flex flex-col pl-6 w-[670px] justify-center items-center gap-4' onMouseEnter={() => { setSectionOne(false); setSectionTwo(false); setSectionThree(true); }}>
+                        <div className='flex flex-col pl-5 w-[670px] justify-center items-center gap-4' onMouseEnter={() => { setSectionOne(false); setSectionTwo(false); setSectionThree(true); }}>
                             <button type='submit' className='h-[58px] w-[400px] rounded-[30px] bg-[#669162] hover:scale-105 duration-200 poppins-semibold text-white text-[18px]' onClick={handleSubmit}>CREATE ACCOUNT</button>
                             <div className='flex'>
                                 <p className='poppins-semibold text-[#767676] text-[15px] gap-1'>Already have an account? <Link to='/signin/' className='text-[#669162] hover:scale-105 duration-200'>Sign In</Link></p>
