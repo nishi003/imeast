@@ -505,7 +505,7 @@ app.post('/module/', async (req, res) => {
 app.get('/module/', async (req, res) => {
     try {
         let modules;
-        if (req.isAdmin) {
+        if (req.body.isAdmin) {
             modules = await Module.find({}, '_id title duration description image').lean();
         } else {
             modules = await Module.find({}, '_id title duration description image price link').lean();
@@ -529,7 +529,7 @@ app.get('/module/:moduleID/', async (req, res) => {
         }
 
         let responseData = {};
-        if (req.isAdmin) {
+        if (req.body.isAdmin) {
             responseData['moduleID'] = module.id;
             responseData['title'] = module.title;
             responseData['duration'] = module.duration;
@@ -559,7 +559,7 @@ app.get('/module/:moduleID/', async (req, res) => {
 
 app.patch('/module/:moduleID/', async (req, res) => {
     try {
-        if (!req.isAdmin) {
+        if (!req.body.isAdmin) {
             return res.status(403).json({ success: false, error: 'Unauthorized.' });
         }
 
