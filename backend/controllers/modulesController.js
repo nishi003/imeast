@@ -117,7 +117,7 @@ exports.getDetails = async (req, res) => {
     }
 };
 
-exports.patchDetails = '/module/:moduleID/', async (req, res) => {
+exports.patchDetails = async (req, res) => {
     try {
         if (!req.body.isAdmin) {
             return res.status(403).json({ success: false, error: 'Unauthorized.' });
