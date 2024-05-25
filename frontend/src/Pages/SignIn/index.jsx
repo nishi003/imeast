@@ -90,12 +90,12 @@ const Index = () => {
                     <div className='flex flex-col gap-4'>
                         <div className='flex flex-col gap-1'>
                             <label htmlFor='email' className='poppins-semibold text-sm text-[#767676] ml-1'>Email Address:</label>
-                            <input type='email' id='email' name='email' value={formData['email']} onChange={handleInputChangeForm} className={`w-[500px] h-[56px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors['email'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='abcdefg@gmail.com'></input>
+                            <input type='email' id='email' name='email' onChange={handleInputChangeForm} className={`w-[500px] h-[56px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors['email'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='abcdefg@gmail.com'></input>
                             <FieldError fielderror={errors?.email} />
                         </div>
                         <div className='flex flex-col gap-1'>
                             <label htmlFor='password' className='poppins-semibold text-sm text-[#767676] ml-1'>Password:</label>
-                            <input type='password' id='password' name='password' value={formData['password']} onChange={handleInputChangeForm} className={`w-[500px] h-[56px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors['password'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='●●●●●●●●'></input>
+                            <input type='password' id='password' name='password' onChange={handleInputChangeForm} className={`w-[500px] h-[56px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors['password'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='●●●●●●●●'></input>
                             <FieldError fielderror={errors?.password} />
                         </div>
                         {/* <div className='flex w-[500px] justify-between mt-6'>

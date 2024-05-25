@@ -177,23 +177,23 @@ const Index = () => {
                                     <div className='flex flex-col gap-6 p-8 justify-center'>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='image' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Profile Picture</label>
-                                            <input type='file' name='image' value={formData1['image']} onChange={handleInputChangeForm1} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] items-center flex flex-row justify-center' placeholder='Type in your email here' />
+                                            <input type='file' name='image' defaultValue={formData1['image']} onChange={handleInputChangeForm1} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] items-center flex flex-row justify-center' placeholder='Type in your email here' />
                                         </div>
                                         <div className='flex flex-row gap-5'>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='firstName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
-                                                <input type='text' name='firstName' value={formData1['firstName']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
+                                                <input type='text' name='firstName' defaultValue={formData1['firstName']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='lastName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>
-                                                <input type='text' name='lastName' value={formData1['lastName']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your last name' />
+                                                <input type='text' name='lastName' defaultValue={formData1['lastName']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your last name' />
                                             </div>
                                         </div>
                                         <div className='flex flex-row gap-5'>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='sex' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Sex</label>
-                                                <select name="sex" value={formData1['sex']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
-                                                    <option value="" disabled selected hidden>Select sex</option>
+                                                <select name="sex" defaultValue={formData1['sex']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
+                                                    <option value="" disabled hidden>Select sex</option>
                                                     <option value="male" className="text-[15px]">Male</option>
                                                     <option value="female" className="text-[15px]">Female</option>
                                                     <option value="other" className="text-[15px]">Other</option>
@@ -202,12 +202,12 @@ const Index = () => {
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='birthday' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
-                                                <input type='date' name='birthday' value={BirthdayDatabase(formData1['birthday'])} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' />
+                                                <input type='date' name='birthday' defaultValue={BirthdayDatabase(formData1['birthday'])} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' />
                                             </div>
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>*Email - cannot be changed</label>
-                                            <input type='email' name='email' value={formData1['email']} readOnly className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your email here' />
+                                            <input type='email' name='email' defaultValue={formData1['email']} readOnly className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your email here' />
                                         </div>
                                         <div className='flex flex-row w-full justify-center gap-4'>
                                             <button className='py-3 px-8 bg-red-300 poppins-semibold text-red-500 hover:text-white rounded-full hover:bg-red-500 hover:scale-105 hover:duration-200' onClick={handlePersonalCancel}>CANCEL</button>
@@ -262,20 +262,20 @@ const Index = () => {
                                     <div className='flex flex-col gap-6 p-8 justify-center'>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='registeredCollege' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Registered College</label>
-                                            <input type='text' name='registeredCollege' value={formData2['registeredCollege']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your college' />
+                                            <input type='text' name='registeredCollege' defaultValue={formData2['registeredCollege']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your college' />
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='licenseNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>License Number</label>
-                                            <input type='text' name='licenseNumber' value={formData2['licenseNumber']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your license number' />
+                                            <input type='text' name='licenseNumber' defaultValue={formData2['licenseNumber']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your license number' />
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='practiceLocation' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Location of practice (address)</label>
-                                            <input type='text' name='practiceLocation' value={formData2['practiceLocation']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your location of practice' />
+                                            <input type='text' name='practiceLocation' defaultValue={formData2['practiceLocation']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your location of practice' />
                                         </div>
                                         <div className='flex flex-row gap-4'>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='professionType' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Type of profession</label>
-                                                <select name='professionType' value={formData2['professionType']} onChange={handleInputChangeForm2} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
+                                                <select name='professionType' defaultValue={formData2['professionType']} onChange={handleInputChangeForm2} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
                                                     <option value='acupuncturist' className='text-[15px]'>Acupuncturist</option>
                                                     <option value='physiologist' className='text-[15px]'>Physiologist</option>
                                                     <option value='naturopathicDoctor' className='text-[15px]'>Naturopathic Doctor</option>
@@ -284,7 +284,7 @@ const Index = () => {
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='practicePeriod' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Practicing period</label>
-                                                <select name='practicePeriod' value={formData2['practicePeriod']} onChange={handleInputChangeForm2} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
+                                                <select name='practicePeriod' defaultValue={formData2['practicePeriod']} onChange={handleInputChangeForm2} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
                                                     <option value="" disabled selected hidden>Select practicing period</option>
                                                     <option value='lt1yr' className='text-[15px]'>Less than 1 year</option>
                                                     <option value='1yr' className='text-[15px]'>1 year</option>
@@ -296,7 +296,7 @@ const Index = () => {
                                         {formData2['professionType'] === 'other' ?
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='other' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Please Specify:</label>
-                                                <input type='text' name='other' value={formData2['other']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your profession' />
+                                                <input type='text' name='other' defaultValue={formData2['other']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your profession' />
                                             </div>
                                             :
                                             <></>
