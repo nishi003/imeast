@@ -11,13 +11,13 @@ const Index = () => {
                     <img src={logo} alt='logo' className='h-[34px] w-[10.84px]' />
                     <p className='text-text text-5xl kalam-bold'>meast</p>
                 </Link>
-                <Link to='/user/' className='flex flex-row gap-4 pl-4 border-l border-[#DCDCDC]'>
+                <div className='flex flex-row gap-4 pl-4 border-l border-[#DCDCDC]'>
                     <div className='h-[50px] w-[50px] rounded-full bg-[#9F9F9F]' />
                     <div className='flex flex-col justify-center'>
                         <p className='poppins-medium text-xl'>Admin Account Name</p>
                         <p className='poppins-medium text-sm mt-[-6px] text-[#505050]'>Admin</p>
                     </div>
-                </Link>
+                </div>
             </div>
             <div className='w-full h-full flex flex-row overflow-hidden'>
                 <AdminNavbar />

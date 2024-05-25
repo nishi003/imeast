@@ -29,6 +29,7 @@ function App() {
             <Route index element={<AdminModules />} />
             <Route path='module/*' element={<AdminModules />}>
               <Route index element={<AdminModules />} />
+              <Route path='module/list/' element={<AdminModules />} />
               <Route path=':moduleID/' element={<AdminModules />} />
               <Route path=':moduleID/edit/' element={<AdminModules />} />
               <Route path=':moduleID/video/:videoID/' element={<AdminModules />} />

@@ -86,49 +86,49 @@ app.post("/pdfupload", pdfupload.single("productlesson"), (req, res) => {
 
 // uri example= '/videos/949383072';
 app.post('/:moduleID/lesson', async (req, res) => {
-    try{
+    try {
         const moduleID = req.params.moduleID;
 
         //set password to view the video on vimeo
-        try{
+        try {
             client.request({
                 method: 'PATCH',
                 path: uri,
                 query: {
-                  'privacy': {
-                    'view': 'password'
-                  },
-                  'password': 'helloworld'
+                    'privacy': {
+                        'view': 'password'
+                    },
+                    'password': 'helloworld'
                 }
-              }, function (error, body, status_code, headers) {
+            }, function (error, body, status_code, headers) {
                 console.log(uri + ' will now require a password to be viewed on Vimeo.')
-              })
-        } catch(error){
-            res.json({success: false, error: error})
+            })
+        } catch (error) {
+            res.json({ success: false, error: error })
         }
 
         //whitelist imeast as the only player
-        try{
+        try {
             vimeoClient.request({
                 method: 'PUT',
                 path: uri + '/privacy/domains/imeast.ca'
-              }, function (error, body, status_code, headers) {
+            }, function (error, body, status_code, headers) {
                 //console.log(uri + ' will only be embeddable on "http://example.com".')
                 vimeoClient.request({
-                  method: 'PATCH',
-                  path: uri,
-                  query: {
-                    'privacy': {
-                      'embed': 'whitelist'
+                    method: 'PATCH',
+                    path: uri,
+                    query: {
+                        'privacy': {
+                            'embed': 'whitelist'
+                        }
                     }
-                  }
                 }, function (error, body, status_code, headers) {
-                  console.log(error)
+                    console.log(error)
                 })
-              })
-            
-        } catch(error){
-            res.json({success: false, error: error})
+            })
+
+        } catch (error) {
+            res.json({ success: false, error: error })
         };
 
 
@@ -137,10 +137,10 @@ app.post('/:moduleID/lesson', async (req, res) => {
             title: req.body.title,
             video_embed_link: req.body.video_URI
         });
-        
+
     }
-    catch(error){
-        res.json({success: flase, error: error})
+    catch (error) {
+        res.json({ success: flase, error: error })
     }
 
     // let products = await Product.find({});
@@ -505,7 +505,7 @@ app.post('/user/signup/', async (req, res) => {
         return res.status(201).json({ success: true, token: token });
     } catch (error) {
         errors['serverError'] = 'There was an internal server error. Please try again later.';
-        return res.status(400).json({ success: false, errors: errors });
+        return res.status(400).json({ success: false, errors: error.message });
     }
 })
 
@@ -728,19 +728,19 @@ app.get('/module/', async (req, res) => {
 
 
 
-app.post('/purchase/', async (req, res) =>{
-    try{
+app.post('/purchase/', async (req, res) => {
+    try {
         const userID = req.body.userID;
         const moduleID = req.body.moduleID;
 
         const purchase = new Purchases({
-            userID : userID,
-            moduleID : moduleID
+            userID: userID,
+            moduleID: moduleID
         });
 
-        try{
+        try {
             await purchase.save()
-        } catch(error){
+        } catch (error) {
             console.log("error saving purchase")
         }
 
@@ -766,7 +766,7 @@ app.post('/purchase/', async (req, res) =>{
         });
 
     }
-    catch (err){
+    catch (err) {
         console.log(err)
     }
 
@@ -895,5 +895,6 @@ app.listen(port, (error) => {
         console.log("Server Running on Port" + port)
     }
     else {
-        console.log("Error: " + error)}
+        console.log("Error: " + error)
+    }
 })
