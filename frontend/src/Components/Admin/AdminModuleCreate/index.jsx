@@ -44,15 +44,21 @@ const Index = ({ setModule, moduleNumber }) => {
                         <p className='poppins-medium text-black text-[40px]'>MODULE {moduleNumber}</p>
                     </div>
                     <div className='h-full w-full flex flex-col px-8 gap-3'>
+
                         <div className='flex flex-col gap-1'>
                             <label htmlFor='title' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Title</label>
-                            <input type='text' name='title' onChange={handleInputChangeForm} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['title'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Type in the title of this module' />
+                            <input type='text' name='title' onChange={handleInputChangeForm} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['title'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Add a title' />
                             <FieldError fielderror={errors.title} />
                         </div>
                         <div className='flex flex-col gap-1'>
                             <label htmlFor='description' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Description</label>
-                            <textarea type='text' name='description' onChange={handleInputChangeForm} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] resize-none ${errors['description'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Type in the description of this module' rows={4} maxLength={500} />
+                            <textarea type='text' name='description' onChange={handleInputChangeForm} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] resize-none ${errors['description'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Add a description here...' rows={4} maxLength={500} />
                             <FieldError fielderror={errors.description} />
+                        </div>
+                        <div className='flex flex-col gap-1'>
+                            <label htmlFor='duration' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Duration</label>
+                            <input type='text' name='duration' onChange={handleInputChangeForm} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['duration'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Add a duration (3 hours etc.)' />
+                            <FieldError fielderror={errors.duration} />
                         </div>
                     </div>
                 </div>
