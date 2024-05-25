@@ -4,6 +4,7 @@ import './style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { access, access_or_login } from '../../../Util/access';
 import TransactionHistory from '../../../Components/TransactionHistory';
+import FieldError from '../../../Components/FieldError';
 
 const Index = () => {
     const navigate = useNavigate();
@@ -178,11 +179,13 @@ const Index = () => {
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='image' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Profile Picture</label>
                                             <input type='file' name='image' defaultValue={formData1['image']} onChange={handleInputChangeForm1} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] items-center flex flex-row justify-center' placeholder='Type in your email here' />
+                                            <FieldError fielderror={errors.image} />
                                         </div>
                                         <div className='flex flex-row gap-5'>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='firstName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
                                                 <input type='text' name='firstName' defaultValue={formData1['firstName']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
+                                                <FieldError fielderror={errors.firstName} />
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='lastName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>

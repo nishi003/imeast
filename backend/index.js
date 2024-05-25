@@ -469,9 +469,7 @@ app.get('/user/:userID/', async (req, res) => {
 app.patch('/user/:userID/', async (req, res) => {
     const userID = req.params.userID;
     try {
-        console.log(req.body);
         const user = await User.findById(userID);
-        console.log(user);
 
         let errors = {};
         let isIncomplete = false;
@@ -479,6 +477,7 @@ app.patch('/user/:userID/', async (req, res) => {
         for (const field in req.body) {
             if (!req.body[field]) {
                 if (field !== 'image' && field !== 'other') {
+                    console.log(feild + req.body[field]);
                     errors[field] = 'This field is required.';
                     isIncomplete = true;
                 } else {
