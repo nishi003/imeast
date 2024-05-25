@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const moduleController = require('../controllers/moduleController');
+const moduleController = require('../controllers/modulesController');
 
 //get and add modules
 router.post('/module/', moduleController.addModule);
@@ -14,3 +14,5 @@ router.delete('/module/:moduleID/', moduleController.deleteModule);
 
 //for lessons
 router.post('/:moduleID/lesson', moduleController.lessonPost);
+
+module.exports = router;
