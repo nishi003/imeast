@@ -359,6 +359,7 @@ app.post('/user/signup/', async (req, res) => {
 
     const user = new User({
         isAdmin: false,
+        image: null,
         firstName: fieldNames['firstName'],
         lastName: fieldNames['lastName'],
         email: fieldNames['email'],
@@ -438,6 +439,67 @@ app.post('/login/', async (req, res) => {
     const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
 
     return res.status(200).json({ success: true, access: token });
+})
+
+app.get('/user/', async (req, res) => {
+    const token = req.body.access;
+    const user = await User.findById(decodeJwt(token).user.id);
+
+    if (user.isAdmin) {
+        try {
+            users = await User.find({ isAdmin: false }).lean();
+            return res.status(200).json({ success: true, users: users });
+        } catch (error) {
+            return res.status(500).json({ success: false, error: error.message });
+        }
+    }
+})
+
+app.get('/user/:userID/', async (req, res) => {
+    try {
+        const userID = req.params.userID;
+        const user = await User.findById(userID);
+
+        return res.status(200).json({ success: true, user: user });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+})
+
+app.patch('/user/:userID/', async (req, res) => {
+    const userID = req.params.userID;
+    try {
+        const user = await User.findById(userID);
+
+        let errors = {};
+        let isIncomplete = false;
+
+        for (const field in req.body) {
+            if (!req.body[field]) {
+                if (field !== 'image' && field !== 'other') {
+                    console.log(feild + req.body[field]);
+                    errors[field] = 'This field is required.';
+                    isIncomplete = true;
+                } else {
+                    errors[field] = '';
+                }
+            }
+        }
+
+        if (isIncomplete) {
+            return res.status(400).json({ success: false, errors: errors });
+        }
+
+        for (const field in req.body) {
+            user[field] = req.body[field];
+        }
+
+        await user.save();
+        const newUser = await User.findById(userID);
+        return res.status(200).json({ success: true, changed: newUser });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
 })
 
 const Module = require('./models/Module')
