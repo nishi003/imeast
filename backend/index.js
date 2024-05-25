@@ -383,7 +383,7 @@ app.post('/user/signup/', async (req, res) => {
             }
         }
         const token = jwt.sign(data, 'imEast_tokenEncryptionKey'); //may also somehow put this into .env
-        return res.status(200).json({ success: true, token: token });
+        return res.status(201).json({ success: true, token: token });
     } catch (error) {
         errors['serverError'] = 'There was an internal server error. Please try again later.';
         return res.status(400).json({ success: false, errors: errors });
@@ -474,15 +474,43 @@ app.patch('/user/:userID/', async (req, res) => {
         let errors = {};
         let isIncomplete = false;
 
+        console.log(req.body);
+
         for (const field in req.body) {
-            if (!req.body[field]) {
-                if (field !== 'image' && field !== 'other') {
-                    console.log(feild + req.body[field]);
+            if (req.body[field] == '') {
+                if (field === 'image') {
+                    errors[field] = '';
+                } else if (field === 'professionType' && req.body[field] === 'other') {
+                    if (req.body['other'] === '') {
+                        errors['other'] = 'This field is required.';
+                        isIncomplete = true;
+                    } else {
+                        errors['other'] = '';
+                    }
+                } else {
                     errors[field] = 'This field is required.';
                     isIncomplete = true;
-                } else {
-                    errors[field] = '';
                 }
+            } else {
+                errors[field] = '';
+            }
+        }
+
+        if ('birthday' in req.body) {
+            const today = new Date();
+            const birthday = new Date(req.body.birthday);
+
+            let age = today.getFullYear() - birthday.getFullYear();
+            const birthMonth = birthday.getMonth();
+            const todayMonth = today.getMonth();
+
+            if (todayMonth < birthMonth || (todayMonth === birthMonth && today.getDate() < birthday.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                errors["birthday"] = "You must be at least 18 years old.";
+                isIncomplete = true;
             }
         }
 
@@ -492,6 +520,9 @@ app.patch('/user/:userID/', async (req, res) => {
 
         for (const field in req.body) {
             user[field] = req.body[field];
+            if (field === 'professionType' && req.body[field] !== 'other') {
+                user['other'] = '';
+            }
         }
 
         await user.save();

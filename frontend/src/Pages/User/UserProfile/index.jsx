@@ -93,20 +93,27 @@ const Index = () => {
         fetchUserData();
     }, []);
 
-    function handlePersonalCancel() {
+    function handlePersonalEdit() {
         setFormData1({ image: user?.image, firstName: user?.firstName, lastName: user?.lastName, sex: user?.sex, birthday: user?.birthday, email: user?.email, phoneNumber: user?.phoneNumber });
+        setErrors((prevErrors) => ({ ...prevErrors, image: '', firstName: '', lastName: '', sex: '', birthday: '', email: '', phoneNumber: '' }));
+        setIsPersonalEdit(true);
+    };
+
+    function handlePersonalCancel() {
         setIsPersonalEdit(false);
     };
 
     async function handlePersonalSubmit(event) {
         event.preventDefault();
-
         try {
             const response = await access(`/user/${user._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData1) }, navigate);
+            const json = await response.json();
             if (!response.ok) {
-                console.log('Internal server error.');
+                const serverErrors = json.errors;
+                if (serverErrors) {
+                    setErrors(serverErrors);
+                }
             } else {
-                const json = await response.json();
                 setUser(json.changed);
                 setIsPersonalEdit(false);
             }
@@ -115,19 +122,27 @@ const Index = () => {
         }
     };
 
-    function handleProfessionalCancel() {
+    function handleProfessionalEdit() {
         setFormData2({ registeredCollege: user?.registeredCollege, licenseNumber: user?.licenseNumber, practiceLocation: user?.practiceLocation, professionType: user?.professionType, practicePeriod: user?.practicePeriod, other: user?.other });
+        setErrors((prevErrors) => ({ ...prevErrors, registeredCollege: '', licenseNumber: '', practiceLocation: '', professionType: '', practicePeriod: '', other: '' }));
+        setIsProfessionalEdit(true);
+    };
+
+    function handleProfessionalCancel() {
         setIsProfessionalEdit(false);
-    }
+    };
 
     async function handleProfessionalSubmit(event) {
         event.preventDefault();
         try {
             const response = await access_or_login(`/user/${user._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData2) }, navigate);
+            const json = await response.json();
             if (!response.ok) {
-                console.log('Internal server error.');
+                const serverErrors = json.errors;
+                if (serverErrors) {
+                    setErrors(serverErrors);
+                }
             } else {
-                const json = await response.json();
                 setUser(json.changed);
                 setIsProfessionalEdit(false);
             }
@@ -140,19 +155,19 @@ const Index = () => {
         const date = new Date(isoDateString);
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
+        const day = (date.getDate() + 1).toString().padStart(2, '0');
         return `${year}.${month}.${day}`;
-    }
+    };
 
     function BirthdayDisplay(isoDateString) {
         const formattedDate = formatDate(isoDateString);
         return <>{formattedDate}</>;
-    }
+    };
 
     function BirthdayDatabase(birthday) {
         const formattedDate = birthday?.split('T')[0];
         return formattedDate
-    }
+    };
 
 
     return (
@@ -178,24 +193,26 @@ const Index = () => {
                                     <div className='flex flex-col gap-6 p-8 justify-center'>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='image' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Profile Picture</label>
-                                            <input type='file' name='image' defaultValue={formData1['image']} onChange={handleInputChangeForm1} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] items-center flex flex-row justify-center' placeholder='Type in your email here' />
+                                            <input type='file' name='image' onChange={handleInputChangeForm1} className={`w-full rounded-[10px] border border-[#9F9F9F] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] items-center flex flex-row justify-center`} />
+                                            {/* defaultValue={formData1['image']} */}
                                             <FieldError fielderror={errors.image} />
                                         </div>
                                         <div className='flex flex-row gap-5'>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='firstName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
-                                                <input type='text' name='firstName' defaultValue={formData1['firstName']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
+                                                <input type='text' name='firstName' defaultValue={formData1['firstName']} onChange={handleInputChangeForm1} className={`w-[500px] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['firstName'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='First name cannot be blank' />
                                                 <FieldError fielderror={errors.firstName} />
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='lastName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>
-                                                <input type='text' name='lastName' defaultValue={formData1['lastName']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your last name' />
+                                                <input type='text' name='lastName' defaultValue={formData1['lastName']} onChange={handleInputChangeForm1} className={`w-[500px] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['lastName'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Last name cannot be blank' />
+                                                <FieldError fielderror={errors.lastName} />
                                             </div>
                                         </div>
                                         <div className='flex flex-row gap-5'>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='sex' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Sex</label>
-                                                <select name="sex" defaultValue={formData1['sex']} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
+                                                <select name="sex" defaultValue={formData1['sex']} onChange={handleInputChangeForm1} className={`w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]`}>
                                                     <option value="" disabled hidden>Select sex</option>
                                                     <option value="male" className="text-[15px]">Male</option>
                                                     <option value="female" className="text-[15px]">Female</option>
@@ -205,12 +222,13 @@ const Index = () => {
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='birthday' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
-                                                <input type='date' name='birthday' defaultValue={BirthdayDatabase(formData1['birthday'])} onChange={handleInputChangeForm1} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' />
+                                                <input type='date' name='birthday' defaultValue={BirthdayDatabase(formData1['birthday'])} onChange={handleInputChangeForm1} className={`w-[500px] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['birthday'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} />
+                                                <FieldError fielderror={errors.birthday} />
                                             </div>
                                         </div>
                                         <div className='flex flex-col gap-1'>
-                                            <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>*Email - cannot be changed</label>
-                                            <input type='email' name='email' defaultValue={formData1['email']} readOnly className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your email here' />
+                                            <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Email - *cannot be changed</label>
+                                            <input type='email' name='email' defaultValue={formData1['email']} readOnly className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-none' />
                                         </div>
                                         <div className='flex flex-row w-full justify-center gap-4'>
                                             <button className='py-3 px-8 bg-red-300 poppins-semibold text-red-500 hover:text-white rounded-full hover:bg-red-500 hover:scale-105 hover:duration-200' onClick={handlePersonalCancel}>CANCEL</button>
@@ -250,7 +268,7 @@ const Index = () => {
                                         </div>
                                     </div>
                                     <div className='h-full w-auto flex flex-col justify-end pb-2 pr-2'>
-                                        <button className='flex flex-row items-baseline justify-center pl-4 pr-3 pt-2 pb-1 border border-[#767676] rounded-full gap-2 hover:scale-105 hover:duration-200' onClick={() => setIsPersonalEdit(true)}>
+                                        <button className='flex flex-row items-baseline justify-center pl-4 pr-3 pt-2 pb-1 border border-[#767676] rounded-full gap-2 hover:scale-105 hover:duration-200' onClick={handlePersonalEdit}>
                                             <p className='poppins-semibold text-base'>Edit</p>
                                             <UilPen size='18' />
                                         </button>
@@ -265,15 +283,18 @@ const Index = () => {
                                     <div className='flex flex-col gap-6 p-8 justify-center'>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='registeredCollege' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Registered College</label>
-                                            <input type='text' name='registeredCollege' defaultValue={formData2['registeredCollege']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your college' />
+                                            <input type='text' name='registeredCollege' defaultValue={formData2['registeredCollege']} onChange={handleInputChangeForm2} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['registeredCollege'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='College cannot be blank' />
+                                            <FieldError fielderror={errors.registeredCollege} />
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='licenseNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>License Number</label>
-                                            <input type='text' name='licenseNumber' defaultValue={formData2['licenseNumber']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your license number' />
+                                            <input type='text' name='licenseNumber' defaultValue={formData2['licenseNumber']} onChange={handleInputChangeForm2} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['licenseNumber'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='License number cannot be blank' />
+                                            <FieldError fielderror={errors.licenseNumber} />
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='practiceLocation' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Location of practice (address)</label>
-                                            <input type='text' name='practiceLocation' defaultValue={formData2['practiceLocation']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your location of practice' />
+                                            <input type='text' name='practiceLocation' defaultValue={formData2['practiceLocation']} onChange={handleInputChangeForm2} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['practiceLocation'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Location of practice cannot be blank' />
+                                            <FieldError fielderror={errors.practiceLocation} />
                                         </div>
                                         <div className='flex flex-row gap-4'>
                                             <div className='flex flex-col gap-1'>
@@ -299,7 +320,8 @@ const Index = () => {
                                         {formData2['professionType'] === 'other' ?
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='other' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Please Specify:</label>
-                                                <input type='text' name='other' defaultValue={formData2['other']} onChange={handleInputChangeForm2} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your profession' />
+                                                <input type='text' name='other' defaultValue={formData2['other']} onChange={handleInputChangeForm2} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['other'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Profession cannot be blank' />
+                                                <FieldError fielderror={errors.other} />
                                             </div>
                                             :
                                             <></>
@@ -367,7 +389,7 @@ const Index = () => {
                                         </div>
                                     </div>
                                     <div className='h-full w-auto flex flex-col justify-end mr-[-8px] mb-[-8px]'>
-                                        <button className='flex flex-row items-baseline justify-center pl-4 pr-3 pt-2 pb-1 border border-[#767676] rounded-full gap-2 hover:scale-105 hover:duration-200' onClick={() => setIsProfessionalEdit(true)}>
+                                        <button className='flex flex-row items-baseline justify-center pl-4 pr-3 pt-2 pb-1 border border-[#767676] rounded-full gap-2 hover:scale-105 hover:duration-200' onClick={handleProfessionalEdit}>
                                             <p className='poppins-semibold text-base'>Edit</p>
                                             <UilPen size='18' />
                                         </button>
