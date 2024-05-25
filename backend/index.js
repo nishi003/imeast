@@ -453,28 +453,6 @@ app.get('/user/', async (req, res) => {
             return res.status(500).json({ success: false, error: error.message });
         }
     }
-    // else {
-    //     try {
-    //         // const info = {
-    //         //     image: user.image,
-    //         //     firstName: user.firstName,
-    //         //     lastName: user.lastName,
-    //         //     email: user.email,
-    //         //     sex: user.sex,
-    //         //     birthday: user.birthday,
-    //         //     phoneNumber: user.phoneNumber,
-    //         //     registeredCollege: user.registeredCollege,
-    //         //     licenseNumber: user.licenseNumber,
-    //         //     practiceLocation: user.practiceLocation,
-    //         //     professionType: user.professionType,
-    //         //     practicePeriod: user.practicePeriod,
-    //         //     other: user.other,
-    //         // };
-    //         return res.status(200).json({ success: true, user: user });
-    //     } catch (error) {
-    //         return res.status(500).json({ success: false, error: error.message });
-    //     }
-    // }
 })
 
 app.get('/user/:userID/', async (req, res) => {
@@ -483,6 +461,43 @@ app.get('/user/:userID/', async (req, res) => {
         const user = await User.findById(userID);
 
         return res.status(200).json({ success: true, user: user });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+})
+
+app.patch('/user/:userID/', async (req, res) => {
+    const userID = req.params.userID;
+    try {
+        console.log(req.body);
+        const user = await User.findById(userID);
+        console.log(user);
+
+        let errors = {};
+        let isIncomplete = false;
+
+        for (const field in req.body) {
+            if (!req.body[field]) {
+                if (field !== 'image' && field !== 'other') {
+                    errors[field] = 'This field is required.';
+                    isIncomplete = true;
+                } else {
+                    errors[field] = '';
+                }
+            }
+        }
+
+        if (isIncomplete) {
+            return res.status(400).json({ success: false, errors: errors });
+        }
+
+        for (const field in req.body) {
+            user[field] = req.body[field];
+        }
+
+        await user.save();
+        const newUser = await User.findById(userID);
+        return res.status(200).json({ success: true, changed: newUser });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }
