@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema(
             default: false,
             required: true,
         },
+        image: {
+            type: String,
+            required: false,
+        },
         firstName: {
             type: String,
             required: false,
