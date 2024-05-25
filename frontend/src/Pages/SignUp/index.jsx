@@ -148,7 +148,7 @@ const Index = () => {
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <label htmlFor='phoneNumber' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Phone Number</label>
-                                <input type='text' name='phoneNumber' onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["phoneNumber"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'} `} placeholder='Type in your phone number here' />
+                                <input type='number' name='phoneNumber' onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[670px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["phoneNumber"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'} `} placeholder='Type in your phone number here' />
                                 <FieldError fielderror={errors?.phoneNumber} />
                             </div>
                             <div className='flex flex-col gap-1'>

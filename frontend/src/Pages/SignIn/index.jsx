@@ -61,7 +61,12 @@ const Index = () => {
                         setErrors(decrypt_serverErrors);
                     }
                 } else {
-                    navigate('/user/profile/');
+                    const info = decrypt_json.info;
+                    if (info.isAdmin) {
+                        navigate('/admin/module/list/');
+                    } else {
+                        navigate('/user/profile/');
+                    }
                 }
             }
         } catch (error) {
