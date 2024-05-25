@@ -66,8 +66,8 @@ const Index = () => {
 
         try {
             const response = await access('/Users/user/signup/', requestOptions);
+            const json = await response.json();
             if (!response.ok) {
-                const json = await response.json();
                 const serverErrors = json.errors;
                 if (serverErrors) {
                     setErrors(serverErrors);
