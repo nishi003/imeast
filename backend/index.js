@@ -593,8 +593,10 @@ app.post('/purchase/', async (req, res) =>{
         }
 
         //get username from userid:
-        const username = await User.findById({ userID: moduleID });
-        const modulePrice = await User
+        const user = await User.findById(userId);
+        const firstName = user ? user.firstName : null;
+        const module = await Module.findById(moduleId);
+        const price = module ? module.price : null;
 
         //send a notification
         const notification = new Notification({
@@ -605,8 +607,10 @@ app.post('/purchase/', async (req, res) =>{
 
         //add to transaction
         const transaction = new Transaction({
-            username: username,
-
+            username: firstName,
+            moduleID: moduleID,
+            price: price,
+            status: 
         })
 
     }
