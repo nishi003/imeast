@@ -1,83 +1,108 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UilPen } from '@iconscout/react-unicons'
 import './style.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { access, access_or_login } from '../../../Util/access';
 import TransactionHistory from '../../../Components/TransactionHistory';
 
 const Index = () => {
+    const navigate = useNavigate();
+
     const [isProfile, setIsProfile] = useState(true);
     const [isPersonalEdit, setIsPersonalEdit] = useState(false);
     const [isProfessionalEdit, setIsProfessionalEdit] = useState(false);
-    const [user, setUser] = useState();
-    const [firstName, setFirstName] = useState("Eugene");
-    const [lastName, setLastName] = useState("Jang");
-    const [sex, setSex] = useState("Male");
-    const [birthday, setBirthday] = useState("2003.06.24");
-    const [email, setEmail] = useState("emailoverhere@gmail.com");
-    const [phoneNumber, setPhoneNumber] = useState("604-459-3405");
-    const [profilePic, setProfilePic] = useState();
+    const [user, setUser] = useState(null);
 
-    const [college, setCollege] = useState("University of Waterloo");
-    const [license, setLicense] = useState("CAMD-9999-9999");
-    const [location, setLocation] = useState("405-889 West Pender St. Vancouver, BC. V6C 3B2");
-    const [profession, setProfession] = useState("naturopathicDoctor");
-    const [other, setOther] = useState("");
-    const [period, setPeriod] = useState("less than 1 year");
-
-    const handleFirstNameChange = ((event) => {
-        const newFirstName = event.target.value;
-        setFirstName(newFirstName);
+    const [errors, setErrors] = useState({
+        image: "",
+        firstName: "",
+        lastName: "",
+        sex: "",
+        birthday: "",
+        email: "",
+        phoneNumber: "",
+        pw1: "",
+        pw2: "",
+        registeredCollege: "",
+        licenseNumber: "",
+        practiceLocation: "",
+        professionType: "",
+        practicePeriod: "",
+        other: "",
+        serverErrors: "",
     });
 
-    const handleLastNameChange = (event) => {
-        const newLastName = event.target.value;
-        setLastName(newLastName);
-    };
-
-    const handelSexChange = ((event) => {
-        const newSex = event.target.value;
-        setSex(newSex);
+    const [formData, setFormData] = useState({
+        image: null,
+        firstName: null,
+        lastName: null,
+        sex: null,
+        birthday: null,
+        email: null,
+        phoneNumber: null,
+        pw1: null,
+        pw2: null,
+        registeredCollege: null,
+        licenseNumber: null,
+        practiceLocation: null,
+        professionType: null,
+        practicePeriod: null,
+        other: null
     });
 
-    const handleBirthdayChange = ((event) => {
-        const newBirthday = event.target.value;
-        setBirthday(newBirthday);
-    })
-
-    const handleProfilePictureChange = (event) => {
-        const newProfilePic = event.target.value;
-        setProfilePic(newProfilePic);
+    const handleInputChangeForm = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: '' });
     };
 
-    const handleCollegeChange = ((event) => {
-        const newCollege = event.target.value;
-        setCollege(newCollege);
-    });
-
-    const handleLicenseChange = (event) => {
-        const newLicense = event.target.value;
-        setLicense(newLicense);
+    const fetchUserData = async () => {
+        try {
+            const response = await access('/currentuser/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ access: localStorage.getItem('access') }) }, navigate);
+            const json = await response.json();
+            if (!response.ok) {
+                const decrypt_serverErrors = json.errors;
+                if (decrypt_serverErrors) {
+                    setErrors(decrypt_serverErrors);
+                }
+            } else {
+                const info = json.info;
+                const userID = info.userID;
+                const userResponse = await access_or_login(`/user/${userID}`, { method: 'GET' }, navigate);
+                const userResponseJson = await userResponse.json();
+                if (!userResponse.ok) {
+                    console.log('Internal server error.')
+                } else {
+                    setUser(userResponseJson.user);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    const handleLocationChange = (event) => {
-        const newLocation = event.target.value;
-        setLocation(newLocation);
-    };
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
-    const handleProfessionChange = (event) => {
-        const newProfession = event.target.value;
-        setProfession(newProfession);
-    };
-
-    const handleOtherChange = (event) => {
-        const newOther = event.target.value;
-        setOther(newOther);
+    function formatDate(isoDateString) {
+        const date = new Date(isoDateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}.${month}.${day}`;
     }
 
-    const handlePeriodChange = (event) => {
-        const newPeriod = event.target.value;
-        setPeriod(newPeriod);
-    };
+    function BirthdayDisplay({ isoDateString }) {
+        const formattedDate = formatDate(isoDateString);
+        return <>{formattedDate}</>;
+    }
+
+    function BirthdayDatabase(birthday) {
+        const formattedDate = birthday.split('T')[0];
+        return formattedDate
+    }
+
 
     return (
         <div className='h-full w-full bg-[#DEF1DD] flex flex-col p-8'>
@@ -101,23 +126,23 @@ const Index = () => {
                                     </div>
                                     <div className='flex flex-col gap-6 p-8 justify-center'>
                                         <div className='flex flex-col gap-1'>
-                                            <label htmlFor='profilePic' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Profile Picture</label>
-                                            <input type='file' name='profilePic' value={profilePic} required onChange={handleProfilePictureChange} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] items-center flex flex-row justify-center' placeholder='Type in your email here' />
+                                            <label htmlFor='image' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Profile Picture</label>
+                                            <input type='file' name='image' defaultValue={user?.image} value={formData['image']} required onChange={handleInputChangeForm} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] items-center flex flex-row justify-center' placeholder='Type in your email here' />
                                         </div>
                                         <div className='flex flex-row gap-5'>
                                             <div className='flex flex-col gap-1'>
-                                                <label htmlFor='first-name' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
-                                                <input type='text' id='first-name' value={firstName} onChange={handleFirstNameChange} required className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
+                                                <label htmlFor='firstName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>First Name</label>
+                                                <input type='text' name='firstName' defaultValue={user?.firstName} value={formData['firstName']} onChange={handleInputChangeForm} required className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your first name' />
                                             </div>
                                             <div className='flex flex-col gap-1'>
-                                                <label htmlFor='last-name' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>
-                                                <input type='text' id='last-name' value={lastName} onChange={handleLastNameChange} required className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your last name' />
+                                                <label htmlFor='lastName' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Last Name</label>
+                                                <input type='text' name='lastName' defaultValue={user?.lastName} value={formData['lastName']} onChange={handleInputChangeForm} required className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Fill in your last name' />
                                             </div>
                                         </div>
                                         <div className='flex flex-row gap-5'>
                                             <div className='flex flex-col gap-1'>
-                                                <label className='poppins-semibold text-[15px] text-[#767676] pl-2'>Sex</label>
-                                                <select name="sex" value={sex} onChange={handelSexChange} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
+                                                <label htmlFor='sex' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Sex</label>
+                                                <select name="sex" value={formData['sex'] || user?.sex} onChange={handleInputChangeForm} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
                                                     <option value="" disabled selected hidden>Select sex</option>
                                                     <option value="male" className="text-[15px]">Male</option>
                                                     <option value="female" className="text-[15px]">Female</option>
@@ -127,12 +152,12 @@ const Index = () => {
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='birthday' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Birthday</label>
-                                                <input type='date' name='birthday' value={birthday} required onChange={handleBirthdayChange} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' />
+                                                <input type='date' name='birthday' value={formData['birthday'] || BirthdayDatabase(user?.birthday)} required onChange={handleInputChangeForm} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' />
                                             </div>
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='email' className='poppins-semibold text-[15px] text-[#767676] pl-2'>*Email - cannot be changed</label>
-                                            <input type='email' name='email' value={email} required readOnly className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your email here' />
+                                            <input type='email' name='email' value={user?.email} required readOnly className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your email here' />
                                         </div>
                                         <div className='flex flex-row w-full justify-center gap-4'>
                                             <Link className='py-3 px-8 bg-red-300 poppins-semibold text-red-500 hover:text-white rounded-full hover:bg-red-500 hover:scale-105 hover:duration-200' onClick={() => { setIsPersonalEdit(false) }}>CANCEL</Link>
@@ -145,14 +170,14 @@ const Index = () => {
                                     <div className='h-[200px] w-[200px] bg-secondary rounded-full flex-shrink-0' />
                                     <div className='flex flex-col gap-6 w-full'>
                                         <div className='flex flex-row gap-1'>
-                                            <p className='poppins-semibold text-xl'>{firstName}</p>
-                                            <p className='poppins-semibold text-xl'>{lastName}</p>
+                                            <p className='poppins-semibold text-xl'>{user?.firstName}</p>
+                                            <p className='poppins-semibold text-xl'>{user?.lastName}</p>
                                         </div>
                                         <div className='flex flex-col gap-2'>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{sex}</p>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{birthday}</p>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{phoneNumber}</p>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{email}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>{user?.sex}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'><BirthdayDisplay isoDateString={user?.birthday} /></p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>{user?.phoneNumber}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>{user?.email}</p>
                                         </div>
                                     </div>
                                     <div className='h-full w-auto flex flex-col justify-end pb-2 pr-2'>
@@ -171,20 +196,20 @@ const Index = () => {
                                     <div className='flex flex-col gap-6 p-8 justify-center'>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='college' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Registered College</label>
-                                            <input type='text' name='college' value={college} required onChange={handleCollegeChange} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your college' />
+                                            <input type='text' name='college' value={user?.registeredCollege} required onChange={handleInputChangeForm} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your college' />
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='license' className='poppins-semibold text-[15px] text-[#767676] pl-2'>License Number</label>
-                                            <input type='text' name='license' value={license} required onChange={handleLicenseChange} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your license number' />
+                                            <input type='text' name='license' value={user?.licenseNumber} required onChange={handleInputChangeForm} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your license number' />
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <label htmlFor='location' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Location of practice (address)</label>
-                                            <input type='text' name='location' value={location} required onChange={handleLocationChange} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your location of practice' />
+                                            <input type='text' name='location' value={user?.practiceLocation} required onChange={handleInputChangeForm} className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' placeholder='Type in your location of practice' />
                                         </div>
                                         <div className='flex flex-row gap-4'>
                                             <div className='flex flex-col gap-1'>
-                                                <label htmlFor='profession' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Type of profession</label>
-                                                <select name='profession' value={profession} onChange={handleProfessionChange} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
+                                                <label htmlFor='professionType' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Type of profession</label>
+                                                <select name='professionType' value={user?.professionType} onChange={handleInputChangeForm} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
                                                     <option value="" disabled selected hidden>Select Profession</option>
                                                     <option value='acupuncturist' className='text-[15px]'>Acupuncturist</option>
                                                     <option value='physiologist' className='text-[15px]'>Physiologist</option>
@@ -194,7 +219,7 @@ const Index = () => {
                                             </div>
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='period' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Practicing period</label>
-                                                <select name='period' value={period} onChange={handlePeriodChange} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
+                                                <select name='period' value={user?.practicePeriod} onChange={handleInputChangeForm} className='w-[500px] border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]'>
                                                     <option value="" disabled selected hidden>Select practicing period</option>
                                                     <option value='lt1yr' className='text-[15px]'>Less than 1 year</option>
                                                     <option value='1yr' className='text-[15px]'>1 year</option>
@@ -203,10 +228,10 @@ const Index = () => {
                                                 </select>
                                             </div>
                                         </div>
-                                        {profession === 'other' ?
+                                        {user?.professionType === 'other' ?
                                             <div className='flex flex-col gap-1'>
                                                 <label htmlFor='other-prof' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Please Specify:</label>
-                                                <input type='text' name='other-prof' className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' onChange={handleOtherChange} value={other} placeholder='Type in your profession' />
+                                                <input type='text' name='other-prof' className='w-full border border-[#9F9F9F] rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676]' onChange={handleInputChangeForm} value={user?.other} placeholder='Type in your profession' />
                                             </div>
                                             :
                                             <></>
@@ -224,32 +249,53 @@ const Index = () => {
                                             <p className='poppins-semibold text-xl'>Professional Information</p>
                                         </div>
                                         <div className='w-full justify-start flex flex-col gap-1'>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{college}</p>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{license}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>{user?.registeredCollege}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>{user?.licenseNumber}</p>
                                             <p className='poppins-semibold text-base text-[#767676]'>
-                                                {profession === 'acupuncturist' ?
+                                                {user?.professionType === 'acupuncturist' ?
                                                     <>Acupuncturist</>
                                                     :
                                                     <></>
                                                 }
-                                                {profession === 'physiologist' ?
+                                                {user?.professionType === 'physiologist' ?
                                                     <>Physiologist</>
                                                     :
                                                     <></>
                                                 }
-                                                {profession === 'naturopathicDoctor' ?
+                                                {user?.professionType === 'naturopathicDoctor' ?
                                                     <>Naturopathic Doctor</>
                                                     :
                                                     <></>
                                                 }
-                                                {profession === 'other' ?
-                                                    <>{other}</>
+                                                {user?.professionType === 'other' ?
+                                                    <>{user?.other}</>
                                                     :
                                                     <></>
                                                 }
                                             </p>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{location}</p>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{period}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>{user?.practiceLocation}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>
+                                                {user?.practicePeriod === 'lt1yr' ?
+                                                    <>Less than 1 year</>
+                                                    :
+                                                    <></>
+                                                }
+                                                {user?.practicePeriod === '1yr' ?
+                                                    <>1 year</>
+                                                    :
+                                                    <></>
+                                                }
+                                                {user?.practicePeriod === '2-3yr' ?
+                                                    <>2-3 years</>
+                                                    :
+                                                    <></>
+                                                }
+                                                {user?.practicePeriod === 'gt3yr' ?
+                                                    <>More than 3 years</>
+                                                    :
+                                                    <></>
+                                                }
+                                            </p>
                                         </div>
                                     </div>
                                     <div className='h-full w-auto flex flex-col justify-end mr-[-8px] mb-[-8px]'>

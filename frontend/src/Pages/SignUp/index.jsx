@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../../Assets/logo-green-sm.png';
-
+import { access } from '../../Util/access';
 import { useState } from 'react';
 
 import './style.css'
@@ -65,7 +65,7 @@ const Index = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/user/signup/', requestOptions);
+            const response = await access('/user/signup/', requestOptions);
             if (!response.ok) {
                 const json = await response.json();
                 const serverErrors = json.errors;

@@ -359,6 +359,7 @@ app.post('/user/signup/', async (req, res) => {
 
     const user = new User({
         isAdmin: false,
+        image: null,
         firstName: fieldNames['firstName'],
         lastName: fieldNames['lastName'],
         email: fieldNames['email'],
@@ -438,6 +439,53 @@ app.post('/login/', async (req, res) => {
     const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
 
     return res.status(200).json({ success: true, access: token });
+})
+
+app.get('/user/', async (req, res) => {
+    const token = req.body.access;
+    const user = await User.findById(decodeJwt(token).user.id);
+
+    if (user.isAdmin) {
+        try {
+            users = await User.find({ isAdmin: false }).lean();
+            return res.status(200).json({ success: true, users: users });
+        } catch (error) {
+            return res.status(500).json({ success: false, error: error.message });
+        }
+    }
+    // else {
+    //     try {
+    //         // const info = {
+    //         //     image: user.image,
+    //         //     firstName: user.firstName,
+    //         //     lastName: user.lastName,
+    //         //     email: user.email,
+    //         //     sex: user.sex,
+    //         //     birthday: user.birthday,
+    //         //     phoneNumber: user.phoneNumber,
+    //         //     registeredCollege: user.registeredCollege,
+    //         //     licenseNumber: user.licenseNumber,
+    //         //     practiceLocation: user.practiceLocation,
+    //         //     professionType: user.professionType,
+    //         //     practicePeriod: user.practicePeriod,
+    //         //     other: user.other,
+    //         // };
+    //         return res.status(200).json({ success: true, user: user });
+    //     } catch (error) {
+    //         return res.status(500).json({ success: false, error: error.message });
+    //     }
+    // }
+})
+
+app.get('/user/:userID/', async (req, res) => {
+    try {
+        const userID = req.params.userID;
+        const user = await User.findById(userID);
+
+        return res.status(200).json({ success: true, user: user });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
 })
 
 const Module = require('./models/Module')
