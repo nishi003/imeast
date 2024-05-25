@@ -6,18 +6,6 @@ dotenv.config();
 let Vimeo = require('vimeo').Vimeo;
 let client = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
 
-
-client.request({
-    method: 'GET',
-    path: '/tutorial'
-  }, function (error, body, status_code, headers) {
-    if (error) {
-      console.log(error);
-    }
-
-    console.log(body);
-  })
-
 let file_name = "C:\\Users\\San Basnet\\Downloads\\d793f97348274cbaa7892633b7376664.mov"
 // client.upload(
 //   file_name,
@@ -39,12 +27,20 @@ let file_name = "C:\\Users\\San Basnet\\Downloads\\d793f97348274cbaa7892633b7376
 
 let uri = '/videos/949383072';
 
-client.request(uri + '?fields=link', function (error, body, statusCode, headers) {
-    if (error) {
-      console.log('There was an error making the request.')
-      console.log('Server reported: ' + error)
-      return
+client.request({
+  method: 'PUT',
+  path: uri + '/privacy/domains/example.com'
+}, function (error, body, status_code, headers) {
+  //console.log(uri + ' will only be embeddable on "http://example.com".')
+  client.request({
+    method: 'PATCH',
+    path: uri,
+    query: {
+      'privacy': {
+        'embed': 'whitelist'
+      }
     }
-  
-    console.log('Your video link is: ' + body.link)
+  }, function (error, body, status_code, headers) {
+    console.log(uri + error + body + status_code + headers)
   })
+})

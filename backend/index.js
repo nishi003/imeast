@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken")
 const multer = require("multer")
 const path = require("path")
 const cors = require("cors")
+const dotenv = require("dotenv");
+dotenv.config();
 
 //google auth
 var authRouter = require('./routes/oauth')
@@ -17,6 +19,10 @@ var stripeRouter = require('./routes/stripe')
 //comments
 var Comments = require('./routes/comments')
 
+//vimeo sdk setup
+let Vimeo = require('vimeo').Vimeo;
+let vimeoClient = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
+
 app.use(express.json());
 app.use(cors());
 
@@ -25,6 +31,14 @@ app.use(cors());
 
 //my own test database
 mongoose.connect("mongodb+srv://basnetsan25:InnWSc0E6O7SG3m6@cluster0.4vviipo.mongodb.net/");
+
+const User = require('./models/User');
+const Purchases = require('./models/Purchases');
+const Notification = require('./models/notifications');
+const Transaction = require('./models/Transactions');
+const Module = require('./models/Module');
+const Lesson = require('./models/Lesson');
+
 
 //API Creation
 app.get("/", (req, res) => {
@@ -69,48 +83,93 @@ app.post("/pdfupload", pdfupload.single("productlesson"), (req, res) => {
     })
 })
 
-//vimeo stuff
-//dot env for vimeo secrets
-const dotenv = require("dotenv");
-dotenv.config();
 
-let Vimeo = require('vimeo').Vimeo;
-let client = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
+// uri example= '/videos/949383072';
+app.post('/:moduleID/lesson', async (req, res) => {
+    try{
+        const moduleID = req.params.moduleID;
 
-app.post('/uploadvideo', async (req, res) => {
+        //set password to view the video on vimeo
+        try{
+            client.request({
+                method: 'PATCH',
+                path: uri,
+                query: {
+                  'privacy': {
+                    'view': 'password'
+                  },
+                  'password': 'helloworld'
+                }
+              }, function (error, body, status_code, headers) {
+                console.log(uri + ' will now require a password to be viewed on Vimeo.')
+              })
+        } catch(error){
+            res.json({success: false, error: error})
+        }
 
-})
+        //whitelist imeast as the only player
+        try{
+            vimeoClient.request({
+                method: 'PUT',
+                path: uri + '/privacy/domains/imeast.ca'
+              }, function (error, body, status_code, headers) {
+                //console.log(uri + ' will only be embeddable on "http://example.com".')
+                vimeoClient.request({
+                  method: 'PATCH',
+                  path: uri,
+                  query: {
+                    'privacy': {
+                      'embed': 'whitelist'
+                    }
+                  }
+                }, function (error, body, status_code, headers) {
+                  console.log(error)
+                })
+              })
+            
+        } catch(error){
+            res.json({success: false, error: error})
+        };
 
-const Product = require('./models/Product');
 
-app.post('/addproduct', async (req, res) => {
-    let products = await Product.find({});
-    let id;
-    if (products.length > 0) {
-        let last_product_array = products.slice(-1)
-        let last_product = last_product_array[0]
-        id = last_product.id + 1
+        const lesson = new Lesson({
+            moduleid: moduleID,
+            title: req.body.title,
+            video_embed_link: req.body.video_URI
+        });
+        
     }
-    else {
-        id = 1
+    catch(error){
+        res.json({success: flase, error: error})
     }
-    const product = new Product({
-        id: id,
-        name: req.body.name,
-        image: req.body.image,
-        description: req.body.description,
-        category: req.body.category,
-        new_price: req.body.new_price,
-        old_price: req.body.old_price,
-        video_embed_link: req.body.video_embed_link
-    });
-    console.log(product);
-    await product.save();
-    console.log("Saved");
-    res.json({
-        success: true,
-        name: req.body.name
-    })
+
+    // let products = await Product.find({});
+    // let id;
+    // if (products.length > 0) {
+    //     let last_product_array = products.slice(-1)
+    //     let last_product = last_product_array[0]
+    //     id = last_product.id + 1
+    // }
+    // else {
+    //     id = 1
+    // }
+    // const product = new Product({
+    //     id: id,
+    //     name: req.body.name,
+    //     image: req.body.image,
+    //     description: req.body.description,
+    //     category: req.body.category,
+    //     new_price: req.body.new_price,
+    //     old_price: req.body.old_price,
+    //     video_embed_link: req.body.video_embed_link
+    // });
+    // console.log(product);
+    // await product.save();
+    // console.log("Saved");
+    // res.json({
+    //     success: true,
+    //     name: req.body.name
+    // })
 })
 
 // Creating API for deleting products
@@ -250,7 +309,7 @@ app.post('/request', (req, res) => {
     return data
 })
 
-const User = require('./models/User')
+
 
 function decodeJwt(token) {
     try {
@@ -440,7 +499,6 @@ app.post('/login/', async (req, res) => {
     return res.status(200).json({ success: true, access: token });
 })
 
-const Module = require('./models/Module')
 
 app.post('/module/', async (req, res) => {
     let errors = {};
@@ -516,7 +574,47 @@ app.get('/module/', async (req, res) => {
     }
 })
 
-const Purchases = require('./models/Purchases')
+
+
+app.post('/purchase/', async (req, res) =>{
+    try{
+        const userID = req.body.userID;
+        const moduleID = req.body.moduleID;
+
+        const purchase = new Purchases({
+            userID : userID,
+            moduleID : moduleID
+        });
+
+        try{
+            await purchase.save()
+        } catch(error){
+            console.log("error saving purchase")
+        }
+
+        //get username from userid:
+        const username = await User.findById({ userID: moduleID });
+        const modulePrice = await User
+
+        //send a notification
+        const notification = new Notification({
+            username: username,
+            type: "Purchased Module" + String(moduleID),
+            link: ""
+        });
+
+        //add to transaction
+        const transaction = new Transaction({
+            username: username,
+
+        })
+
+    }
+    catch (err){
+        console.log(err)
+    }
+
+})
 
 app.get('/module/:moduleID/', async (req, res) => {
     try {

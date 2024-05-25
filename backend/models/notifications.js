@@ -5,12 +5,13 @@ mongoose.connect("mongodb+srv://basnetsan25:InnWSc0E6O7SG3m6@cluster0.4vviipo.mo
 
 
 const notificationSchema = new mongoose.Schema({
-    Username: {type: Number, required: true, unique: true},
-    Type: {type: String, required: true},
-    timestamp: { type: Date, default: Date.now },
-    status: { type: String, default: 'unread' }, //read, unread
+    username: {type: String, required: true},
+    timeStamp: { type: Date, default: Date.now },
+    type: {type: String, required: true},
+    readStatus: { type: String, default: 'unread' }, //read, unread
+    link: {type: String}
 });
 
-const Comment = mongoose.model('Comment', commentSchema);
+const Notification = mongoose.model('notifications', notificationSchema);
 
-module.exports = Comment;
+module.exports = Notification;
