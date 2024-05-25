@@ -202,7 +202,7 @@ exports.userSignup = async (req, res) => {
 };
 
 
-exports.login =  async (req, res) => {
+exports.login = async (req, res) => {
     let errors = {};
     let isIncomplete = false;
 
@@ -278,7 +278,7 @@ exports.userDetails = async (req, res) => {
     }
 };
 
-exports.userPatch =  async (req, res) => {
+exports.userPatch = async (req, res) => {
     const userID = req.params.userID;
     try {
         const user = await User.findById(userID);
