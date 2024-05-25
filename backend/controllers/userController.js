@@ -1,4 +1,4 @@
-const User = require('./models/User');
+const User = require('../models/User');
 
 
 function decodeJwt(token) {
@@ -23,7 +23,7 @@ exports.currentuser = async (req, res) => {
     return res.status(200).json({ success: true, info: info });
 };
 
-exports.adminSignup, async (req, res) => {
+exports.adminSignup = async (req, res) => {
     let errors = {};
     let isIncomplete = false;
 
