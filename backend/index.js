@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken")
 const multer = require("multer")
 const path = require("path")
 const cors = require("cors")
+app.use(cors());
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -39,7 +41,7 @@ let Vimeo = require('vimeo').Vimeo;
 let vimeoClient = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
 
 app.use(express.json());
-app.use(cors());
+
 
 //Database Connection with MongoDB #eugene needs to redo with his own account. uncomment the line below and comment out the other database.
 //mongoose.connect("mongodb+srv://eugeneyuchanjang:klrUCKGCOwY6w1iL@imeastdb.gi927z1.mongodb.net/");
