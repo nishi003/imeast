@@ -1,46 +1,39 @@
 const port = 4000;
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose")
 const jwt = require("jsonwebtoken")
 const multer = require("multer")
 const path = require("path")
 const cors = require("cors")
-app.use(cors());
+const app = express();
 
 const dotenv = require("dotenv");
 dotenv.config();
 
-//google auth -currently not used...
+//routers
 var authRouter = require('./routes/oauth');
-var requestRouter = require('./routes/request');
-
-//stripe
 var stripeRouter = require('./routes/stripe');
-app.use('/stripepayment', stripeRouter);
-
-//comments
 var Comments = require('./routes/comments');
-app.use('/comments', Comments);
-
-//modules
 var Modules = require('./routes/moduleroute');
-app.use('/modules', Modules);
-
-//users
+var requestRouter = require('./routes/request');
 var Users = require('./routes/userroute');
-app.use('/Users', Users )
-
-//purchases and transactions
 var PurchasesTransactions = require('./routes/purchaseRoute');
+
+
+app.use(express.json());
+app.use(cors());
+
+app.use('/stripepayment', stripeRouter);
+app.use('/comments', Comments);
+app.use('/modules', Modules);
+app.use('/Users', Users )
 app.use('/purchase', PurchasesTransactions )
+
 
 
 //vimeo sdk setup
 let Vimeo = require('vimeo').Vimeo;
 let vimeoClient = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
-
-app.use(express.json());
 
 
 //Database Connection with MongoDB #eugene needs to redo with his own account. uncomment the line below and comment out the other database.
