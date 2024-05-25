@@ -14,38 +14,38 @@ const Index = () => {
     const [sectionThree, setSectionThree] = useState(false);
 
     const [errors, setErrors] = useState({
-        firstName: "",
-        lastName: "",
-        sex: "",
-        birthday: "",
-        email: "",
-        phoneNumber: "",
-        pw1: "",
-        pw2: "",
-        registeredCollege: "",
-        licenseNumber: "",
-        practiceLocation: "",
-        professionType: "",
-        practicePeriod: "",
-        other: "",
-        serverError: "",
+        firstName: '',
+        lastName: '',
+        sex: '',
+        birthday: '',
+        email: '',
+        phoneNumber: '',
+        pw1: '',
+        pw2: '',
+        registeredCollege: '',
+        licenseNumber: '',
+        practiceLocation: '',
+        professionType: '',
+        practicePeriod: '',
+        other: '',
+        serverError: '',
     });
 
     const [formData, setFormData] = useState({
-        firstName: null,
-        lastName: null,
-        sex: null,
-        birthday: null,
-        email: null,
-        phoneNumber: null,
-        pw1: null,
-        pw2: null,
-        registeredCollege: null,
-        licenseNumber: null,
-        practiceLocation: null,
-        professionType: null,
-        practicePeriod: null,
-        other: null
+        firstName: '',
+        lastName: '',
+        sex: '',
+        birthday: '',
+        email: '',
+        phoneNumber: '',
+        pw1: '',
+        pw2: '',
+        registeredCollege: '',
+        licenseNumber: '',
+        practiceLocation: '',
+        professionType: '',
+        practicePeriod: '',
+        other: ''
     });
 
     const handleInputChangeForm = (e) => {
@@ -126,8 +126,8 @@ const Index = () => {
                             <div className='flex flex-row gap-5'>
                                 <div className='flex flex-col gap-1'>
                                     <label className='poppins-semibold text-[15px] text-[#767676] pl-2'>Sex</label>
-                                    <select name="sex" value={formData['sex']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[326px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["sex"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`}>
-                                        <option value="" disabled selected hidden>Select sex</option>
+                                    <select name="sex" defaultValue="" value={formData['sex']} onFocus={() => { setSectionOne(true); setSectionTwo(false); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[326px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["sex"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`}>
+                                        <option value="" disabled hidden>Select sex</option>
                                         <option value="male" className="text-[15px]">Male</option>
                                         <option value="female" className="text-[15px]">Female</option>
                                         <option value="other" className="text-[15px]">Other</option>
@@ -198,8 +198,8 @@ const Index = () => {
                             <div className='flex flex-row gap-4'>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='professionType' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Type of profession</label>
-                                    <select name='professionType' value={formData['professionType']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[327px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["professionType"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`}>
-                                        <option value="" disabled selected hidden>Select Profession</option>
+                                    <select name='professionType' defaultValue='' value={formData['professionType']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[327px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["professionType"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`}>
+                                        <option value="" disabled hidden>Select Profession</option>
                                         <option value='acupuncturist' className='text-[15px]'>Acupuncturist</option>
                                         <option value='physiologist' className='text-[15px]'>Physiologist</option>
                                         <option value='naturopathicDoctor' className='text-[15px]'>Naturopathic Doctor</option>
@@ -209,8 +209,8 @@ const Index = () => {
                                 </div>
                                 <div className='flex flex-col gap-1'>
                                     <label htmlFor='practicePeriod' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Practicing period</label>
-                                    <select name='practicePeriod' value={formData['practicePeriod']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[327px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["practicePeriod"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`}>
-                                        <option value="" disabled selected hidden>Select practicing period</option>
+                                    <select name='practicePeriod' defaultValue='' value={formData['practicePeriod']} onFocus={() => { setSectionOne(false); setSectionTwo(true); setSectionThree(false); }} onChange={handleInputChangeForm} className={`h-[58px] w-[327px] rounded-[10px] text-[#9F9F9F] poppins-semibold px-3 focus:outline-[#767676] ${errors["practicePeriod"] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`}>
+                                        <option value="" disabled hidden>Select practicing period</option>
                                         <option value='lt1yr' className='text-[15px]'>Less than 1 year</option>
                                         <option value='1yr' className='text-[15px]'>1 year</option>
                                         <option value='2-3yr' className='text-[15px]'>2-3 years</option>
