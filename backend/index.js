@@ -308,8 +308,6 @@ app.post('/request', (req, res) => {
     return data
 })
 
-const User = require('./models/User')
-const Module = require('./models/Module')
 
 function decodeJwt(token) {
     try {
@@ -346,6 +344,9 @@ app.post('/admin/signup/', async (req, res) => {
         if (!req.body[field]) {
             errors[field] = 'This field is required.';
             isIncomplete = true;
+        }
+        else {
+            fieldNames[field] = req.body[field].trim();
         }
     }
 
@@ -387,7 +388,7 @@ app.post('/admin/signup/', async (req, res) => {
         const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
         return res.status(201).json({ success: true, token: token });
     } catch (error) {
-        errors['serverError'] = 'There was an internal server error. Please try again later.';
+        errors['serverError'] = error.message;
         return res.status(400).json({ success: false, errors: errors });
     }
 })
@@ -761,8 +762,8 @@ app.post('/purchase/', async (req, res) =>{
             username: firstName,
             moduleID: moduleID,
             price: price,
-            status: 
-        })
+            status: "Completed"
+        });
 
     }
     catch (err){
@@ -894,6 +895,5 @@ app.listen(port, (error) => {
         console.log("Server Running on Port" + port)
     }
     else {
-        console.log("Error: " + error)
-    }
+        console.log("Error: " + error)}
 })
