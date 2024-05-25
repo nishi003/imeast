@@ -196,7 +196,6 @@ app.post('/removefromcart', async (req, res) => {
     }
     //console.log(idList)
 
-
     if (!idList.includes(productID)) {
         res.json({ success: false, message: "item doesn't exist in cart" })
     }
@@ -251,6 +250,7 @@ app.post('/request', (req, res) => {
 })
 
 const User = require('./models/User')
+const Module = require('./models/Module')
 
 function decodeJwt(token) {
     try {
@@ -272,6 +272,65 @@ app.post('/currentuser/', async (req, res) => {
     };
 
     return res.status(200).json({ success: true, info: info });
+})
+
+app.post('/admin/signup/', async (req, res) => {
+    let errors = {};
+    let isIncomplete = false;
+
+    const fieldNames = {
+        'email': '',
+        'password': '',
+    };
+
+    for (const field in fieldNames) {
+        if (!req.body[field]) {
+            errors[field] = 'This field is required.';
+            isIncomplete = true;
+        }
+    }
+
+    const existingUser = await User.findOne({ email: fieldNames['email'] });
+    if (existingUser) {
+        errors['email'] = 'This email is already registered.';
+        isIncomplete = true;
+    }
+
+    if (isIncomplete) {
+        return res.status(400).json({ success: false, errors: errors });
+    }
+
+    const user = new User({
+        isAdmin: true,
+        image: null,
+        firstName: null,
+        lastName: null,
+        email: fieldNames['email'],
+        phoneNumber: null,
+        password: fieldNames['password'],
+        sex: null,
+        birthday: null,
+        registeredCollege: null,
+        licenseNumber: null,
+        practiceLocation: null,
+        professionType: null,
+        practicePeriod: null,
+        other: null,
+    });
+
+    try {
+        await user.save();
+        const data = {
+            user: {
+                id: user.id
+            }
+        }
+        const token = jwt.sign(data, 'imEast_tokenEncryptionKey');
+        return res.status(201).json({ success: true, token: token });
+    } catch (error) {
+        errors['serverError'] = 'There was an internal server error. Please try again later.';
+        return res.status(400).json({ success: false, errors: errors });
+    }
 })
 
 app.post('/user/signup/', async (req, res) => {
@@ -383,7 +442,7 @@ app.post('/user/signup/', async (req, res) => {
             }
         }
         const token = jwt.sign(data, 'imEast_tokenEncryptionKey'); //may also somehow put this into .env
-        return res.status(200).json({ success: true, token: token });
+        return res.status(201).json({ success: true, token: token });
     } catch (error) {
         errors['serverError'] = 'There was an internal server error. Please try again later.';
         return res.status(400).json({ success: false, errors: errors });
@@ -474,15 +533,43 @@ app.patch('/user/:userID/', async (req, res) => {
         let errors = {};
         let isIncomplete = false;
 
+        console.log(req.body);
+
         for (const field in req.body) {
-            if (!req.body[field]) {
-                if (field !== 'image' && field !== 'other') {
-                    console.log(feild + req.body[field]);
+            if (req.body[field] == '') {
+                if (field === 'image') {
+                    errors[field] = '';
+                } else if (field === 'professionType' && req.body[field] === 'other') {
+                    if (req.body['other'] === '') {
+                        errors['other'] = 'This field is required.';
+                        isIncomplete = true;
+                    } else {
+                        errors['other'] = '';
+                    }
+                } else {
                     errors[field] = 'This field is required.';
                     isIncomplete = true;
-                } else {
-                    errors[field] = '';
                 }
+            } else {
+                errors[field] = '';
+            }
+        }
+
+        if ('birthday' in req.body) {
+            const today = new Date();
+            const birthday = new Date(req.body.birthday);
+
+            let age = today.getFullYear() - birthday.getFullYear();
+            const birthMonth = birthday.getMonth();
+            const todayMonth = today.getMonth();
+
+            if (todayMonth < birthMonth || (todayMonth === birthMonth && today.getDate() < birthday.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                errors["birthday"] = "You must be at least 18 years old.";
+                isIncomplete = true;
             }
         }
 
@@ -492,6 +579,9 @@ app.patch('/user/:userID/', async (req, res) => {
 
         for (const field in req.body) {
             user[field] = req.body[field];
+            if (field === 'professionType' && req.body[field] !== 'other') {
+                user['other'] = '';
+            }
         }
 
         await user.save();
@@ -501,8 +591,6 @@ app.patch('/user/:userID/', async (req, res) => {
         return res.status(500).json({ success: false, error: error.message });
     }
 })
-
-const Module = require('./models/Module')
 
 app.post('/module/', async (req, res) => {
     let errors = {};
