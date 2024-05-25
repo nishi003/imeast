@@ -74,7 +74,7 @@ const Index = () => {
             } else {
                 const info = json.info;
                 const userID = info.userID;
-                const userResponse = await access_or_login(`/user/${userID}`, { method: 'GET' }, navigate);
+                const userResponse = await access_or_login(`/Users/user/${userID}`, { method: 'GET' }, navigate);
                 const userResponseJson = await userResponse.json();
                 if (!userResponse.ok) {
                     console.log('Internal server error.')

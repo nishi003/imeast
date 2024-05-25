@@ -279,8 +279,8 @@ exports.userDetails = async (req, res) => {
 };
 
 exports.userPatch = async (req, res) => {
-    const userID = req.params.userID;
     try {
+        const userID = req.params.userID;
         const user = await User.findById(userID);
 
         let errors = {};
@@ -300,8 +300,12 @@ exports.userPatch = async (req, res) => {
                         errors['other'] = '';
                     }
                 } else {
-                    errors[field] = 'This field is required.';
-                    isIncomplete = true;
+                    if (field === 'other' && req.body['professionType'] !== 'other') {
+                        errors[field] = '';
+                    } else {
+                        errors[field] = 'This field is required.';
+                        isIncomplete = true;
+                    }
                 }
             } else {
                 errors[field] = '';
@@ -327,6 +331,7 @@ exports.userPatch = async (req, res) => {
         }
 
         if (isIncomplete) {
+            console.log(errors);
             return res.status(400).json({ success: false, errors: errors });
         }
 
@@ -341,6 +346,7 @@ exports.userPatch = async (req, res) => {
         const newUser = await User.findById(userID);
         return res.status(200).json({ success: true, changed: newUser });
     } catch (error) {
+        console.log(error.message);
         return res.status(500).json({ success: false, error: error.message });
     }
 }

@@ -11,6 +11,6 @@ router.post('/login/', userController.login);
 
 router.get('/user/', userController.user);
 router.get('/user/:userID/', userController.userDetails);
-router.post('/user/:userID/', userController.userPatch);
+router.patch('/user/:userID/', userController.userPatch);
 
 module.exports = router;
