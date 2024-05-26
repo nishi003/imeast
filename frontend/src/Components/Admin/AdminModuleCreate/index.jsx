@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UilAngleLeft, UilLinkH, UilEditAlt } from '@iconscout/react-unicons';
-import { access, access_or_login } from '../../../Util/access';
+import { UilAngleLeft } from '@iconscout/react-unicons';
+import { access } from '../../../Util/access';
 import FieldError from '../../../Components/FieldError';
 
 import './style.css';
