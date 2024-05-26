@@ -1,16 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import logo from '../../Assets/logo-large.png';
 import logo_lg from '../../Assets/logo-xl.png';
 import FieldError from '../../Components/FieldError';
 import { access, access_or_login } from '../../Util/access';
-import { UserContext } from '../../Contexts/UserContext';
 
 import './style.css'
 import { Link, useNavigate } from 'react-router-dom';
 
 const Index = () => {
     const navigate = useNavigate();
-    const { setID } = useContext(UserContext);
 
     const [errors, setErrors] = useState({
         email: '',

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import AdminModuleList from '../../../Components/Admin/AdminModuleList';
 import AdminVideo from '../../../Components/Admin/AdminVideo';
-import AdminModuleCreate from '../../../Components/Admin/AdminModuleCreate';
-import AdminModuleInfo from '../../../Components/Admin/AdminModuleInfo';
 import { access } from '../../../Util/access';
 
 import './style.css';
@@ -18,7 +15,7 @@ const Index = () => {
     const [isCreate, setIsCreate] = useState(false);
     const [isNewVideo, setIsNewVideo] = useState(false);
     const [type, typeChange] = useState("");
-    const [module, setModule] = useState(-1);
+    const [module, setModule] = useState();
     const [video, setVideo] = useState(-1);
     const [comment, setComment] = useState(0);
 
@@ -75,6 +72,8 @@ const Index = () => {
                         const modules = jsonModule.modules;
                         setModuleNumber(modules.length + 1);
                         setModules(modules);
+                        setModule(-1);
+                        console.log(modules);
                     }
                 }
             }
@@ -85,21 +84,21 @@ const Index = () => {
 
     useEffect(() => {
         fetchUserData();
-    }, [navigate]);
+    }, [module]);
 
     return (
         <div className='h-full w-full bg-[#DCDCDC] flex p-8 gap-4 overflow-hidden'>
             {isCreate ?
-                <AdminModuleCreate setModule={setModule} moduleNumber={moduleNumber} />
+                <></>
                 :
                 (module === -1 ?
-                    <AdminModuleList modules={modules} setModule={setModule} />
+                    <></>
                     :
                     <div className='h-full w-full flex flex-col flex-grow-0 flex-shrink-0 bg-white rounded-[30px] p-8 overflow-hidden'>
                         {video !== -1 ?
                             <AdminVideo module={module} video={video} setVideo={setVideo} comment={comment} />
                             :
-                            <AdminModuleInfo module={module} setModule={setModule} video={video} setVideo={setVideo} isNewVideo={isNewVideo} />
+                            <></>
                         }
                     </div>
                 )

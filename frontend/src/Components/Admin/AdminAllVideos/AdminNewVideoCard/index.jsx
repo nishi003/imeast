@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UilPlusCircle } from '@iconscout/react-unicons';
 
+import { LessonContext } from '../../../../Contexts/MLCContext';
+
 const Index = ({ module, video, setVideo }) => {
+    const { lessonNumber } = useContext(LessonContext);
+
     return (
         <>
-            {video === -1 ?
+            {lessonNumber === -1 ?
                 <Link className='flex flex-col gap-1' to={`/admin/module/${module}/video/create/`} onClick={() => { setVideo(-1) }}>
                     <div className='bg-primary w-[240px] h-[135px] flex flex-col justify-center items-center flex-shrink-0'>
                         <UilPlusCircle color="#ffffff" size='40' />

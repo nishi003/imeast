@@ -85,49 +85,21 @@ exports.getModulesUser = async (req, res) => {
 
 exports.getDetails = async (req, res) => {
     try {
-        const userID = req.body.userID
         const moduleID = req.params.moduleID;
         const module = await Module.findById(moduleID);
 
         if (!module) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });
         }
-
-        let responseData = {};
-        if (req.body.isAdmin) {
-            responseData['moduleID'] = module.id;
-            responseData['title'] = module.title;
-            responseData['duration'] = module.duration;
-            responseData['description'] = module.description;
-            responseData['pdf'] = module.pdf;
-            responseData['image'] = module.image;
-            responseData['price'] = module.price;
-            responseData['link'] = module.link;
-        } else {
-            const userOwns = await Purchases.findOne({ userID: userID, moduleID: moduleID });
-            if (!userOwns) {
-                return res.status(403).json({ success: false, error: 'You do not have permission to view this module.' });
-            }
-
-            responseData['moduleID'] = module.id;
-            responseData['title'] = module.title;
-            responseData['duration'] = module.duration;
-            responseData['description'] = module.description;
-            responseData['pdf'] = module.pdf;
-            responseData['image'] = module.image;
-        }
-        return res.status(200).json({ success: true, module: responseData });
+        return res.status(200).json({ success: true, module: module });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }
-};
+}
+
 
 exports.patchDetails = async (req, res) => {
     try {
-        if (!req.body.isAdmin) {
-            return res.status(403).json({ success: false, error: 'Unauthorized.' });
-        }
-
         const moduleID = req.params.moduleID;
         const module = await Module.findById(moduleID);
 
@@ -152,22 +124,12 @@ exports.patchDetails = async (req, res) => {
             if (!req.body[field]) {
                 if (field === 'pdf' || field === 'image' || field === 'link') {
                     errors[field] = '';
-                    if (typeof req.body[field] === 'string') {
-                        module[field] = req.body[field].trim();
-                    } else {
-                        module[field] = req.body[field];
-                    }
                 } else {
                     errors[field] = 'This field is required.';
                     isIncomplete = true;
                 }
             } else {
                 errors[field] = '';
-                if (typeof req.body[field] === 'string') {
-                    module[field] = req.body[field].trim();
-                } else {
-                    module[field] = req.body[field];
-                }
             }
         };
 
@@ -175,8 +137,13 @@ exports.patchDetails = async (req, res) => {
             return res.status(400).json({ success: false, errors: errors });
         }
 
+        for (const field in req.body) {
+            module[field] = req.body[field];
+        }
+
         await module.save();
-        return res.status(200).json({ success: true, module: module });
+        const newModule = await Module.findById(moduleID);
+        return res.status(200).json({ success: true, changed: newModule });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }
@@ -185,18 +152,15 @@ exports.patchDetails = async (req, res) => {
 
 exports.deleteModule = async (req, res) => {
     try {
-        if (!req.isAdmin) {
-            return res.status(403).json({ success: false, error: 'You do not have permission to delete this module.' });
-        }
-
         const moduleID = req.params.moduleID;
+
         const deletedModule = await Module.findByIdAndDelete(moduleID);
+        const lessonsDeleted = await Lesson.deleteMany({ moduleid: moduleID });
 
         if (!deletedModule) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });
         }
-
-        return res.status(200).json({ success: true, message: 'Module deleted successfully.' });
+        return res.status(200).json({ success: true, message: 'Module deleted successfully.', module: deletedModule, lessons: lessonsDeleted.deletedCount });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }

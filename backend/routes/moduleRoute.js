@@ -12,7 +12,6 @@ router.patch('/module/:moduleID/', moduleController.patchDetails);
 
 router.delete('/module/:moduleID/', moduleController.deleteModule);
 
-
 //for lessons
 router.post('/:moduleID/lesson', moduleController.lessonPost);
 
