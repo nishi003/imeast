@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
+import { LessonContext } from '../../../../Contexts/MLCContext';
+
 const Index = ({ lesson, title, module, setVideo, video }) => {
+    const { lessonNumber } = useContext(LessonContext);
+
     return (
         <>
-            {video === -1 ?
+            {lessonNumber === -1 ?
                 <Link className='flex flex-row w-full items-start gap-6' onClick={() => { setVideo(lesson) }} to={`/admin/module/${module}/video/${lesson}/`}>
                     <div className='bg-[#D9D9D9] w-[240px] h-[135px]' />
                     <div className='flex flex-col items-start'>

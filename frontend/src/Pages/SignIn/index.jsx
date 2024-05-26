@@ -1,16 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import logo from '../../Assets/logo-large.png';
 import logo_lg from '../../Assets/logo-xl.png';
 import FieldError from '../../Components/FieldError';
 import { access, access_or_login } from '../../Util/access';
-import { UserContext } from '../../Contexts/UserContext';
 
 import './style.css'
 import { Link, useNavigate } from 'react-router-dom';
 
 const Index = () => {
     const navigate = useNavigate();
-    const { setID } = useContext(UserContext);
 
     const [errors, setErrors] = useState({
         email: '',
@@ -40,7 +38,7 @@ const Index = () => {
         };
 
         try {
-            const response = await access('/Users/login/', requestOptions);
+            const response = await access('/users/login/', requestOptions);
             const json = await response.json();
             if (!response.ok) {
                 const serverErrors = json.errors;
@@ -49,7 +47,7 @@ const Index = () => {
                 }
             } else {
                 localStorage.setItem('access', json.access);
-                const decrypt = await access_or_login('/Users/currentuser/', {
+                const decrypt = await access_or_login('/users/currentuser/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ access: json.access })

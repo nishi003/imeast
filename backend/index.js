@@ -24,8 +24,8 @@ app.use(cors());
 app.use('/stripepayment', stripeRouter);
 app.use('/comments', Comments);
 app.use('/modules', Modules);
-app.use('/Users', Users)
-app.use('/purchase', PurchasesTransactions)
+app.use('/users', Users)
+app.use('/purchases', PurchasesTransactions)
 
 require('dotenv').config();
 const dbUri = process.env.MONGOOSE_CONNECT;
