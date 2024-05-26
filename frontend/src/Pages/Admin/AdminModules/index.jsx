@@ -48,8 +48,6 @@ const Index = () => {
                 setIsNewVideo(false);
                 break;
         }
-        console.log(location.pathname);
-        console.log(isCreate);
     }, [moduleID, videoID, commentID, location, isCreate, isNewVideo]);
 
     return (
