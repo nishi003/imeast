@@ -63,14 +63,19 @@ exports.addModule = async (req, res) => {
     }
 };
 
-exports.getModules = async (req, res) => {
+exports.getModulesAdmin = async (req, res) => {
     try {
-        let modules;
-        if (req.body.isAdmin) {
-            modules = await Module.find({}, '_id title duration description image').lean();
-        } else {
-            modules = await Module.find({}, '_id title duration description image price link').lean();
-        }
+        const modules = await Module.find({}, '_id title duration description image').lean();
+        return res.status(200).json({ success: true, modules: modules });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+
+exports.getModulesUser = async (req, res) => {
+    try {
+        const modules = await Module.find({}, '_id title duration description image price link').lean();
         return res.status(200).json({ success: true, modules: modules });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });

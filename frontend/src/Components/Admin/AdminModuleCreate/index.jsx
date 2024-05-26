@@ -37,7 +37,7 @@ const Index = ({ setModule, moduleNumber }) => {
 
     const fetchUserData = async () => {
         try {
-            const response = await access('/Users/currentuser/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ access: localStorage.getItem('access') }) }, navigate);
+            const response = await access('/users/currentuser/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ access: localStorage.getItem('access') }) }, navigate);
             const json = await response.json();
             if (!response.ok) {
                 const decrypt_serverErrors = json.errors;
