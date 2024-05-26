@@ -22,7 +22,6 @@ export const useLessonContext = () => {
     const [lessonNumber, setLessonNumber] = useState(-1);
 
     return {
-        lessonNumber,
-        setLessonNumber,
+        lessonNumber, setLessonNumber,
     };
 };
