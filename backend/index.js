@@ -25,8 +25,8 @@ app.use(cors());
 app.use('/stripepayment', stripeRouter);
 app.use('/comments', Comments);
 app.use('/modules', Modules);
-app.use('/Users', Users )
-app.use('/purchase', PurchasesTransactions )
+app.use('/Users', Users)
+app.use('/purchase', PurchasesTransactions)
 
 
 
@@ -41,6 +41,8 @@ let vimeoClient = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENT
 //my own test database
 mongoose.connect("mongodb+srv://basnetsan25:InnWSc0E6O7SG3m6@cluster0.4vviipo.mongodb.net/");
 
+// nishi database connection
+// mongoose.connect('mongodb+srv://nishi003:mxwI4Mmyf0OQEptq@test-database.5buokwp.mongodb.net/');
 
 //API Creation
 app.get("/", (req, res) => {
