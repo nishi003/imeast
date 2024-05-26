@@ -40,7 +40,7 @@ const Index = () => {
         };
 
         try {
-            const response = await access('/Users/login/', requestOptions);
+            const response = await access('/users/login/', requestOptions);
             const json = await response.json();
             if (!response.ok) {
                 const serverErrors = json.errors;
@@ -49,7 +49,7 @@ const Index = () => {
                 }
             } else {
                 localStorage.setItem('access', json.access);
-                const decrypt = await access_or_login('/Users/currentuser/', {
+                const decrypt = await access_or_login('/users/currentuser/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ access: json.access })
