@@ -87,8 +87,6 @@ const Index = ({ setModule, moduleNumber }) => {
         };
     }
 
-    // const moduleJSON = await moduleResponse.json();
-
     return (
         <div className='w-full h-full rounded-[30px] bg-white flex flex-col flex-grow-0 flex-shrink-0 p-8'>
             <div className='flex flex-col overflow-hidden h-full w-full gap-4'>
