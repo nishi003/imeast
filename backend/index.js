@@ -18,7 +18,6 @@ var requestRouter = require('./routes/request');
 var Users = require('./routes/userroute');
 var PurchasesTransactions = require('./routes/purchaseRoute');
 
-
 app.use(express.json());
 app.use(cors());
 
@@ -28,21 +27,14 @@ app.use('/modules', Modules);
 app.use('/Users', Users)
 app.use('/purchase', PurchasesTransactions)
 
-
+require('dotenv').config();
+const dbUri = process.env.MONGOOSE_CONNECT;
 
 //vimeo sdk setup
 let Vimeo = require('vimeo').Vimeo;
 let vimeoClient = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
 
-
-//Database Connection with MongoDB #eugene needs to redo with his own account. uncomment the line below and comment out the other database.
-//mongoose.connect("mongodb+srv://eugeneyuchanjang:klrUCKGCOwY6w1iL@imeastdb.gi927z1.mongodb.net/");
-
-//my own test database
-mongoose.connect("mongodb+srv://basnetsan25:InnWSc0E6O7SG3m6@cluster0.4vviipo.mongodb.net/");
-
-// nishi database connection
-// mongoose.connect('mongodb+srv://nishi003:mxwI4Mmyf0OQEptq@test-database.5buokwp.mongodb.net/');
+mongoose.connect(dbUri);
 
 //API Creation
 app.get("/", (req, res) => {
