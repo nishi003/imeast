@@ -64,7 +64,7 @@ const Index = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await access('/currentuser/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ access: localStorage.getItem('access') }) }, navigate);
+            const response = await access('/Users/currentuser/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ access: localStorage.getItem('access') }) }, navigate);
             const json = await response.json();
             if (!response.ok) {
                 const decrypt_serverErrors = json.errors;
@@ -74,7 +74,7 @@ const Index = () => {
             } else {
                 const info = json.info;
                 const userID = info.userID;
-                const userResponse = await access_or_login(`/user/${userID}`, { method: 'GET' }, navigate);
+                const userResponse = await access_or_login(`/Users/user/${userID}`, { method: 'GET' }, navigate);
                 const userResponseJson = await userResponse.json();
                 if (!userResponse.ok) {
                     console.log('Internal server error.')
@@ -106,7 +106,7 @@ const Index = () => {
     async function handlePersonalSubmit(event) {
         event.preventDefault();
         try {
-            const response = await access(`/user/${user._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData1) }, navigate);
+            const response = await access(`/Users/user/${user._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData1) }, navigate);
             const json = await response.json();
             if (!response.ok) {
                 const serverErrors = json.errors;
@@ -135,7 +135,7 @@ const Index = () => {
     async function handleProfessionalSubmit(event) {
         event.preventDefault();
         try {
-            const response = await access_or_login(`/user/${user._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData2) }, navigate);
+            const response = await access_or_login(`/Users/user/${user._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData2) }, navigate);
             const json = await response.json();
             if (!response.ok) {
                 const serverErrors = json.errors;

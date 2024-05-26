@@ -48,14 +48,12 @@ const Index = () => {
                 setIsNewVideo(false);
                 break;
         }
-        console.log(location.pathname);
-        console.log(isCreate);
     }, [moduleID, videoID, commentID, location, isCreate, isNewVideo]);
 
     return (
         <div className='h-full w-full bg-[#DCDCDC] flex p-8 gap-4 overflow-hidden'>
             {isCreate ?
-                <AdminModuleCreate setModule={setModule} />
+                <AdminModuleCreate setModule={setModule} moduleNumber={10} />
                 :
                 (module === -1 ?
                     <AdminModuleList setModule={setModule} />
