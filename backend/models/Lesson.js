@@ -10,10 +10,14 @@ const Lesson = mongoose.model("Lesson", {
         type: String,
         required: true,
     },
-    video_URI: {
+    video_URL: {
         type: String,
         //for now false
-        required: false,
+        required: true,
+    },
+    videoHtmlEmbed: {
+        type: String,
+        required: false
     },
     thumbnail: {
         type: String,

@@ -83,10 +83,24 @@ exports.getModulesUser = async (req, res) => {
 };
 
 
-exports.getDetails = async (req, res) => {
+exports.getDetailsAdmin = async (req, res) => {
     try {
         const moduleID = req.params.moduleID;
-        const module = await Module.findById(moduleID);
+        const module =await Module.findById(moduleID).select('title duration description pdf picture price');
+
+        if (!module) {
+            return res.status(404).json({ success: false, error: 'Module does not exist.' });
+        }
+        return res.status(200).json({ success: true, module: module });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+}
+
+exports.getDetailsUser = async (req, res) => {
+    try {
+        const moduleID = req.params.moduleID;
+        const module = await Module.findById(moduleID).select('title duration description pdf picture');
 
         if (!module) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });
@@ -166,63 +180,3 @@ exports.deleteModule = async (req, res) => {
     }
 };
 
-
-// uri example='/videos/949383072';
-exports.lessonPost = async (req, res) => {
-    try {
-        const moduleID = req.params.moduleID;
-
-        //set password to view the video on vimeo
-        try {
-            client.request({
-                method: 'PATCH',
-                path: uri,
-                query: {
-                    'privacy': {
-                        'view': 'password'
-                    },
-                    'password': 'helloworld'
-                }
-            }, function (error, body, status_code, headers) {
-                console.log(uri + ' will now require a password to be viewed on Vimeo.')
-            })
-        } catch (error) {
-            res.json({ success: false, error: error })
-        }
-
-        //whitelist imeast as the only player
-        try {
-            vimeoClient.request({
-                method: 'PUT',
-                path: uri + '/privacy/domains/imeast.ca'
-            }, function (error, body, status_code, headers) {
-                //console.log(uri + ' will only be embeddable on "http://example.com".')
-                vimeoClient.request({
-                    method: 'PATCH',
-                    path: uri,
-                    query: {
-                        'privacy': {
-                            'embed': 'whitelist'
-                        }
-                    }
-                }, function (error, body, status_code, headers) {
-                    console.log(error)
-                })
-            })
-
-        } catch (error) {
-            res.json({ success: false, error: error })
-        };
-
-
-        const lesson = new Lesson({
-            moduleid: moduleID,
-            title: req.body.title,
-            video_embed_link: req.body.video_URI
-        });
-
-    }
-    catch (error) {
-        res.json({ success: flase, error: error })
-    }
-}

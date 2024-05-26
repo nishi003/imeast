@@ -7,12 +7,10 @@ router.post('/module/', moduleController.addModule);
 router.get('/admin/module/', moduleController.getModulesAdmin);
 router.get('/user/module/', moduleController.getModulesUser);
 
-router.get('/module/:moduleID/', moduleController.getDetails);
+router.get('/admin/module/:moudleID/', moduleController.getDetailsAdmin)
+router.get('/admin/module/:moudleID/', moduleController.getDetailsUser)
+
 router.patch('/module/:moduleID/', moduleController.patchDetails);
-
 router.delete('/module/:moduleID/', moduleController.deleteModule);
-
-//for lessons
-router.post('/:moduleID/lesson', moduleController.lessonPost);
 
 module.exports = router;
