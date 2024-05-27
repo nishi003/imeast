@@ -28,19 +28,36 @@ let file_name = "C:\\Users\\San Basnet\\Downloads\\d793f97348274cbaa7892633b7376
 let uri = '/videos/949383072';
 
 client.request({
-  method: 'PUT',
-  path: uri + '/privacy/domains/example.com'
-}, function (error, body, status_code, headers) {
-  //console.log(uri + ' will only be embeddable on "http://example.com".')
-  client.request({
-    method: 'PATCH',
-    path: uri,
-    query: {
+  method: 'PATCH',
+  path: uri,
+  query: {
       'privacy': {
-        'embed': 'whitelist'
-      }
-    }
-  }, function (error, body, status_code, headers) {
-    console.log(uri + error + body + status_code + headers)
-  })
+          'view': 'password'
+      },
+      'password': 'helloworld'
+  }
+}, function (error, body, status_code, headers) {
+  console.log(uri);
+  console.log("the errors are", error);
+  console.log("other info", body, status_code, headers)
+
 })
+
+
+// client.request({
+//   method: 'PUT',
+//   path: uri + '/privacy/domains/example.com'
+// }, function (error, body, status_code, headers) {
+//   //console.log(uri + ' will only be embeddable on "http://example.com".')
+//   client.request({
+//     method: 'PATCH',
+//     path: uri,
+//     query: {
+//       'privacy': {
+//         'embed': 'whitelist'
+//       }
+//     }
+//   }, function (error, body, status_code, headers) {
+//     //console.log(uri + error + body + status_code + headers)
+//   })
+// })
