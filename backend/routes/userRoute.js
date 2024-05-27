@@ -10,6 +10,7 @@ router.post('/user/signup/', userController.userSignup);
 router.post('/login/', userController.login);
 
 router.get('/user/', userController.user);
+router.post('/user/purchases/', userController.userPurchases);
 router.get('/user/:userID/', userController.userDetails);
 router.patch('/user/:userID/', userController.userPatch);
 

@@ -169,6 +169,9 @@ const Index = () => {
         return formattedDate
     };
 
+    function formattedNumber(originalNumber) {
+        return originalNumber.toString().replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    };
 
     return (
         <div className='h-full w-full bg-[#DEF1DD] flex flex-col p-8'>
@@ -263,7 +266,7 @@ const Index = () => {
                                                 }
                                             </p>
                                             <p className='poppins-semibold text-base text-[#767676]'>{BirthdayDisplay(user?.birthday)}</p>
-                                            <p className='poppins-semibold text-base text-[#767676]'>{user?.phoneNumber}</p>
+                                            <p className='poppins-semibold text-base text-[#767676]'>{formattedNumber(user?.phoneNumber)}</p>
                                             <p className='poppins-semibold text-base text-[#767676]'>{user?.email}</p>
                                         </div>
                                     </div>

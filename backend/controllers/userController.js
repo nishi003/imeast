@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Purchase = require('../models/Purchase');
 const jwt = require("jsonwebtoken")
 
 function decodeJwt(token) {
@@ -254,16 +255,25 @@ exports.login = async (req, res) => {
 };
 
 exports.user = async (req, res) => {
-    const token = req.body.access;
-    const user = await User.findById(decodeJwt(token).user.id);
+    try {
+        const users = await User.find({ isAdmin: false }).lean();
+        return res.status(200).json({ success: true, users: users });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
 
-    if (user.isAdmin) {
-        try {
-            users = await User.find({ isAdmin: false }).lean();
-            return res.status(200).json({ success: true, users: users });
-        } catch (error) {
-            return res.status(500).json({ success: false, error: error.message });
+exports.userPurchases = async (req, res) => {
+    try {
+        const user = await User.findById(req.body.userID);
+        if (!user) {
+            return res.status(400).json({ success: false, error: 'User not found.' });
         }
+        const purchases = await Purchase.find({ userID: req.body.userID });
+        const numberOfPurchases = purchases.length;
+        return res.status(200).json({ success: true, purchases: numberOfPurchases });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
     }
 };
 
