@@ -1,7 +1,8 @@
 const Comment = require('../models/Comment');
-
-exports.addComment = async (req, res) => {
+const Notification = require('../models/notifications');
+exports.addCommentAdmin = async (req, res) => {
   try {
+    const lessonID = req.params.lessonID;
     let comments = await Comment.find({});
     let CommentID;
     if (comments.length>0){
@@ -13,16 +14,72 @@ exports.addComment = async (req, res) => {
     else{
         CommentID = 0;
     }
-    const { ProductID, userId, username, text, parentCommentId } = req.body;
-    const newComment = new Comment({
-        CommentID: CommentID, 
-        ProductID: ProductID,
-        userId: userId,
-        username: username, 
-        text: text ,
-        parentCommentId: parentCommentId});
-    await newComment.save();
-    res.status(201).json(newComment);
+
+    //comment character limit:
+    limit = 500
+    if (req.body.text > limit){
+      const { ProductID, userId, username, text, parentCommentId } = req.body;
+      const newComment = new Comment({
+          CommentID: CommentID, 
+          lessonID: lessonID,
+          userId: userId,
+          username: username, 
+          text: text ,
+          parentCommentId: parentCommentId});
+      await newComment.save();
+      res.status(201).json(newComment);
+    }
+    else{
+      res.json({success: false, error: "the text is too long. limit of 500 characters"})
+    
+    }
+
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ error: 'Error adding comment', message: error });
+  }
+};
+
+exports.addCommentAdmin = async (req, res) => {
+  try {
+    const lessonID = req.params.lessonID;
+    let comments = await Comment.find({});
+    let CommentID;
+    if (comments.length>0){
+        let last_comment_array = comments.slice(-1)
+        let last_comment = last_comment_array[0];
+        //console.log(last_comment)
+        CommentID = last_comment.CommentID+1
+    }
+    else{
+        CommentID = 0;
+    }
+
+    //comment character limit:
+    limit = 500
+    if (req.body.text > limit){
+      const { ProductID, userId, username, text, parentCommentId } = req.body;
+      const newComment = new Comment({
+          CommentID: CommentID, 
+          lessonID: lessonID,
+          userId: userId,
+          username: username, 
+          text: text ,
+          parentCommentId: parentCommentId});
+      await newComment.save();
+      res.status(201).json(newComment);
+      
+      const notification = new Notification({
+        username: username,
+        type: "New Comment",
+        link: ""
+    });
+    }
+    else{
+      res.json({success: false, error: "the text is too long. limit of 500 characters"})
+    
+    }
+
   } catch (error) {
     console.log(error.message)
     res.status(500).json({ error: 'Error adding comment', message: error });
