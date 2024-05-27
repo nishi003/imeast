@@ -1,8 +1,8 @@
 
 
-const Purchases = require('../models/Purchases');
+const Purchases = require('../models/Purchase');
 const Notification = require('../models/notifications');
-const Transaction = require('../models/Transactions');
+const Transaction = require('../models/Transaction');
 
 exports.purchasePost = async (req, res) => {
     try {
