@@ -17,6 +17,7 @@ var Modules = require('./routes/moduleroute');
 var requestRouter = require('./routes/request');
 var Users = require('./routes/userroute');
 var PurchasesTransactions = require('./routes/purchaseRoute');
+var LessonsRouter = require('./routes/lessonRouter');
 
 app.use(express.json());
 app.use(cors());
@@ -26,13 +27,10 @@ app.use('/comments', Comments);
 app.use('/modules', Modules);
 app.use('/users', Users)
 app.use('/purchases', PurchasesTransactions)
+app.use('/lesson', LessonsRouter)
 
 require('dotenv').config();
 const dbUri = process.env.MONGOOSE_CONNECT;
-
-//vimeo sdk setup
-let Vimeo = require('vimeo').Vimeo;
-let vimeoClient = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
 
 mongoose.connect(dbUri);
 
