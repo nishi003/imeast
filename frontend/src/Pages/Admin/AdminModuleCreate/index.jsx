@@ -72,7 +72,7 @@ const Index = () => {
         };
 
         try {
-            const response = await access('/modules/module/', requestOptions);
+            const response = await access('/modules/', requestOptions);
             const json = await response.json();
             if (!response.ok) {
                 const serverErrors = json.errors;

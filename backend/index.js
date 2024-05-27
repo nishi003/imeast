@@ -27,7 +27,7 @@ app.use('/comments', Comments);
 app.use('/modules', Modules);
 app.use('/users', Users)
 app.use('/purchases', PurchasesTransactions)
-app.use('/lesson', LessonsRouter)
+app.use('/lessons', LessonsRouter)
 
 require('dotenv').config();
 const dbUri = process.env.MONGOOSE_CONNECT;

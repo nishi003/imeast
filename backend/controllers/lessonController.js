@@ -1,20 +1,19 @@
 
 const Lesson = require('../models/Lesson');
-const { user } = require('./userController');
+const Comment = require('../models/Comment');
 
 // uri example='/videos/949383072';
 function getApiUri(vimeoUrl) {
     const videoIdMatch = vimeoUrl.match(/vimeo\.com\/(\d+)/);
     if (videoIdMatch && videoIdMatch[1]) {
-      const videoId = videoIdMatch[1];
-      return `/videos/${videoId}`;
+        const videoId = videoIdMatch[1];
+        return `/videos/${videoId}`;
     } else {
-      throw new Error('Invalid Vimeo URL');
+        throw new Error('Invalid Vimeo URL');
     }
-  }
+};
 
-
-exports.postLesson = async (req, res) => {
+exports.createLesson = async (req, res) => {
     try {
         let errors = {};
         let isIncomplete = false;
@@ -24,16 +23,16 @@ exports.postLesson = async (req, res) => {
             'moduleID': '',
             'title': '',
             'description': '',
-            'video_URL': '',
-            'videoHtmlEmbed': '',
+            'videoURL': '',
+            'videoHTMLEmbed': '',
             'thumbnail': '',
             'date': '',
-            
+
         };
-        
+
         for (const field in fieldNames) {
             if (!req.body[field]) {
-                if (field === 'date' || field === 'moduleID' || field === 'videoHtmlEmbed') {
+                if (field === 'date' || field === 'moduleID' || field === 'videoHTMLEmbed') {
                     errors[field] = '';
                     if (typeof req.body[field] === 'string') {
                         fieldNames[field] = req.body[field].trim();
@@ -58,7 +57,7 @@ exports.postLesson = async (req, res) => {
             return res.status(400).json({ success: false, errors: errors });
         }
 
-        const uri = getApiUri(fieldNames['video_URL']);
+        const uri = getApiUri(fieldNames['videoURL']);
 
         //vimeo sdk setup
         let Vimeo = require('vimeo').Vimeo;
@@ -67,9 +66,9 @@ exports.postLesson = async (req, res) => {
         vimeoClient.request({
             method: 'GET',
             path: '/tutorial'
-          }, function (error, body, status_code, headers) {
+        }, function (error, body, status_code, headers) {
             if (error) {
-              console.log(error);
+                console.log(error);
             }
         })
 
@@ -83,7 +82,7 @@ exports.postLesson = async (req, res) => {
                         'view': 'disable'
                     },
                 }
-            }, function (error, body, status_code, headers) {})
+            }, function (error, body, status_code, headers) { })
         } catch (error) {
             res.json({ success: false, error: "error changing privacy settings on vimeo", error: error })
         }
@@ -103,7 +102,7 @@ exports.postLesson = async (req, res) => {
                             'embed': 'whitelist'
                         },
                         'embed': {
-                            'buttons':{
+                            'buttons': {
                                 share: false,
                                 embed: false,
                                 like: false,
@@ -117,9 +116,9 @@ exports.postLesson = async (req, res) => {
                 })
             })
         } catch (error) {
-            res.json({success: false, error: "whitelist failed"})
+            return res.json({ success: false, error: "whitelist failed" });
         }
-        
+
         //get embed text
         try {
             vimeoClient.request({
@@ -141,9 +140,9 @@ exports.postLesson = async (req, res) => {
                     }
                 })
             })
-        
+
         } catch (error) {
-            res.json({ success: false,  error: "error getting html embed code", error: error })
+            res.json({ success: false, error: "error getting html embed code", error: error })
         };
 
         const lesson = new Lesson({
@@ -153,69 +152,52 @@ exports.postLesson = async (req, res) => {
             videoHtmlEmbed: fieldNames['videoHtmlEmbed'],
             thumbnail: fieldNames['thumbnail'],
             description: fieldNames['description'],
-    
+
         });
 
-        try{
+        try {
             await lesson.save()
-            res.json({success: true, message: "yipee! lesson saved"})
-        } catch (error){ 
-            res.json({success: false, message: "error saving lesson to database", error: error});
+            res.json({ success: true, message: "yipee! lesson saved" })
+        } catch (error) {
+            res.json({ success: false, message: "error saving lesson to database", error: error });
         }
     }
     catch (error) {
         res.json({ success: false, error: error })
     }
-}
+};
 
-exports.getLessonAdmin = async(req, res) => {
+exports.retrieveLessonList = async (req, res) => {
     try {
-        const lessons = await Lesson.find({}, 'lessonID title video_URL thumbnail description').lean();
-        return res.status(200).json({ success: true, modules: lessons });
+        const moduleID = req.params.moduleID;
+        const lessons = await Lesson.find({ moduleID: moduleID }).lean();
+        return res.status(200).json({ success: true, lessons: lessons });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }
-}
+};
 
-exports.getLessonUser = async(req, res) => {
-    try {
-        const lessons = await Lesson.find({}, 'lessonID title video_URL thumbnail description').lean();
-        return res.status(200).json({ success: true, modules: lessons });
-    } catch (error) {
-        return res.status(500).json({ success: false, error: error.message });
-    }
-}
-
-exports.getLessonDetailAdmin = async(req, res) => {
+exports.retrieveLesson = async (req, res) => {
     try {
         const lessonID = req.params.lessonID;
         const lesson = await Lesson.findById(lessonID);
-        return res.status(200).json({ success: true, modules: lesson});
+        return res.status(200).json({ success: true, lesson: lesson });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }
-}
+};
 
-exports.getLessonDetailUser = async(req, res) => {
+
+exports.updateLesson = async (req, res) => {
     try {
         const lessonID = req.params.lessonID;
         const lesson = await Lesson.findById(lessonID);
-        return res.status(200).json({ success: true, modules: lesson});
-    } catch (error) {
-        return res.status(500).json({ success: false, error: error.message });
-    }
-}
 
-exports.patchLesson = async(req, res) => {
-    try {
-        const lessonID = req.params.lessonID;
-        const lesson = await Lesson.findById(lessonID);
-        
         //title, video embed link, thumbnail, description
         for (const field in req.body) {
             lesson[field] = req.body[field];
 
-            if (field === "video_URL"){
+            if (field === "video_URL") {
 
                 lesson['video_URL'] = req.body["video_URL"]
 
@@ -228,7 +210,7 @@ exports.patchLesson = async(req, res) => {
                     path: '/tutorial'
                 }, function (error, body, status_code, headers) {
                     if (error) {
-                    console.log(error);
+                        console.log(error);
                     }
                 })
 
@@ -242,7 +224,7 @@ exports.patchLesson = async(req, res) => {
                                 'view': 'disable'
                             },
                         }
-                    }, function (error, body, status_code, headers) {})
+                    }, function (error, body, status_code, headers) { })
                 } catch (error) {
                     res.json({ success: false, error: "error changing privacy settings on vimeo", error: error })
                 }
@@ -262,7 +244,7 @@ exports.patchLesson = async(req, res) => {
                                     'embed': 'whitelist'
                                 },
                                 'embed': {
-                                    'buttons':{
+                                    'buttons': {
                                         share: false,
                                         embed: false,
                                         like: false,
@@ -276,9 +258,9 @@ exports.patchLesson = async(req, res) => {
                         })
                     })
                 } catch (error) {
-                    res.json({success: false, error: "whitelist failed"})
+                    res.json({ success: false, error: "whitelist failed" })
                 }
-                
+
                 //get embed text
                 try {
                     vimeoClient.request({
@@ -297,24 +279,53 @@ exports.patchLesson = async(req, res) => {
                             if (body && body.embed && body.embed.html) {
                                 const videoHtmlEmbed = body.embed.html;
                                 lesson['videoHtmlEmbed'] = videoHtmlEmbed;
-                                console.log("New Embed HTML:",videoHtmlEmbed);
+                                console.log("New Embed HTML:", videoHtmlEmbed);
                             }
                         })
                     })
-                
+
                 } catch (error) {
-                    res.json({ success: false,  error: "error getting html embed code", error: error })
+                    res.json({ success: false, error: "error getting html embed code", error: error })
                 };
 
             }
 
             await lesson.save();
             const newLesson = await Lesson.findById(lessonID)
-            return res.status(200).json({ success: true, changed: newLesson});
+            return res.status(200).json({ success: true, changed: newLesson });
         }
 
     } catch (error) {
         return res.status(500).json({ success: false, error: "lesson does not exist" });
     }
-}
+};
 
+exports.destroyLesson = async (req, res) => {
+    try {
+        const lessonID = req.params.lessonID;
+
+        const deletedLesson = await Lesson.findByIdAndDelete(lessonID);
+        const deletedComments = await Comment.find({ lessonID: lessonID });
+
+        for (const comment of deletedComments) {
+            await Notification.deleteMany({ type: 'comment', typeID: comment._id });
+        }
+        await Comment.deleteMany({ lessonID: lessonID });
+        return res.status(200).json({ success: true, message: 'Lesson and associated comments and notifications deleted successfully' });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+exports.retrieveLessonList = async (req, res) => {
+    try {
+        const moduleID = req.params.moduleID;
+
+        const lessons = await Lesson.find({ moduleID: moduleID });
+        return res.status(200).json({ success: true, lessons: lessons });
+
+    } catch (error) {
+        console.log('retrieveLessonList: ' + error.message);
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};

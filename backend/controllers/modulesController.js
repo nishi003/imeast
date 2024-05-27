@@ -3,7 +3,7 @@ const Module = require('../models/Module');
 const Lesson = require('../models/Lesson');
 
 
-exports.addModule = async (req, res) => {
+exports.createModule = async (req, res) => {
     let errors = {};
     let isIncomplete = false;
 
@@ -63,7 +63,7 @@ exports.addModule = async (req, res) => {
     }
 };
 
-exports.getModulesAdmin = async (req, res) => {
+exports.retrieveModuleListAdmin = async (req, res) => {
     try {
         const modules = await Module.find({}, '_id title duration description image').lean();
         return res.status(200).json({ success: true, modules: modules });
@@ -73,7 +73,7 @@ exports.getModulesAdmin = async (req, res) => {
 };
 
 
-exports.getModulesUser = async (req, res) => {
+exports.retrieveModuleListUser = async (req, res) => {
     try {
         const modules = await Module.find({}, '_id title duration description image price link').lean();
         return res.status(200).json({ success: true, modules: modules });
@@ -83,24 +83,10 @@ exports.getModulesUser = async (req, res) => {
 };
 
 
-exports.getDetailsAdmin = async (req, res) => {
+exports.retrieveModule = async (req, res) => {
     try {
         const moduleID = req.params.moduleID;
-        const module =await Module.findById(moduleID).select('title duration description pdf picture price');
-
-        if (!module) {
-            return res.status(404).json({ success: false, error: 'Module does not exist.' });
-        }
-        return res.status(200).json({ success: true, module: module });
-    } catch (error) {
-        return res.status(500).json({ success: false, error: error.message });
-    }
-}
-
-exports.getDetailsUser = async (req, res) => {
-    try {
-        const moduleID = req.params.moduleID;
-        const module = await Module.findById(moduleID).select('title duration description pdf picture');
+        const module = await Module.findById(moduleID);
 
         if (!module) {
             return res.status(404).json({ success: false, error: 'Module does not exist.' });
@@ -112,7 +98,7 @@ exports.getDetailsUser = async (req, res) => {
 }
 
 
-exports.patchDetails = async (req, res) => {
+exports.patchModule = async (req, res) => {
     try {
         const moduleID = req.params.moduleID;
         const module = await Module.findById(moduleID);
@@ -164,15 +150,15 @@ exports.patchDetails = async (req, res) => {
 };
 
 
-exports.deleteModule = async (req, res) => {
+exports.destroyModule = async (req, res) => {
     try {
         const moduleID = req.params.moduleID;
 
         const deletedModule = await Module.findByIdAndDelete(moduleID);
-        const lessonsDeleted = await Lesson.deleteMany({ moduleid: moduleID });
+        const lessonsDeleted = await Lesson.deleteMany({ moduleID: moduleID });
 
         if (!deletedModule) {
-            return res.status(404).json({ success: false, error: 'Module does not exist.' });
+            return res.status(400).json({ success: false, error: 'Module does not exist.' });
         }
         return res.status(200).json({ success: true, message: 'Module deleted successfully.', module: deletedModule, lessons: lessonsDeleted.deletedCount });
     } catch (error) {

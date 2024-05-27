@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const commentController = require('../controllers/commentController');
 
-router.post('admin/:lessonID/comment', commentController.addCommentAdmin);
-router.post('user/:lessonID/comment', commentController.addCommentUser);
-router.get('/getreplies', commentController.getCommentsByParent);
+router.post('/:lessonID/', commentController.createComment);
+router.get('/:lessonID/', commentController.retrieveCommentList);
 
-router.get('/allcomments', commentController.getAllComments);
-router.get('/getcommentsbyvid', commentController.getCommentsbyVid);
-router.post('/deletecomment', commentController.deleteComment);
+router.post('/:commentID/', commentController.createReply);
+router.get('/:commentID/', commentController.retrieveReplyList);
+
+router.delete('/:commentID/', commentController.destroyComment);
 
 module.exports = router;
