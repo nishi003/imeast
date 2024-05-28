@@ -16,7 +16,7 @@ const Lesson = mongoose.model("Lesson",
         },
         videoHTMLEmbed: {
             type: String,
-            required: false
+            required: true,
         },
         thumbnail: {
             type: String,
