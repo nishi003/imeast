@@ -2,15 +2,13 @@ const express = require('express');
 const router = express.Router();
 const moduleController = require('../controllers/modulesController');
 
-//get and add modules
-router.post('/module/', moduleController.addModule);
-router.get('/admin/module/', moduleController.getModulesAdmin);
-router.get('/user/module/', moduleController.getModulesUser);
+router.post('/', moduleController.createModule);
 
-router.get('/admin/module/:moudleID/', moduleController.getDetailsAdmin)
-router.get('/admin/module/:moudleID/', moduleController.getDetailsUser)
+router.get('/list/admin/', moduleController.retrieveModuleListAdmin);
+router.get('/user/module/', moduleController.retrieveModuleListUser);
 
-router.patch('/module/:moduleID/', moduleController.patchDetails);
-router.delete('/module/:moduleID/', moduleController.deleteModule);
+router.get('/:moduleID/', moduleController.retrieveModule);
+router.patch('/:moduleID/', moduleController.patchModule);
+router.delete('/:moduleID/', moduleController.destroyModule);
 
 module.exports = router;

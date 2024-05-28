@@ -30,7 +30,7 @@ const Index = () => {
                 if (!info.isAdmin) {
                     navigate('/signin/');
                 } else {
-                    const moduleResponse = await access_or_login(`/modules/module/${moduleID}/`, { method: 'GET' }, navigate);
+                    const moduleResponse = await access_or_login(`/modules/${moduleID}/`, { method: 'GET' }, navigate);
                     const jsonModule = await moduleResponse.json();
                     const moduleRes = jsonModule.module;
                     setModule(moduleRes);
@@ -100,7 +100,7 @@ const Index = () => {
                         </div>
                     </div>
                     <div className='h-full w-full flex flex-col px-8 overflow-hidden'>
-                        <AdminAllVideos module={module?._id} />
+                        <AdminAllVideos moduleID={module?._id} />
                     </div>
                 </div>
             </div>

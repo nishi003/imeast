@@ -5,6 +5,7 @@ import { access } from '../../../Util/access';
 import { UilAngleLeft } from '@iconscout/react-unicons';
 
 import FieldError from '../../../Components/FieldError';
+import './style.css';
 
 const Index = () => {
     const navigate = useNavigate();
@@ -72,7 +73,7 @@ const Index = () => {
         };
 
         try {
-            const response = await access('/modules/module/', requestOptions);
+            const response = await access('/modules/', requestOptions);
             const json = await response.json();
             if (!response.ok) {
                 const serverErrors = json.errors;

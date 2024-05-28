@@ -68,7 +68,7 @@ const Index = () => {
                 if (!info.isAdmin) {
                     navigate('/signin/');
                 } else {
-                    const moduleResponse = await access_or_login(`/modules/module/${moduleID}/`, { method: 'GET' }, navigate);
+                    const moduleResponse = await access_or_login(`/modules/${moduleID}/`, { method: 'GET' }, navigate);
                     const jsonModule = await moduleResponse.json();
                     if (jsonModule && jsonModule.module) {
                         const moduleData = jsonModule.module;
@@ -98,7 +98,7 @@ const Index = () => {
     async function handleUpdate(event) {
         event.preventDefault();
         try {
-            const response = await access(`/modules/module/${module._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) }, navigate);
+            const response = await access(`/modules/${module._id}/`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) }, navigate);
             const json = await response.json();
             if (!response.ok) {
                 const serverErrors = json.errors;
@@ -120,7 +120,7 @@ const Index = () => {
         } else {
             event.preventDefault();
             try {
-                const response = await access_or_login(`/modules/module/${module._id}/`, { method: 'DELETE' }, navigate);
+                const response = await access_or_login(`/modules/${module._id}/`, { method: 'DELETE' }, navigate);
                 const json = await response.json();
                 if (!response.ok) {
                     const serverErrors = json.errors;

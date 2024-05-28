@@ -25,7 +25,7 @@ const Index = () => {
                 if (!info.isAdmin) {
                     navigate('/signin/');
                 } else {
-                    const moduleResponse = await access('/modules/admin/module/', { method: 'GET' });
+                    const moduleResponse = await access('/modules/list/admin/', { method: 'GET' });
                     const jsonModule = await moduleResponse.json();
                     if (!moduleResponse.ok) {
                         console.log(jsonModule);

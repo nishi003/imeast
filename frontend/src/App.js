@@ -11,6 +11,8 @@ import AdminModuleList from './Pages/Admin/AdminModuleList';
 import AdminModuleCreate from './Pages/Admin/AdminModuleCreate';
 import AdminModuleInfo from './Pages/Admin/AdminModuleInfo';
 import AdminModuleEdit from './Pages/Admin/AdminModuleEdit';
+import AdminLessonCreate from './Pages/Admin/AdminLessonCreate';
+import AdminLessonDetail from './Pages/Admin/AdminLessonDetail';
 import UserInformation from './Pages/Admin/UserInformation';
 import Notifications from './Pages/Admin/Notifications';
 import UserLayout from './Components/User/UserLayout';
@@ -37,12 +39,15 @@ function App() {
               <Route path='module/create/:moduleNumber/' element={<AdminModuleCreate />} />
               <Route path='module/:moduleID/' element={<AdminModuleInfo />} />
               <Route path='module/:moduleID/edit/' element={<AdminModuleEdit />} />
-              {/* <Route index element={<AdminModules />} />
-            <Route path='module/*' element={<AdminModules />}>
-              <Route path=':moduleID/video/:videoID/' element={<AdminModules />} />
-              <Route path=':moduleID/video/create/' element={<AdminModules />} />
-              <Route path=':moduleID/video/:videoID/comment/:commentID/' element={<AdminModules />} />
-            </Route> */}
+              <Route path='module/:moduleID/lesson/create/:numLesson/' element={<AdminLessonCreate />} />
+              <Route path='module/:moduleID/lesson/:lessonID/:lessonNumber/' element={<AdminLessonDetail />} />
+              {/* 
+              <Route index element={<AdminModules />} />
+                <Route path=':moduleID/video/:videoID/' element={<AdminModules />} />
+                <Route path=':moduleID/video/create/' element={<AdminModules />} />
+                <Route path=':moduleID/video/:videoID/comment/:commentID/' element={<AdminModules />} />
+              </Route> 
+              */}
               <Route path='user-info/*' element={<UserInformation />} />
               <Route path='notifications/' element={<Notifications />} />
             </Route>
