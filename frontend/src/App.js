@@ -39,8 +39,8 @@ function App() {
               <Route path='module/create/:moduleNumber/' element={<AdminModuleCreate />} />
               <Route path='module/:moduleID/' element={<AdminModuleInfo />} />
               <Route path='module/:moduleID/edit/' element={<AdminModuleEdit />} />
-              <Route path='module/:moduleID/lesson/create/' element={<AdminLessonCreate />} />
-              <Route path='module/:moduleID/lesson/:lessonID/' element={<AdminLessonDetail />} />
+              <Route path='module/:moduleID/lesson/create/:numLesson/' element={<AdminLessonCreate />} />
+              <Route path='module/:moduleID/lesson/:lessonID/:lessonNumber/' element={<AdminLessonDetail />} />
               {/* 
               <Route index element={<AdminModules />} />
                 <Route path=':moduleID/video/:videoID/' element={<AdminModules />} />

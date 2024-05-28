@@ -5,6 +5,7 @@ import { access } from '../../../Util/access';
 import { UilAngleLeft } from '@iconscout/react-unicons';
 
 import FieldError from '../../../Components/FieldError';
+import './style.css';
 
 const Index = () => {
     const navigate = useNavigate();

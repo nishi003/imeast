@@ -4,13 +4,13 @@ import { UilPlusCircle } from '@iconscout/react-unicons';
 
 import { LessonContext } from '../../../../Contexts/MLCContext';
 
-const Index = ({ moduleID }) => {
+const Index = ({ moduleID, numLesson }) => {
     const navigate = useNavigate();
     const { lessonNumber, setLessonNumber } = useContext(LessonContext);
 
     const handleCreate = (() => {
         setLessonNumber(-1);
-        navigate(`/admin/module/${moduleID}/lesson/create/`);
+        navigate(`/admin/module/${moduleID}/lesson/create/${numLesson}/`);
     });
 
     return (

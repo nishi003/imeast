@@ -8,7 +8,9 @@ import { access, access_or_login } from '../../../Util/access';
 
 const Index = ({ moduleID }) => {
     const navigate = useNavigate();
-    const [videos, setVideos] = useState([]);
+    const [lessons, setLessons] = useState([]);
+    const [numLessons, setNumLesson] = useState();
+
     const { lessonNumber } = useContext(LessonContext);
 
     const fetchUserData = async () => {
@@ -25,7 +27,9 @@ const Index = ({ moduleID }) => {
                 } else {
                     const lessonsResponse = await access_or_login(`/lessons/${moduleID}/lesson/`, { method: 'GET' }, navigate);
                     const jsonLessons = await lessonsResponse.json();
-                    console.log(jsonLessons);
+                    const lessons = jsonLessons.lessons;
+                    setLessons(lessons);
+                    setNumLesson(lessons.length + 1);
                 }
             }
         } catch (error) {
@@ -40,7 +44,7 @@ const Index = ({ moduleID }) => {
 
     return (
         <div className={`h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar ${lessonNumber !== -1 ? 'items-center mr-[-32px]' : ''}`}>
-            <AdminNewVideoCard moduleID={moduleID} />
+            <AdminNewVideoCard moduleID={moduleID} numLesson={numLessons} />
             <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' module={module} />
             <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' module={module} />
             <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' module={module} />
