@@ -230,7 +230,7 @@ exports.login = async (req, res) => {
         return res.status(400).json({ success: false, errors: errors });
     }
 
-    let user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email });
     if (!user) {
         errors['valid'] = 'This email is not registered with imEast.';
         return res.status(400).json({ success: false, errors: errors });

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import AdminVideoCard from './AdminVideoCard';
 import AdminNewVideoCard from './AdminNewVideoCard';
+import AdminVideoCard from './AdminVideoCard';
 import { LessonContext } from '../../../Contexts/MLCContext';
 import { useNavigate } from 'react-router-dom';
 import { access, access_or_login } from '../../../Util/access';
@@ -39,24 +39,14 @@ const Index = ({ moduleID }) => {
 
     useEffect(() => {
         fetchUserData();
-    }, []);
-
+    }, [moduleID]);
 
     return (
         <div className={`h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar ${lessonNumber !== -1 ? 'items-center mr-[-32px]' : ''}`}>
             <AdminNewVideoCard moduleID={moduleID} numLesson={numLessons} />
-            <AdminVideoCard lesson={1} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={2} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={3} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={4} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={5} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={6} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={7} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={8} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={9} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={10} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={11} title='Neck & Shoulder, Shoulder Joint' module={module} />
-            <AdminVideoCard lesson={12} title='Neck & Shoulder, Shoulder Joint' module={module} />
+            {lessons && lessons.map((lesson, index) => (
+                <AdminVideoCard key={lesson?._id} index={index + 1} id={lesson?._id} module={lesson?.moduleID} title={lesson?.title} path={lesson?.path} video={lesson?.videoURL} thumbnail={lesson?.thumbnail} description={lesson?.description} date={lesson?.date} />
+            ))}
         </div>
     )
 }
