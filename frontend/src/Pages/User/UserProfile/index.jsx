@@ -170,7 +170,11 @@ const Index = () => {
     };
 
     function formattedNumber(originalNumber) {
-        return originalNumber.toString().replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        if (originalNumber) {
+            return originalNumber.toString().replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        } else {
+            return null;
+        }
     };
 
     return (

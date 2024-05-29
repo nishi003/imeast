@@ -20,14 +20,14 @@ const Index = () => {
         title: '',
         description: '',
         thumbnail: '',
-        videoURL: '',
+        path: '',
     });
 
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         thumbnail: '',
-        videoURL: '',
+        path: '',
     });
 
     const handleInputChangeForm = (e) => {
@@ -55,9 +55,8 @@ const Index = () => {
                     setErrors(serverErrors);
                 }
             } else {
-
+                navigate(`/admin/module/${moduleID}/`);
             }
-            console.log(json);
         } catch (error) {
             console.log("Error during fetch: ", error);
         };
@@ -92,10 +91,15 @@ const Index = () => {
                             <FieldError fielderror={errors.description} />
                         </div>
                         <div className='flex flex-col gap-1'>
+                            <label htmlFor='path' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Path</label>
+                            <input type='text' name='path' onChange={handleInputChangeForm} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['path'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='SHIFT + RIGHT CLICK and COPY AS PATH' />
+                            <FieldError fielderror={errors.path} />
+                        </div>
+                        {/* <div className='flex flex-col gap-1'>
                             <label htmlFor='videoURL' className='poppins-semibold text-[15px] text-[#767676] pl-2'>Video URL</label>
                             <input type='text' name='videoURL' onChange={handleInputChangeForm} className={`w-full rounded-[10px] text-[#9F9F9F] poppins-semibold p-3 focus:outline-[#767676] ${errors['videoURL'] === '' ? 'border border-[#9F9F9F]' : 'border-2 border-red-400'}`} placeholder='Add the video URL from VIMEO' />
                             <FieldError fielderror={errors.videoURL} />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

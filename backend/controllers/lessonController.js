@@ -1,7 +1,10 @@
 
 const Lesson = require('../models/Lesson');
 const Comment = require('../models/Comment');
+require('dotenv').config();
+
 const Vimeo = require('vimeo').Vimeo;
+const client = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
 
 // uri example='/videos/949383072';
 function getApiUri(vimeoUrl) {
@@ -23,14 +26,13 @@ exports.createLesson = async (req, res) => {
         const fieldNames = {
             'title': '',
             'description': '',
-            'videoURL': '',
-            'videoHTMLEmbed': '',
             'thumbnail': '',
+            'path': ''
         };
 
         for (const field in fieldNames) {
             if (!req.body[field]) {
-                if (field === 'thumbnail' || field === 'videoHTMLEmbed') {
+                if (field === 'thumbnail') {
                     errors[field] = '';
                 } else {
                     errors[field] = 'This field is required.';
@@ -51,112 +53,63 @@ exports.createLesson = async (req, res) => {
         }
 
         //vimeo sdk setup
-        let vimeoClient = new Vimeo(process.env.VIMEO_CLIENTID, process.env.VIMEO_CLIENTSECRET, process.env.VIMEO_ACCESS_TOKEN);
 
-        try {
-            const response = await new Promise((resolve, reject) => {
-                vimeoClient.request({ method: 'GET', path: '/tutorial' }, (error, body, status_code, headers) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve({ body, status_code, headers });
-                    }
-                });
-            });
-        } catch (error) {
-            console.error("Error during fetch: " + error.message);
-        }
+        client.request({
+            method: 'GET',
+            path: '/tutorial'
+        }, function (error, body, status_code, headers) {
+            if (error) {
+                console.log(error);
+            }
 
-        const uri = getApiUri(fieldNames['videoURL']);
-        if (!uri) {
-            return res.status(400).json({ success: false, errors: 'Invalid Vimeo URL' });
-        }
-
-        //disable view on vimeo *need to pay for account
-        try {
-            const response = await new Promise((resolve, reject) => {
-                vimeoClient.request({
-                    method: 'PATCH', path: uri,
-                    query: { 'privacy': { 'view': 'anybody' } } // change anybody to disable **REQUIRES PAYMENT**
-                }, (error, body, status_code, headers) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve({ body, status_code, headers });
-                    }
-                });
-            });
-        } catch (error) {
-            return res.status(400).json({ success: false, error: "error changing privacy settings on vimeo" });
-        }
-
-        //whitelist imeast as the only player
-        try {
-            const response = await new Promise((resolve, reject) => {
-                vimeoClient.request({ method: 'PUT', path: uri + '/privacy/domains/imeast.ca' }, (error, body, status_code, headers) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        vimeoClient.request({ method: 'PATCH', path: uri, query: { 'privacy': { 'embed': 'whitelist' }, 'embed': { 'buttons': { share: false, embed: false, like: false } } } },
-                            (error, body, status_code, headers) => {
-                                if (error) {
-                                    reject(error);
-                                } else {
-                                    resolve({ body, status_code, headers });
-                                }
-                            })
-                    }
-                });
-            });
-        } catch (error) {
-            return res.status(400).json({ success: false, error: "error getting html embed code" });
-        }
-
-        //get embed text
-        try {
-            const response = await new Promise((resolve, reject) => {
-                vimeoClient.request({ method: 'GET', path: uri + '/privacy/domains/imeast.ca' }, (error, body, status_code, headers) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        vimeoClient.request({ method: 'GET', path: uri, query: { embed: '' } }, (error, body, status_code, headers) => {
-                            if (error) {
-                                reject(error);
-                            } else {
-                                if (body && body.embed && body.embed.html) {
-                                    console.log(body.embed.html);
-                                    fieldNames['videoHTMLEmbed'] = body.embed.html;
-                                }
-                                resolve({ body, status_code, headers });
-                            }
-                        })
-                        resolve({ body, status_code, headers });
-                    }
-                })
-            });
-        } catch (error) {
-            return res.status(400).json({ success: false, error: "error getting html embed code" });
-        }
-
-        const lesson = new Lesson({
-            moduleID: moduleID,
-            title: fieldNames['title'],
-            video_URL: fieldNames['video_URL'],
-            videoHTMLEmbed: fieldNames['videoHTMLEmbed'],
-            thumbnail: fieldNames['thumbnail'],
-            description: fieldNames['description'],
+            console.log(body);
         });
 
-        try {
-            console.log(lesson);
-            await lesson.save();
-            return res.json({ success: true, message: "yipee! lesson saved", embed: fieldNames['videoHTMLEmbed'] });
-        } catch (error) {
-            return res.json({ success: false, message: "error saving lesson to database", error: error.message });
-        }
+        let file_name = fieldNames['path'];
+
+        client.upload(
+            file_name,
+            {
+                'name': fieldNames['title'],
+                'description': fieldNames['description']
+            },
+            function (uri) {
+                console.log('Your video URI is: ' + uri);
+                client.request(uri + '?fields=link', function (error, body, statusCode, headers) {
+                    if (error) {
+                        console.log('There was an error making the request.')
+                        console.log('Server reported: ' + error)
+                        return
+                    }
+                    console.log('Your video link is: ' + body.link)
+                    const lesson = new Lesson({
+                        moduleID: moduleID,
+                        title: fieldNames['title'],
+                        path: body.link,
+                        thumbnail: fieldNames['thumbnail'],
+                        description: fieldNames['description'],
+                    });
+                    lesson.save()
+                        .then(() => {
+                            return res.status(201).json({ success: true, lesson });
+                        })
+                        .catch(error => {
+                            return res.status(500).json({ success: false, message: "error saving lesson to database", error: error.message });
+                        });
+                })
+            },
+            function (bytes_uploaded, bytes_total) {
+                var percentage = (bytes_uploaded / bytes_total * 100).toFixed(2);
+                console.log(bytes_uploaded, bytes_total, percentage + '%');
+            },
+            function (error) {
+                console.log('Failed because: ' + error);
+                return res.status(500).json({ success: false, error: "Failed to upload video to Vimeo", details: error });
+            }
+        );
     }
     catch (error) {
-        res.json({ success: false, error: error })
+        res.status(500).json({ success: false, error: error })
     }
 };
 

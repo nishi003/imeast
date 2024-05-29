@@ -20,49 +20,51 @@ import UserProfile from './Pages/User/UserProfile';
 import UserModules from './Pages/User/UserModules';
 import UserPurchases from './Pages/User/UserPurchases';
 
-import { ModuleContext, useModuleContext, LessonContext, useLessonContext, } from './Contexts/MLCContext';
+import { ModuleContext, useModuleContext, LessonContext, useLessonContext, CommentContext, useCommentContext } from './Contexts/MLCContext';
 
 function App() {
   return (
     <ModuleContext.Provider value={useModuleContext()}>
       <LessonContext.Provider value={useLessonContext()}>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path='module/list/' element={<ModuleList />} />
-              <Route path='signin/' element={<SignIn />} />
-              <Route path='signup/' element={<SignUp />} />
-            </Route>
-            <Route path='/admin/*' element={<AdminLayout />}>
-              <Route path='module/list/' element={<AdminModuleList />} />
-              <Route path='module/create/:moduleNumber/' element={<AdminModuleCreate />} />
-              <Route path='module/:moduleID/' element={<AdminModuleInfo />} />
-              <Route path='module/:moduleID/edit/' element={<AdminModuleEdit />} />
-              <Route path='module/:moduleID/lesson/create/:numLesson/' element={<AdminLessonCreate />} />
-              <Route path='module/:moduleID/lesson/:lessonID/:lessonNumber/' element={<AdminLessonDetail />} />
-              {/* 
+        <CommentContext.Provider value={useCommentContext()}>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path='module/list/' element={<ModuleList />} />
+                <Route path='signin/' element={<SignIn />} />
+                <Route path='signup/' element={<SignUp />} />
+              </Route>
+              <Route path='/admin/*' element={<AdminLayout />}>
+                <Route path='module/list/' element={<AdminModuleList />} />
+                <Route path='module/create/:moduleNumber/' element={<AdminModuleCreate />} />
+                <Route path='module/:moduleID/' element={<AdminModuleInfo />} />
+                <Route path='module/:moduleID/edit/' element={<AdminModuleEdit />} />
+                <Route path='module/:moduleID/lesson/create/:numLesson/' element={<AdminLessonCreate />} />
+                <Route path='module/:moduleID/lesson/:lessonID/' element={<AdminLessonDetail />} />
+                {/* 
               <Route index element={<AdminModules />} />
                 <Route path=':moduleID/video/:videoID/' element={<AdminModules />} />
                 <Route path=':moduleID/video/create/' element={<AdminModules />} />
                 <Route path=':moduleID/video/:videoID/comment/:commentID/' element={<AdminModules />} />
               </Route> 
               */}
-              <Route path='user-info/*' element={<UserInformation />} />
-              <Route path='notifications/' element={<Notifications />} />
-            </Route>
-            <Route path='/user/*' element={<UserLayout />}>
-              <Route index element={<UserProfile />} />
-              <Route path='profile/' element={<UserProfile />} />
-              <Route path='transaction/list/' element={<UserProfile />} />
-              <Route path='module/*' element={<UserModules />}>
-                <Route path=':moduleID/' />
-                <Route path=':moduleID/video/:videoID/' />
+                <Route path='user-info/*' element={<UserInformation />} />
+                <Route path='notifications/' element={<Notifications />} />
               </Route>
-              <Route path='purchase/list/' element={<UserPurchases />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+              <Route path='/user/*' element={<UserLayout />}>
+                <Route index element={<UserProfile />} />
+                <Route path='profile/' element={<UserProfile />} />
+                <Route path='transaction/list/' element={<UserProfile />} />
+                <Route path='module/*' element={<UserModules />}>
+                  <Route path=':moduleID/' />
+                  <Route path=':moduleID/video/:videoID/' />
+                </Route>
+                <Route path='purchase/list/' element={<UserPurchases />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CommentContext.Provider>
       </LessonContext.Provider>
     </ModuleContext.Provider>
   );

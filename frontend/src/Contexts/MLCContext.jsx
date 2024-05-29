@@ -10,6 +10,11 @@ export const LessonContext = createContext({
     setLessonNumber: () => { },
 });
 
+export const CommentContext = createContext({
+    commentID: -1,
+    setCommentID: () => { },
+})
+
 export const useModuleContext = () => {
     const [moduleNumber, setModuleNumber] = useState(-1);
 
@@ -25,3 +30,11 @@ export const useLessonContext = () => {
         lessonNumber, setLessonNumber,
     };
 };
+
+export const useCommentContext = () => {
+    const [commentID, setCommentID] = useState(-1);
+
+    return {
+        commentID, setCommentID,
+    };
+}

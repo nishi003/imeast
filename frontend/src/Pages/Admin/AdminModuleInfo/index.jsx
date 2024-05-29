@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UilAngleLeft, UilLinkH, UilEditAlt } from '@iconscout/react-unicons';
+import { UilAngleLeft, UilLinkH } from '@iconscout/react-unicons';
 
 import { access, access_or_login } from '../../../Util/access';
 import { ModuleContext } from '../../../Contexts/MLCContext';
