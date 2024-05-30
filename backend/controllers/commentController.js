@@ -1,6 +1,7 @@
 const Comment = require('../models/Comment');
 const Notification = require('../models/Notification');
 const User = require('../models/User');
+const Lesson = require('../models/Lesson');
 
 exports.createComment = async (req, res) => {
 	try {
@@ -8,6 +9,8 @@ exports.createComment = async (req, res) => {
 		const userID = req.body.userID;
 
 		const user = await User.findById(userID);
+
+		console.log(req.body);
 		if (!user) {
 			console.log('createComment: user DNE');
 			return res.status(400).json({ success: false, error: 'This user does not exist.' });
@@ -17,21 +20,36 @@ exports.createComment = async (req, res) => {
 			return res.status(200);
 		}
 
+		let name;
+		if (user.isAdmin) {
+			name = 'Admin';
+		} else {
+			name = user.firstName + ' ' + user.lastName;
+		}
+
+		const lesson = await Lesson.findById(lessonID);
+		if (!lesson) {
+			return res.status(400).json({success: false, error: 'This lesson does not exist.'});
+		}
+		const moduleID = lesson.moduleID;
+
 		const comment = new Comment({
 			lessonID: lessonID,
 			userID: userID,
+			displayName: name,
+			isAdmin: user.isAdmin,
 			content: req.body.content.trim(),
 			parentCommentID: null,
 		});
 		await comment.save();
 
 		if (!user.isAdmin) {
-			const name = user.firstName + ' ' + user.lastName
 			const notification = new Notification({
 				displayName: name,
 				read: false,
 				type: 'comment',
 				typeID: comment._id,
+				link: `/admin/module/${moduleID}/lesson/${lessonID}/`
 			});
 			await notification.save();
 		}
@@ -63,9 +81,9 @@ exports.retrieveComment = async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ success: false, error: 'User not found.' });
 		}
-		const hasReplies = false;
+		let hasReplies = false;
 		const replies = await Comment.find({ parentCommentID: commentID });
-		if (replies) {
+		if (replies.length > 0) {
 			hasReplies = true;
 		}
 		const name = 'Admin';

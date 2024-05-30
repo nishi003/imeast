@@ -7,7 +7,7 @@ import { access, access_or_login } from '../../../Util/access';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 
-const Index = ({ commID, user, content, timestamp }) => {
+const Index = ({ commID, user, name, isAdmin, content, timestamp }) => {
     const navigate = useNavigate();
     const { commentID, setCommentID } = useContext(CommentContext);
     const [isReply, setIsReply] = useState(false);
@@ -17,10 +17,11 @@ const Index = ({ commID, user, content, timestamp }) => {
     const fetchCommentData = async () => {
         try {
             if (commID) {
+                console.log(`/comments/comment/${commID}/`);
                 const response = await access_or_login(`/comments/comment/${commID}/`, { method: 'GET' }, navigate);
                 const json = await response.json();
                 if (!response.ok) {
-                    console.log(json.error);
+                    console.log(json);
                 } else {
                     console.log(json);
                     setComment(json.comment);
@@ -35,19 +36,27 @@ const Index = ({ commID, user, content, timestamp }) => {
         fetchCommentData();
     }, [commID]);
 
+    function formatDate(isoDateString) {
+        const date = new Date(isoDateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = (date.getDate() + 1).toString().padStart(2, '0');
+        return `${year}.${month}.${day}`;
+    };
+
     return (
         <div className={`flex flex-row gap-4 items-start h-full w-full pl-[14px] ${commentID === commID ? 'bg-[#def1dd59] p-2 rounded-3xl' : ''}`}>
             <div className='bg-secondary h-[50px] w-[50px] rounded-full flex-shrink-0' />
             <div className='flex flex-col gap-1 w-full'>
                 <div className='flex flex-row gap-3 items-baseline'>
-                    {comment?.isAdmin ?
+                    {isAdmin ?
                         <div className='flex px-2 py-[2px] bg-secondary rounded-xl items-center'>
                             <p className='poppins-medium text-sm'>Admin</p>
                         </div>
                         :
-                        <p className='poppins-medium text-sm text-[#505050]'>{comment?.name}</p>
+                        <p className='poppins-medium text-sm text-[#505050]'>{name}</p>
                     }
-                    <p className='poppins-medium text-xs text-[#9F9F9F]'>Posted on {timestamp}</p>
+                    <p className='poppins-medium text-xs text-[#9F9F9F]'>Posted on {formatDate(timestamp)}</p>
                 </div>
                 <p className="poppins-medium text-base">{content}</p>
                 <div className='flex flex-row items-baseline gap-4'>

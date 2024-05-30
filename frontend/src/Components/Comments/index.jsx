@@ -9,7 +9,8 @@ const Index = ({ lessonID }) => {
 
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [comments, setComments] = useState([1]);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState(false);
 
     const fetchCommentData = async () => {
         try {
@@ -18,6 +19,7 @@ const Index = ({ lessonID }) => {
             if (!response.ok) {
                 console.log(json);
             } else {
+                setComments(json.comments);
             }
         } catch (error) {
             console.log(error);
@@ -26,7 +28,7 @@ const Index = ({ lessonID }) => {
 
     useEffect(() => {
         fetchCommentData();
-    }, [lessonID]);
+    }, [lessonID, newComment]);
 
     return (
         <div className='flex flex-col w-full h-auto gap-1'>
@@ -38,7 +40,7 @@ const Index = ({ lessonID }) => {
                     <p className='poppins-medium text-[#9F9F9F] pl-[14px]'>No comments yet</p>
                     :
                     comments.map((comment) => (
-                        <Comment key={comment?._id} commID={comment?._id} user={comment?.userID} content={comment?.content} timestamp={comment?.timestamp} />
+                        <Comment key={comment?._id} commID={comment?._id} user={comment?.userID} name={comment?.displayName} isAdmin={comment?.isAdmin} content={comment?.content} timestamp={comment?.timestamp} />
                     ))
                 }
             </div>

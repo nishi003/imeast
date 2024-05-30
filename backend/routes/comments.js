@@ -4,7 +4,7 @@ const commentController = require('../controllers/commentController');
 
 router.post('/:lessonID/', commentController.createComment);
 router.get('/:lessonID/', commentController.retrieveCommentList);
-router.get('/:commentID/', commentController.retrieveComment);
+router.get('/comment/:commentID/', commentController.retrieveComment);
 
 router.post('/comment/:commentID/', commentController.createReply);
 router.get('/:commentID/reply/', commentController.retrieveReplyList);
