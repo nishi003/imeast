@@ -3,7 +3,7 @@ import Reply from './Reply';
 import { access, access_or_login } from '../../Util/access';
 import { useNavigate } from 'react-router-dom';
 
-const Index = ({ commentID }) => {
+const Index = ({ commentID, refresh }) => {
     const navigate = useNavigate();
     const [replies, setReplies] = useState([]);
 
@@ -25,7 +25,7 @@ const Index = ({ commentID }) => {
 
     useEffect(() => {
         fetchReplyData();
-    }, [])
+    }, [commentID, refresh])
 
     return (
         <div className='flex flex-col gap-2 pt-2'>
