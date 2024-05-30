@@ -3,19 +3,11 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema(
     {
         lessonID: {
-            type: Number,
+            type: String,
             required: true,
         },
         userID:
         {
-            type: Number,
-            required: true,
-        },
-        isAdmin: {
-            type: Boolean,
-            required: true,
-        },
-        displayName: {
             type: String,
             required: true,
         },

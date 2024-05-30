@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UilAngleLeft } from '@iconscout/react-unicons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ModuleContext, LessonContext } from '../../../Contexts/MLCContext';
+import { LessonContext } from '../../../Contexts/MLCContext';
 import { access, access_or_login } from '../../../Util/access';
 
 import AdminAllVideos from '../../../Components/Admin/AdminAllVideos';
@@ -62,14 +62,14 @@ const Index = () => {
                         <p className='poppins-bold text-[#505050] text-base'>Back</p>
                     </button>
                     <div className='h-full w-full flex flex-row overflow-hidden flex-grow-0'>
-                        <div className='flex flex-col gap-3 overflow-y-scroll custom-scrollbar border-r-2 border-[#9F9F9F] pl-4 pr-12 flex-shrink-0 h-auto'>
-                            <iframe src={src} width="1104" height="621" frameborder="0" className='flex flex-shrink-0' allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                        <div className='flex flex-col gap-3 overflow-y-scroll custom-scrollbar border-r-2 border-[#9F9F9F] pl-4 pr-12 flex-shrink-0 min-h-full h-auto'>
+                            <iframe src={src} width="1104" height="621" frameborder="0" title={lesson?.title} className='flex flex-shrink-0 bg-black' allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                             <div className='flex flex-row items-center gap-2 mb-2'>
                                 <p className='poppins-bold text-[30px]'>LESSON {lessonNumber}:</p>
                                 <p className='poppins-semibold text-[30px]'>{lesson?.title}</p>
                             </div>
-                            <p className='flex w-full h-full poppins-medium'>{lesson?.description}</p>
-                            {/* <Comments lessonID={lessonID} /> */}
+                            {/* <p className='flex w-full h-full poppins-medium'>{lesson?.description}</p> */}
+                            <Comments lessonID={lessonID} />
                         </div>
                         <AdminAllVideos moduleID={moduleID} />
                     </div>

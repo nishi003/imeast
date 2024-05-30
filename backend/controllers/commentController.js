@@ -10,29 +10,25 @@ exports.createComment = async (req, res) => {
 		const user = await User.findById(userID);
 		if (!user) {
 			console.log('createComment: user DNE');
-			res.status(400).json({ success: false, error: 'This user does not exist.' });
+			return res.status(400).json({ success: false, error: 'This user does not exist.' });
 		}
 
-		let displayName;
-		if (user.isAdmin) {
-			displayName = 'Admin';
-		} else {
-			displayName = user.firstName + ' ' + user.lastName;
+		if (!req.body.content) {
+			return res.status(200);
 		}
 
 		const comment = new Comment({
 			lessonID: lessonID,
 			userID: userID,
-			isAdmin: user.isAdmin,
-			displayName: displayName,
 			content: req.body.content.trim(),
 			parentCommentID: null,
 		});
 		await comment.save();
 
 		if (!user.isAdmin) {
+			const name = user.firstName + ' ' + user.lastName
 			const notification = new Notification({
-				displayName: displayName,
+				displayName: name,
 				read: false,
 				type: 'comment',
 				typeID: comment._id,
@@ -48,8 +44,41 @@ exports.createComment = async (req, res) => {
 exports.retrieveCommentList = async (req, res) => {
 	try {
 		const lessonID = req.params.lessonID;
-		const comments = Comment.find({ lessonID: lessonID });
+		const comments = await Comment.find({ lessonID: lessonID, parentCommentID: null });
 		return res.status(200).json({ success: true, comments: comments });
+	} catch (error) {
+		return res.status(500).json({ success: false, error: error.message });
+	}
+};
+
+exports.retrieveComment = async (req, res) => {
+	try {
+		const commentID = req.params.commentID;
+		const comment = await Comment.findById(commentID);
+
+		if (!comment) {
+			return res.status(404).json({ success: false, error: 'Comment not found.' });
+		}
+		const user = await User.findById(comment.userID);
+		if (!user) {
+			return res.status(404).json({ success: false, error: 'User not found.' });
+		}
+		const hasReplies = false;
+		const replies = await Comment.find({ parentCommentID: commentID });
+		if (replies) {
+			hasReplies = true;
+		}
+		const name = 'Admin';
+		if (!user.isAdmin) {
+			name = user.firstName + ' ' + user.lastName;
+		}
+		const returnComment = {
+			'name': name,
+			'hasReplies': hasReplies,
+			'isAdmin': user.isAdmin,
+		}
+
+		return res.status(200).json({ success: true, comment: returnComment });
 	} catch (error) {
 		return res.status(500).json({ success: false, error: error.message });
 	}
