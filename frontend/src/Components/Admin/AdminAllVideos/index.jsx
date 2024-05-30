@@ -13,6 +13,8 @@ const Index = ({ moduleID }) => {
 
     const { lessonNumber } = useContext(LessonContext);
 
+    const [isAdmin, setIsAdmin] = useState();
+
     const fetchUserData = async () => {
         try {
             const response = await access('/users/currentuser/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ access: localStorage.getItem('access') }) }, navigate);
@@ -23,8 +25,9 @@ const Index = ({ moduleID }) => {
             } else {
                 const info = json.info;
                 if (!info.isAdmin) {
-                    navigate('/signin/');
+                    setIsAdmin(false);
                 } else {
+                    setIsAdmin(true);
                     const lessonsResponse = await access_or_login(`/lessons/${moduleID}/lesson/`, { method: 'GET' }, navigate);
                     const jsonLessons = await lessonsResponse.json();
                     const lessons = jsonLessons.lessons;
@@ -42,8 +45,12 @@ const Index = ({ moduleID }) => {
     }, [moduleID]);
 
     return (
-        <div className={`h-full w-full flex flex-col gap-8 overflow-y-scroll custom-scrollbar ${lessonNumber !== -1 ? 'items-center mr-[-32px]' : ''}`}>
-            <AdminNewVideoCard moduleID={moduleID} numLesson={numLessons} />
+        <div className={`h-full w-full flex flex-col gap-8 overflow-y-scroll min-h-full custom-scrollbar ${lessonNumber !== -1 ? 'items-center mr-[-32px]' : ''}`}>
+            {isAdmin ?
+                <AdminNewVideoCard moduleID={moduleID} numLesson={numLessons} />
+                :
+                <></>
+            }
             {lessons && lessons.map((lesson, index) => (
                 <AdminVideoCard key={lesson?._id} index={index + 1} id={lesson?._id} module={lesson?.moduleID} title={lesson?.title} path={lesson?.path} video={lesson?.videoURL} thumbnail={lesson?.thumbnail} description={lesson?.description} date={lesson?.date} />
             ))}

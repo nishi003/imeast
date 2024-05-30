@@ -61,7 +61,6 @@ exports.createLesson = async (req, res) => {
             if (error) {
                 console.log(error);
             }
-
             console.log(body);
         });
 
@@ -128,6 +127,7 @@ exports.retrieveLesson = async (req, res) => {
         const lessonID = req.params.lessonID;
         const lesson = await Lesson.findById(lessonID);
         return res.status(200).json({ success: true, lesson: lesson });
+
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }

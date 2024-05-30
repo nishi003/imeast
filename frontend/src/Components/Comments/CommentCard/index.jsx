@@ -1,34 +1,58 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { UilAngleDown } from '@iconscout/react-unicons';
 import Replies from '../../Replies';
+import { CommentContext } from '../../../Contexts/MLCContext';
+import { access, access_or_login } from '../../../Util/access';
 
 import './style.css';
+import { useNavigate } from 'react-router-dom';
 
-const Index = ({ id, name, date, content, hasReplies, isAdmin, comment }) => {
+const Index = ({ commID, user, content, timestamp }) => {
+    const navigate = useNavigate();
+    const { commentID, setCommentID } = useContext(CommentContext);
     const [isReply, setIsReply] = useState(false);
     const [isReplies, setIsReplies] = useState(false);
-    const [comm, setComm] = useState("At 4:06, what exactly is the needle used for this type of treatment? At 4:06, what exactly is the needle used for this type of treatment?, At 4:06, what exactly is the needle used for this type of treatment?");
+    const [comment, setComment] = useState();
 
-    console.log({ id });
-    console.log({ comment });
+    const fetchCommentData = async () => {
+        try {
+            if (commID) {
+                const response = await access_or_login(`/comments/comment/${commID}/`, { method: 'GET' }, navigate);
+                const json = await response.json();
+                if (!response.ok) {
+                    console.log(json.error);
+                } else {
+                    console.log(json);
+                    setComment(json.comment);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCommentData();
+    }, [commID]);
+
     return (
-        <div className={`flex flex-row gap-4 items-start h-full w-full pl-[14px] ${comment === id ? 'bg-[#def1dd59] p-2 rounded-3xl' : ''}`}>
+        <div className={`flex flex-row gap-4 items-start h-full w-full pl-[14px] ${commentID === commID ? 'bg-[#def1dd59] p-2 rounded-3xl' : ''}`}>
             <div className='bg-secondary h-[50px] w-[50px] rounded-full flex-shrink-0' />
             <div className='flex flex-col gap-1 w-full'>
                 <div className='flex flex-row gap-3 items-baseline'>
-                    {isAdmin ?
+                    {comment?.isAdmin ?
                         <div className='flex px-2 py-[2px] bg-secondary rounded-xl items-center'>
                             <p className='poppins-medium text-sm'>Admin</p>
                         </div>
                         :
-                        <p className='poppins-medium text-sm text-[#505050]'>{name}</p>
+                        <p className='poppins-medium text-sm text-[#505050]'>{comment?.name}</p>
                     }
-                    <p className='poppins-medium text-xs text-[#9F9F9F]'>Posted on {date}</p>
+                    <p className='poppins-medium text-xs text-[#9F9F9F]'>Posted on {timestamp}</p>
                 </div>
                 <p className="poppins-medium text-base">{content}</p>
                 <div className='flex flex-row items-baseline gap-4'>
                     <button className='poppins-semibold text-xs text-[#505050]' onClick={() => { setIsReply(!isReply); setIsReplies(false); }}>reply</button>
-                    {hasReplies ?
+                    {comment?.hasReplies ?
                         <button className='flex flex-row items-end' onClick={() => { setIsReplies(!isReplies); setIsReply(false); }}>
                             <p className='poppins-semibold text-xs text-accent-200'>view replies</p>
                             <UilAngleDown size='15' color='#669162' />
@@ -49,7 +73,7 @@ const Index = ({ id, name, date, content, hasReplies, isAdmin, comment }) => {
                     <></>
                 }
                 {isReplies ?
-                    <Replies commentID={id} />
+                    <Replies commentID={commID} />
                     :
                     <></>
                 }

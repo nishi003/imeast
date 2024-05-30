@@ -1,33 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Comment from './CommentCard';
 import NewComment from './NewComment';
+import { access, access_or_login } from '../../Util/access';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const Index = ({ module, video, comment }) => {
+const Index = ({ lessonID }) => {
+    const navigate = useNavigate();
+
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [comments, setComments] = useState([1]);
+
+    const fetchCommentData = async () => {
+        try {
+            const response = await access_or_login(`/comments/${lessonID}/`, { method: 'GET' }, navigate);
+            const json = await response.json();
+            if (!response.ok) {
+                console.log(json);
+            } else {
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCommentData();
+    }, [lessonID]);
 
     return (
         <div className='flex flex-col w-full h-auto gap-1'>
             <p className='poppins-semibold text-lg'>COMMENTS</p>
             <div className='w-full h-[2px] bg-black'></div>
-            {comments.length === 0 ?
-                <div className='flex flex-col gap-3 w-full pt-3'>
-                    <NewComment />
+            <div className='flex flex-col gap-3 w-full pt-3'>
+                <NewComment lessonID={lessonID} />
+                {comments.length === 0 ?
                     <p className='poppins-medium text-[#9F9F9F] pl-[14px]'>No comments yet</p>
-                </div>
-                :
-                <div className='flex flex-col gap-6 w-full pt-3'>
-                    <NewComment />
-                    <Comment id={1} name='Eugene Jang' date='2024.05.15' content='At 4:06, what exactly is the needle used for this type of treatment?' hasReplies={false} isAdmin={false} comment={comment} />
-                    <Comment id={2} name='Eugene Jang' date='2024.05.15' content='At 4:06, what exactly is the needle used for this type of treatment?' hasReplies={false} isAdmin={false} comment={comment} />
-                    <Comment id={3} name='Eugene Jang' date='2024.05.15' content='At 4:06, what exactly is the needle used for this type of treatment?' hasReplies={true} isAdmin={true} comment={comment} />
-                    <Comment id={4} name='Eugene Jang' date='2024.05.15' content='At 4:06, what exactly is the needle used for this type of treatment?' hasReplies={false} isAdmin={true} comment={comment} />
-                    <Comment id={5} name='Eugene Jang' date='2024.05.15' content='At 4:06, what exactly is the needle used for this type of treatment?' hasReplies={true} isAdmin={false} comment={comment} />
-                    <Comment id={6} name='Eugene Jang' date='2024.05.15' content='At 4:06, what exactly is the needle used for this type of treatment?' hasReplies={true} isAdmin={false} comment={comment} />
-                    <Comment id={7} name='Eugene Jang' date='2024.05.15' content='At 4:06, what exactly is the needle used for this type of treatment?' hasReplies={true} isAdmin={false} comment={comment} />
-                </div>
-            }
+                    :
+                    comments.map((comment) => (
+                        <Comment key={comment?._id} commID={comment?._id} user={comment?.userID} content={comment?.content} timestamp={comment?.timestamp} />
+                    ))
+                }
+            </div>
         </div>
     )
 }

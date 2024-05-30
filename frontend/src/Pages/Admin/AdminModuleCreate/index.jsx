@@ -59,7 +59,6 @@ const Index = () => {
 
     useEffect(() => {
         fetchUserData();
-        console.log(moduleNumber);
     }, []);
 
     async function handleSubmit(event) {
