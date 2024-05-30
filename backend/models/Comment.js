@@ -6,25 +6,29 @@ const commentSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        userID:
-        {
+        userID: {
             type: String,
             required: true,
         },
-        content:
-        {
+        displayName: {
             type: String,
             required: true,
         },
-        timestamp:
-        {
+        isAdmin: {
+            type: Boolean,
+            required: true,
+        },
+        content: {
+            type: String,
+            required: true,
+        },
+        timestamp: {
             type: Date,
             default: Date.now,
-            required: false,
+            required: true,
         },
-        parentCommentID:
-        {
-            type: Number,
+        parentCommentID: {
+            type: String,
             required: false,
         },
     }
