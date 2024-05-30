@@ -28,7 +28,7 @@ const Index = ({ lessonID }) => {
 
     useEffect(() => {
         fetchCommentData();
-    }, [lessonID, newComment]);
+    }, [lessonID, comments]);
 
     return (
         <div className='flex flex-col w-full h-auto gap-1'>

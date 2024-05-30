@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { access } from '../../../Util/access';
+import { LessonContext } from '../../../Contexts/MLCContext';
 
 import AdminNewModuleCard from '../../../Components/Admin/AdminModuleCard/AdminNewModuleCard';
 import AdminModuleCard from '../../../Components/Admin/AdminModuleCard';
@@ -13,6 +14,8 @@ const Index = () => {
     const [modules, setModules] = useState([]);
     const [moduleNumber, setModuleNumber] = useState(0);
     const [module, setModule] = useState();
+
+    const { lessonNumber, setLessonNumber } = useContext(LessonContext);
 
     const fetchUserData = async () => {
         try {
@@ -43,8 +46,9 @@ const Index = () => {
     };
 
     useEffect(() => {
+        setLessonNumber(-1);
         fetchUserData();
-    }, [module]);
+    }, []);
 
     return (
         <div className='h-full w-full bg-[#DCDCDC] flex p-8 gap-4 overflow-hidden justify-center'>

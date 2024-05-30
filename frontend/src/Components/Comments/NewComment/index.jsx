@@ -28,25 +28,27 @@ const Index = ({ lessonID }) => {
             } else {
                 const jsonInfo = json.info;
                 setFormData({ ...formData, userID: jsonInfo.userID });
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                };
-                const commentResponse = await access(`/comments/${lessonID}/`, requestOptions);
-                const jsonComment = await commentResponse.json();
-                if (!commentResponse.ok) {
-                    console.log(jsonComment);
-                } else {
-                    console.log(jsonComment);
+                if (formData['user'] !== '') {
+                    const requestOptions = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    };
+                    const commentResponse = await access(`/comments/${lessonID}/`, requestOptions);
+                    const jsonComment = await commentResponse.json();
+                    if (!commentResponse.ok) {
+                        console.log(jsonComment);
+                    } else {
+                        console.log(jsonComment);
+                    }
                 }
             }
         } catch (error) {
             console.log("Error during fetch: ", error);
         }
-    }
+    };
 
     return (
         <div className='flex flex-row gap-4 items-start h-full w-full pl-[14px]'>
