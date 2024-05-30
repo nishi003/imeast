@@ -41,7 +41,13 @@ exports.createLesson = async (req, res) => {
             } else {
                 errors[field] = '';
                 if (typeof req.body[field] === 'string') {
-                    fieldNames[field] = req.body[field].trim();
+                    let value = req.body[field].trim();
+                    if (field === 'path') {
+                        if (value.startsWith('"') && value.endsWith('"')) {
+                            value = value.substring(1, value.length - 1);
+                        }
+                    }
+                    fieldNames[field] = value;
                 } else {
                     fieldNames[field] = req.body[field];
                 }

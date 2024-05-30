@@ -28,7 +28,7 @@ const Index = ({ lessonID, onCommentAdded }) => {
             } else {
                 const jsonInfo = json.info;
                 setFormData({ ...formData, userID: jsonInfo.userID });
-                if (formData['user'] !== '') {
+                if (formData['userID'] !== '') {
                     const requestOptions = {
                         method: 'POST',
                         headers: {

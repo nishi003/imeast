@@ -123,7 +123,7 @@ const Index = ({ commID, user, name, isAdmin, content, timestamp }) => {
                     <div className='flex flex-col justify-end w-full gap-2 pt-2'>
                         <input type='text' name='content' onChange={handleInputChangeForm} value={formData.content} className='outline-none w-full resize-none border-b-2 border-[#505050] bg-white py-[2px] poppins-medium text-xs' placeholder='Add a reply...' />
                         <div className='flex flex-row w-full justify-end gap-4'>
-                            <button className='poppins-medium text-xs hover:scale-105 hover:duration-200' onClick={() => setIsReply(false)}>cancel</button>
+                            <button className='poppins-medium text-xs hover:scale-105 hover:duration-200' onClick={() => { setIsReply(false); setFormData({ ...formData, content: '' }); }}>cancel</button>
                             <button onClick={handleSubmit} className='flex px-6 py-1 bg-[#DCDCDC] text-xs text-white hover:bg-primary hover:scale-105 hover:duration-200 items-center rounded-full poppins-medium'>reply</button>
                         </div>
                     </div>
